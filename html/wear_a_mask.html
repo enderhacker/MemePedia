@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Unveil Project</title>
+		<style>
+			html,
+			body {
+				margin: 0;
+				height: 100%;
+				overflow: hidden;
+				background: black;
+			}
+			canvas {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				display: block;
+			}
+			h1 {
+				position: fixed;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				font-family: "Courier New", monospace;
+				font-size: 3vw;
+				text-align: center;
+				color: #ff0000;
+				letter-spacing: 5px;
+				text-shadow: 0 0 25px red, 0 0 50px #ff2222, 0 0 100px #770000;
+				z-index: 5;
+			}
+			#flash {
+				position: fixed;
+				inset: 0;
+				background: rgba(255, 0, 0, 0);
+				pointer-events: none;
+				mix-blend-mode: screen;
+				z-index: 4;
+				transition: background 0.05s ease;
+			}
+		</style>
+	</head>
+	<body>
+		<canvas id="bg"></canvas>
+		<div id="flash"></div>
+		<h1>USE A MASK BEFORE IT CATCHES YOU.<br />IT WAS TOO LATE FOR ME</h1>
+		<script>
+			const canvas = document.getElementById("bg");
+			const ctx = canvas.getContext("2d");
+			const flash = document.getElementById("flash");
+			let w,
+				h,
+				t = 0;
+			function resize() {
+				w = canvas.width = innerWidth;
+				h = canvas.height = innerHeight;
+			}
+			resize();
+			addEventListener("resize", resize);
+
+			function rand(min, max) {
+				return Math.random() * (max - min) + min;
+			}
+
+			function noise(x, y, time) {
+				return Math.sin(x * 0.0021 + Math.random() * 5) + Math.cos(y * 0.002 + time * 0.01 + Math.random() * 2);
+			}
+
+			function drawFrame() {
+				t += 1;
+				const imgData = ctx.createImageData(w, h);
+				const data = imgData.data;
+				const shiftX = rand(-400, 400);
+				const shiftY = rand(-400, 400);
+
+				for (let y = 0; y < h; y += 2) {
+					for (let x = 0; x < w; x += 2) {
+						const i = (x + y * w) * 4;
+						const n = noise(x + shiftX, y + shiftY, t);
+						const chaos = Math.abs(Math.sin(n * 3.5 + rand(-1, 1))) * 255;
+						data[i] = chaos;
+						data[i + 1] = rand(0, 30);
+						data[i + 2] = rand(0, 30);
+						data[i + 3] = 255;
+					}
+				}
+
+				ctx.putImageData(imgData, 0, 0);
+
+				// Dense random glitch lines (horizontal + vertical)
+				ctx.globalCompositeOperation = "screen";
+				for (let i = 0; i < 40; i++) {
+					ctx.fillStyle = `rgba(255,0,0,${rand(0.05, 0.4)})`;
+					ctx.fillRect(0, rand(0, h), w, rand(0.5, 3));
+				}
+				for (let i = 0; i < 40; i++) {
+					ctx.fillStyle = `rgba(255,0,0,${rand(0.05, 0.4)})`;
+					ctx.fillRect(rand(0, w), 0, rand(0.5, 3), h);
+				}
+				ctx.globalCompositeOperation = "source-over";
+
+				// Random screen flicker
+				if (Math.random() < 0.15) {
+					flash.style.background = `rgba(255,0,0,${rand(0.05, 0.25)})`;
+				} else {
+					flash.style.background = "rgba(255,0,0,0)";
+				}
+
+				requestAnimationFrame(drawFrame);
+			}
+			drawFrame();
+		</script>
+	</body>
+</html>
