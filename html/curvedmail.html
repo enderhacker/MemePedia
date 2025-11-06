@@ -775,7 +775,7 @@
 
 		<script>
 			const mailDatabase = {
-				"gregory.meyer@CurvedMail.com": {
+				"gregory.meyer@curvedmail.com": {
 					password: "greg",
 					emails: [
 						{
@@ -867,7 +867,7 @@
 					],
 				},
 
-				"darren.hancock@CurvedMail.com": {
+				"darren.hancock@curvedmail.com": {
 					password: "alleyes",
 					emails: [
 						{
@@ -1214,8 +1214,8 @@
 			};
 
 			function login() {
-				const username = document.getElementById("username").value;
-				const password = document.getElementById("password").value;
+				const username = document.getElementById("username").value?.toString().toLowerCase().trim() || "";
+				const password = document.getElementById("password").value?.toString() || "";
 				const errorMsg = document.getElementById("errorMsg");
 
 				if (mailDatabase[username] && mailDatabase[username].password === password) {

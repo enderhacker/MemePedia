@@ -5,12 +5,15 @@
 		<meta name="viewport" content="width=800,initial-scale=1" />
 		<title>MemePedia Archive</title>
 		<meta name="description" content="MemePedia - an unofficial archive of memes, inside jokes and old forum threads." />
+		<link rel="stylesheet" href="/24d8fbbc0b0629acf787bb9ece916f209c6184526a6ec6fa628d9bc2840c7764" />
 		<style>
 			body {
 				margin: 0;
 				background: #f3efe9 url("grid.png");
 				font-family: Tahoma, Verdana, Arial, sans-serif;
 				color: #111;
+				font-size: 14px;
+				line-height: 1.4;
 			}
 			#wrapper {
 				width: 800px;
@@ -189,7 +192,7 @@
 					<img src="/9fd8a9b27cf86d9129f1edc6c2d47e25cb8f3cfe11984d1a67b946f00ee4b8c4" alt="MemePedia logo" width="72" height="60" style="display: block; border: 0" />
 				</a>
 				<div>
-					<h1>MemePedia Archive</h1>
+					<h1>MemePedia Archive [HOME]</h1>
 					<div class="tagline">An unofficial snapshot of memes, inside jokes and old forum threads.</div>
 				</div>
 			</header>
@@ -201,7 +204,7 @@
 				<a href="/395b46de6c56b0518e08b07182c1ff4a340e0bb6ca7b315a8967a4d02b44b76d">Gallery</a>
 				<a href="/bec5d5040b7df76f319de5e40a82ad1335d9ab3d23f4f6ff1ab6597c72819333">About</a>
 				<span style="float: right; margin-right: 8px">
-					<img src="Komica.jpg" alt="hit counter" style="vertical-align: middle; height: 24px; border: 1px solid #555" />
+					<img src="/ac57241fc9a4a09696dff89272598c2594365686d25e84137d207fd4c49f6f2b" alt="hit counter" style="vertical-align: middle; height: 24px; border: 1px solid #555" />
 					<span class="counter" id="visits">000,000,000</span>
 				</span>
 			</nav>
@@ -305,8 +308,17 @@
 		<script>
 			(() => {
 				const link = document.getElementById("random-meme");
-				const IMAGES = ["HeManSings.jpg", "UnveilLogoName.png", "EmojiLionKing.jpg", "PepeTheFrog.jpg", "DealWithIt.png", "IHeardULiekMudkipz.jpg", "ThatsRacist.jpg", "Doge.jpg"];
-				const CORRUPTED = "UnveilLogoName.png";
+				const IMAGES = [
+					"79b81ff2a8cf7ebad4d95c1b7351f24a83e7a8d319da2f6e9a0b3af2bb12e597",
+					"3e4a0bdf58f4a7a99f3c2b14cb987e6cdd46a3d8bf64b1b6b3a92a0dfb7814b6",
+					"6a5142ac9b9b985f27e861bbd4e33c6ad2d2af7e05a284e79b83e68266dcbfc7",
+					"48a87d19adf0f0dcfbf41e41bcb2875b90a8b5f5b46c929e8d29b20368cd9618",
+					"72a44cb9a9bfa47f93e04f5a8d1a37961a2efb8bc44c18f4038d20b5e9b4cf10",
+					"e03d9c1d3a47a9652d873b1e8d01b4cf5c28d173cba7e8b480a2196b4283d251",
+					"e7421d2c7b4d2a8a4236c7b2c3f1a8b6d2c937e14efad237b0de5a6fa7a9d5cb",
+					"0bce4769b4cbe2280f27e8e7699a13b7e3c43efc861ffb9ef3b6995bbcc23f5d",
+				];
+				const CORRUPTED = "3e4a0bdf58f4a7a99f3c2b14cb987e6cdd46a3d8bf64b1b6b3a92a0dfb7814b6";
 
 				function openViewer() {
 					const win = window.open("", "randomMemeWindow", "width=900,height=700,scrollbars=yes,resizable=yes");
@@ -359,7 +371,7 @@
 				</div>
 				<div class="layout">
 					<div class="col-left">
-						<img src="UnderConstruction.png" alt="under construction" width="160" class="retro-gif">
+						<img src="/a5f3b9b2c85a8c5baf95f7c83c6a429f2b9e7a3df7d12b8e4325bfb9b47ed820" alt="under construction" width="160" class="retro-gif">
 						<p><a href="#" class="retro-link" id="guestbook">Sign Guestbook</a></p>
 						<p><a href="#" class="retro-link" id="home">Back to MemePedia</a></p>
 						<p class="note">Tip: click "Another" for a new random image. Right-click to save as.</p>

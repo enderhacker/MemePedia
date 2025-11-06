@@ -5,16 +5,18 @@
 		<meta name="viewport" content="width=1000,initial-scale=1" />
 		<title>MemePedia Forums (Archived)</title>
 		<meta name="description" content="MemePedia Forum - Archived community discussions." />
+		<link rel="stylesheet" href="/24d8fbbc0b0629acf787bb9ece916f209c6184526a6ec6fa628d9bc2840c7764" />
 		<style>
 			body {
 				margin: 0;
-				background: #f3efe9;
+				background: #f3efe9 url("grid.png");
 				font-family: Tahoma, Verdana, Arial, sans-serif;
 				color: #111;
-				position: relative;
+				font-size: 14px;
+				line-height: 1.4;
 			}
 			#wrapper {
-				width: 1000px;
+				width: 800px;
 				margin: 20px auto;
 				border: 4px solid #222;
 				background: #fff;
@@ -35,9 +37,14 @@
 			}
 			h1 {
 				margin: 0;
-				font-size: 24px;
+				font-size: 22px;
 				color: #1b1b3a;
 				text-shadow: 1px 1px 0 #fff;
+			}
+			.tagline {
+				font-size: 12px;
+				color: #333;
+				margin-top: 4px;
 			}
 			nav {
 				padding: 8px 12px;
@@ -119,7 +126,7 @@
 				width: 100%;
 				height: 100%;
 				z-index: -1;
-				background-image: url("eye.png");
+				background-image: url("/f1a327eb1b8293f0df25acb6e4f12b3a986ef06c63a57f539a7a4f12f4517e2e");
 				background-repeat: repeat;
 				opacity: 0;
 				transition: opacity 0s;
@@ -200,7 +207,8 @@
 					<img src="/9fd8a9b27cf86d9129f1edc6c2d47e25cb8f3cfe11984d1a67b946f00ee4b8c4" alt="MemePedia logo" width="72" height="60" style="display: block; border: 0" />
 				</a>
 				<div>
-					<h1>MemePedia Forums (Archived)</h1>
+					<h1>MemePedia Archive [FORUM]</h1>
+					<div class="tagline">An unofficial snapshot of memes, inside jokes and old forum threads.</div>
 				</div>
 			</header>
 
@@ -369,7 +377,7 @@
 
 						if (titleKey === "Project Unveil") {
 							modalContentContainer.classList.add("unveil-active");
-							modalContentContainer.style.background = "url('eye.png') #000 center center no-repeat";
+							modalContentContainer.style.background = "url('/f1a327eb1b8293f0df25acb6e4f12b3a986ef06c63a57f539a7a4f12f4517e2e') #000 center center no-repeat";
 							modalContentContainer.style.color = "#f0f0f0";
 							modalTitle.style.textShadow = "2px 2px #000";
 							modalMeta.style.borderBottom = "1px dashed #555";

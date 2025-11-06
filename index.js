@@ -145,6 +145,8 @@ publishFile("/0a04702c2d3c4ce70f0b876f70ab37ce13108c79c756fcbbdda8e4e927207869",
 
 publishFile("/e5f0df71d19f1cb40304a4524042f0feb4f1769fb967ce269922f8721bc3e917", "./data/eyeascii.json");
 
+publishFile("/24d8fbbc0b0629acf787bb9ece916f209c6184526a6ec6fa628d9bc2840c7764", "./css/scrollbar.css");
+
 publishFile("/e2d59fbab9a76cfd9b1d8a9b7db60ad2e4c77cf5d324b4e9b5a6a1a9cb5162c9", "./images/curvedmail.jpg");
 publishFile("/72a44cb9a9bfa47f93e04f5a8d1a37961a2efb8bc44c18f4038d20b5e9b4cf10", "./images/DealWithIt.png");
 publishFile("/0bce4769b4cbe2280f27e8e7699a13b7e3c43efc861ffb9ef3b6995bbcc23f5d", "./images/Doge.jpg");
@@ -164,6 +166,16 @@ publishFile("/2a17b51cb39a0c6c67c0eec8a4c511c2cbe4159cb2b83c973b3d1aeb6a14586a",
 publishFile("/e7421d2c7b4d2a8a4236c7b2c3f1a8b6d2c937e14efad237b0de5a6fa7a9d5cb", "./images/ThatsRacist.jpg");
 publishFile("/a5f3b9b2c85a8c5baf95f7c83c6a429f2b9e7a3df7d12b8e4325bfb9b47ed820", "./images/UnderConstruction.png");
 publishFile("/3e4a0bdf58f4a7a99f3c2b14cb987e6cdd46a3d8bf64b1b6b3a92a0dfb7814b6", "./images/UnveilLogoName.png");
+
+// 157dd9d6f7d7fb22f4c950a8f6713276b53b92a00eb4f195f7400dfb958fcca6
+// 9089f976186daa17b7e9bb4b3c0ddcaa1882c93bbde3013456043e505b624c67
+// e4fc780f974374a885e0246a100a3405285edf85e9e97e27583702fe0afff0df
+// ded2d40110abb9075e42bb31f69a6799bf25e515a8403549d4a8f0706877da9e
+// c3d794cff5e81c280aee4fd3f0968bf84164742833ad463b18e5144d1306bed5
+// 9ba828a78ae3d0111e6ac0e3d1aa4e151b87312448cb58fa5af94072bfa97221
+// 2d7b42abeaff03d4fae6f720d3dd4b82cd2ebacdb0d3aa7115e3f69140ed27ca
+// 52670cb900db3145ba4d17b169b01466393921b0b41c24022ccd06dc153f2dab
+// 87dbeaeabef1ac5fabbc312e4f50a594e5f2bfdc3e3531b050e9319dd87e84dd
 
 app.use(function (req, res) {
 	res.status(404).sendFile(path.join(__dirname, "html", "404.html"));

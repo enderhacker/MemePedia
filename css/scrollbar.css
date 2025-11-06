@@ -1,0 +1,30 @@
+/* Retro scrollbar styles (custom colors) */
+::-webkit-scrollbar {
+	width: 16px;
+	height: 16px;
+}
+
+::-webkit-scrollbar-track {
+	background: #f3efe9; /* fondo track crema */
+	border: 1px solid #e0d8d2; /* borde más suave */
+}
+
+::-webkit-scrollbar-thumb {
+	background: #d6a86a; /* tono ocre */
+	border: 2px outset #ffdba0; /* borde claro estilo retro */
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #c58a4a; /* ocre más oscuro al pasar el ratón */
+}
+
+::-webkit-scrollbar-button {
+	background: #ffdba0; /* botones claros */
+	border: 2px outset #d6a86a; /* efecto retro */
+	height: 16px;
+	width: 16px;
+}
+
+::-webkit-scrollbar-button:hover {
+	background: #c58a4a; /* hover oscuro */
+}
