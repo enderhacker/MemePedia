@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8" />
+		<title>CurvedMail Mail Viewer - Copyright 1997</title>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			body {
+				background-color: #c0c0c0;
+				/* Added subtle retro background pattern */
+				background-image: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px), repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px);
+				font-family: "Tinos", Arial, sans-serif;
+				font-size: 14px;
+				color: #000000;
+				overflow: hidden;
+			}
+
+			/* Retro scrollbar styles */
+			::-webkit-scrollbar {
+				width: 16px;
+				height: 16px;
+			}
+
+			::-webkit-scrollbar-track {
+				background: #c0c0c0;
+				border: 1px solid #808080;
+			}
+
+			::-webkit-scrollbar-thumb {
+				background: #dfdfdf;
+				border: 2px outset #ffffff;
+			}
+
+			::-webkit-scrollbar-thumb:hover {
+				background: #c0c0c0;
+			}
+
+			::-webkit-scrollbar-button {
+				background: #dfdfdf;
+				border: 2px outset #ffffff;
+				height: 16px;
+				width: 16px;
+			}
+
+			::-webkit-scrollbar-button:hover {
+				background: #c0c0c0;
+			}
+
+			.window {
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				background-color: #c0c0c0;
+				border: 2px outset #ffffff;
+				box-shadow: 2px 2px 0px #000000;
+			}
+
+			.title-bar {
+				background: linear-gradient(to right, #000080, #1084d0);
+				color: #ffffff;
+				padding: 3px 5px;
+				font-weight: bold;
+				font-size: 13px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
+
+			.title-bar-text {
+				display: flex;
+				align-items: center;
+				gap: 5px;
+			}
+
+			.title-bar-controls {
+				display: flex;
+				gap: 2px;
+			}
+
+			.title-bar-button {
+				width: 18px;
+				height: 16px;
+				background-color: #c0c0c0;
+				border: 1px outset #ffffff;
+				font-size: 9px;
+				font-weight: bold;
+				cursor: pointer;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.title-bar-button:active {
+				border-style: inset;
+			}
+
+			.window-body {
+				padding: 12px;
+				background-color: #c0c0c0;
+				/* Added subtle dot pattern to window body */
+				background-image: radial-gradient(circle, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+				background-size: 8px 8px;
+			}
+
+			.login-window {
+				width: 480px;
+			}
+
+			.mail-window {
+				width: 960px;
+				height: 700px;
+				overflow-x: auto;
+				display: none;
+			}
+
+			.form-group {
+				margin-bottom: 18px;
+			}
+
+			label {
+				display: block;
+				margin-bottom: 6px;
+				font-weight: bold;
+				font-size: 13px;
+			}
+
+			input[type="text"],
+			input[type="password"] {
+				width: 100%;
+				padding: 4px;
+				border: 2px inset #ffffff;
+				background-color: #ffffff;
+				font-family: "MS Sans Serif", Arial, sans-serif;
+				font-size: 13px;
+			}
+
+			button {
+				padding: 6px 24px;
+				background-color: #c0c0c0;
+				border: 2px outset #ffffff;
+				font-family: "MS Sans Serif", Arial, sans-serif;
+				font-size: 13px;
+				font-weight: bold;
+				cursor: pointer;
+				margin-right: 5px;
+			}
+
+			button:active {
+				border-style: inset;
+			}
+
+			.error {
+				color: #ff0000;
+				font-weight: bold;
+				margin-top: 12px;
+				display: none;
+				font-size: 13px;
+			}
+
+			.header {
+				background-color: #ffffff;
+				border: 2px inset #ffffff;
+				padding: 12px;
+				margin-bottom: 12px;
+				text-align: center;
+				/* Added diagonal line pattern to header */
+				background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(192, 192, 192, 0.1) 10px, rgba(192, 192, 192, 0.1) 20px);
+			}
+
+			.logocontainer {
+				margin-bottom: 10px;
+				align-items: center;
+				display: flex;
+				gap: 10px;
+				justify-content: center;
+			}
+
+			.logoimg {
+				width: 124px;
+				height: 124px;
+				min-width: 124px;
+				min-height: 124px;
+				object-fit: cover;
+			}
+
+			.header h1 {
+				font-size: 30px;
+				color: #000080;
+			}
+
+			.header .copyright {
+				font-size: 11px;
+				color: #808080;
+			}
+
+			.mail-container {
+				display: flex;
+				gap: 12px;
+				height: 560px;
+			}
+
+			.mail-list {
+				flex: 1;
+				background-color: #ffffff;
+				border: 2px inset #ffffff;
+				overflow-y: scroll;
+			}
+
+			.mail-detail {
+				flex: 1;
+				background-color: #ffffff;
+				border: 2px inset #ffffff;
+				overflow-y: scroll;
+				padding: 12px;
+			}
+
+			.mail-item {
+				padding: 10px;
+				border-bottom: 1px solid #c0c0c0;
+				cursor: pointer;
+				background-color: #ffffff;
+			}
+
+			.mail-item:hover {
+				background-color: #3838ff;
+				color: #ffffff;
+			}
+
+			.mail-item.selected {
+				background-color: #000080;
+				color: #ffffff;
+			}
+
+			.mail-subject {
+				font-weight: bold;
+				margin-bottom: 4px;
+				font-size: 13px;
+			}
+
+			.mail-timestamp {
+				font-size: 11px;
+				color: #808080;
+				margin-bottom: 4px;
+			}
+
+			.mail-item:hover .mail-timestamp,
+			.mail-item.selected .mail-timestamp {
+				color: #ffffff;
+			}
+
+			.mail-preview {
+				font-size: 12px;
+				color: #666666;
+			}
+
+			.mail-item:hover .mail-preview,
+			.mail-item.selected .mail-preview {
+				color: #ffffff;
+			}
+
+			.mail-detail-header {
+				border-bottom: 2px solid #000080;
+				padding-bottom: 12px;
+				margin-bottom: 12px;
+			}
+
+			.mail-detail-subject {
+				font-size: 20px;
+				font-weight: bold;
+				color: #000080;
+				margin-bottom: 6px;
+			}
+
+			.mail-detail-meta {
+				font-size: 12px;
+				color: #666666;
+			}
+
+			.mail-detail-content {
+				line-height: 1.6;
+				white-space: pre-wrap;
+				font-size: 13px;
+			}
+
+			.toolbar {
+				background-color: #c0c0c0;
+				border: 2px outset #ffffff;
+				padding: 6px;
+				margin-bottom: 12px;
+				display: flex;
+				justify-content: space-between;
+				align-items: center;
+			}
+
+			.user-info {
+				font-weight: bold;
+				color: #000080;
+				font-size: 13px;
+			}
+
+			.status-bar {
+				background-color: #c0c0c0;
+				border-top: 2px outset #ffffff;
+				padding: 4px 6px;
+				margin-top: 12px;
+				font-size: 12px;
+				display: flex;
+				justify-content: space-between;
+			}
+
+			.blink {
+				animation: blink 1s infinite;
+			}
+
+			@keyframes blink {
+				0%,
+				50% {
+					opacity: 1;
+				}
+				51%,
+				100% {
+					opacity: 0;
+				}
+			}
+
+			.empty-state {
+				text-align: center;
+				color: #808080;
+				padding: 60px;
+				font-style: italic;
+				font-size: 13px;
+			}
+
+			/* Glitch Effect 1: Text Scramble (for "disturb" flag) */
+			.glitch-scramble {
+				position: relative;
+			}
+
+			/* Glitch Effect 2: Screen Flicker */
+			@keyframes screenFlicker {
+				0%,
+				100% {
+					opacity: 1;
+				}
+				10% {
+					opacity: 0.8;
+				}
+				20% {
+					opacity: 1;
+				}
+				30% {
+					opacity: 0.9;
+				}
+				40% {
+					opacity: 1;
+				}
+				50% {
+					opacity: 0.7;
+				}
+				60% {
+					opacity: 1;
+				}
+				70% {
+					opacity: 0.85;
+				}
+				80% {
+					opacity: 1;
+				}
+			}
+
+			.glitch-flicker {
+				animation: screenFlicker 0.3s infinite;
+			}
+
+			/* Glitch Effect 4: Text Drift/Shake */
+			@keyframes textDrift {
+				0% {
+					transform: translate(0, 0);
+				}
+				10% {
+					transform: translate(-2px, 1px);
+				}
+				20% {
+					transform: translate(1px, -1px);
+				}
+				30% {
+					transform: translate(-1px, 2px);
+				}
+				40% {
+					transform: translate(2px, -2px);
+				}
+				50% {
+					transform: translate(-2px, -1px);
+				}
+				60% {
+					transform: translate(1px, 2px);
+				}
+				70% {
+					transform: translate(-1px, -2px);
+				}
+				80% {
+					transform: translate(2px, 1px);
+				}
+				90% {
+					transform: translate(-2px, -1px);
+				}
+				100% {
+					transform: translate(0, 0);
+				}
+			}
+
+			.glitch-drift {
+				animation: textDrift 0.5s infinite;
+				display: inline-block;
+			}
+
+			/* Glitch Effect 5: Static Overlay */
+			@keyframes staticNoise {
+				0% {
+					background-position: 0 0, 0 0, 0 0;
+				}
+				100% {
+					background-position: 100% 100%, -100% 100%, 50% -50%;
+				}
+			}
+
+			.glitch-static {
+				position: relative;
+				overflow: hidden;
+			}
+
+			.glitch-static::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				pointer-events: none;
+				mix-blend-mode: overlay;
+				background-image: repeating-linear-gradient(0deg, rgb(0 0 0) 0px, rgb(255 0 0) 1px, #ffffff00 2px), repeating-linear-gradient(90deg, rgb(255 255 255) 0px, rgb(255 255 255) 1px, #ffffff 2px), repeating-radial-gradient(circle, rgb(255 255 255) 1px, #ffffff 1px);
+				background-size: 3px 3px, 2px 2px, 4px 4px;
+				animation: staticNoise 0.15s steps(2, end) infinite;
+			}
+
+			/* Added image attachment styles */
+			.email-attachments {
+				margin-top: 20px;
+				padding-top: 20px;
+				border-top: 2px solid #c0c0c0;
+			}
+
+			.attachments-header {
+				font-weight: bold;
+				color: #000080;
+				margin-bottom: 12px;
+				font-size: 13px;
+			}
+
+			.attachment-grid {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 12px;
+			}
+
+			.attachment-item {
+				border: 2px outset #ffffff;
+				padding: 8px;
+				background-color: #f0f0f0;
+				cursor: pointer;
+				transition: border-style 0.1s;
+			}
+
+			.attachment-item:hover {
+				border-style: inset;
+			}
+
+			.attachment-item:active {
+				border-style: inset;
+			}
+
+			.attachment-image {
+				display: block;
+				min-width: 100px;
+				max-width: 200px;
+				min-height: 75px;
+				max-height: 150px;
+				object-fit: cover;
+				border: 1px solid #808080;
+			}
+
+			.attachment-name {
+				margin-top: 6px;
+				font-size: 11px;
+				text-align: center;
+				color: #000000;
+				word-break: break-word;
+			}
+
+			/* Added modal styles for image viewer and info popup */
+			.modal-overlay {
+				display: none;
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-color: rgba(0, 0, 0, 0.7);
+				z-index: 1000;
+				align-items: center;
+				justify-content: center;
+			}
+
+			.modal-overlay.active {
+				display: flex;
+			}
+
+			.modal-window {
+				background-color: #c0c0c0;
+				border: 2px outset #ffffff;
+				box-shadow: 4px 4px 0px #000000;
+				max-width: 90%;
+				max-height: 90%;
+			}
+
+			.modal-content {
+				padding: 12px;
+				max-height: 70vh;
+				overflow-y: auto;
+			}
+
+			.modal-image {
+				max-width: 100%;
+				max-height: 60vh;
+				display: block;
+				margin: 0 auto;
+				border: 2px inset #ffffff;
+			}
+
+			.modal-buttons {
+				margin-top: 12px;
+				text-align: center;
+			}
+
+			.info-content {
+				max-width: 600px;
+			}
+
+			.info-section {
+				margin-bottom: 20px;
+			}
+
+			.info-section h2 {
+				color: #000080;
+				font-size: 18px;
+				margin-bottom: 10px;
+				border-bottom: 2px solid #000080;
+				padding-bottom: 4px;
+			}
+
+			.info-section p {
+				line-height: 1.6;
+				margin-bottom: 8px;
+			}
+
+			.team-member {
+				margin-bottom: 12px;
+				padding: 8px;
+				background-color: #ffffff;
+				border: 2px inset #ffffff;
+			}
+
+			.team-member strong {
+				color: #000080;
+			}
+		</style>
+	</head>
+	<body>
+		<!-- Login Window -->
+		<div class="window login-window" id="loginWindow">
+			<div class="title-bar">
+				<div class="title-bar-text">
+					<span>CurvedMail Mail Login</span>
+				</div>
+				<div class="title-bar-controls">
+					<button class="title-bar-button">_</button>
+					<button class="title-bar-button">□</button>
+					<button class="title-bar-button">X</button>
+				</div>
+			</div>
+			<div class="window-body">
+				<div class="header">
+					<div class="logocontainer">
+						<img class="logoimg" src="/images/9149d25d4dc08808a2c6c015b2426d6fee6c0694fba306f91c1bcc23504abcbe.jpg" alt="Curved Mail Logo" />
+						<h1>CURVEDMAIL MAIL VIEWER</h1>
+					</div>
+					<div class="copyright">Copyright © 1997 CurvedMail Corporation. All Rights Reserved.</div>
+				</div>
+				<form id="loginForm" onsubmit="return false;">
+					<div class="form-group">
+						<label for="username">Username:</label>
+						<input type="text" id="username" name="username" autocomplete="off" />
+					</div>
+					<div class="form-group">
+						<label for="password">Password:</label>
+						<input type="password" id="password" name="password" />
+					</div>
+					<div style="text-align: center">
+						<button type="submit" onclick="login()">Login</button>
+						<button type="button">Cancel</button>
+					</div>
+					<div class="error" id="errorMsg">Invalid username or password!</div>
+				</form>
+				<div class="status-bar">
+					<span>Ready</span>
+					<span class="blink">●</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- Mail Window -->
+		<div class="window mail-window" id="mailWindow">
+			<div class="title-bar">
+				<div class="title-bar-text">
+					<span>CurvedMail Mail Viewer - Inbox</span>
+				</div>
+				<div class="title-bar-controls">
+					<button class="title-bar-button">_</button>
+					<button class="title-bar-button">□</button>
+					<button class="title-bar-button" onclick="logout()">X</button>
+				</div>
+			</div>
+			<div class="window-body">
+				<div class="header">
+					<div class="logocontainer">
+						<img class="logoimg" src="/images/9149d25d4dc08808a2c6c015b2426d6fee6c0694fba306f91c1bcc23504abcbe.jpg" alt="Curved Mail Logo" />
+						<h1>CURVEDMAIL MAIL VIEWER</h1>
+					</div>
+					<div class="copyright">Copyright © 1997 CurvedMail Corporation. All Rights Reserved.</div>
+				</div>
+				<div class="toolbar">
+					<div class="user-info">Logged in as: <span id="currentUser"></span></div>
+					<div>
+						<button onclick="showInfo()">Information</button>
+						<button onclick="logout()">Logout</button>
+					</div>
+				</div>
+				<div class="mail-container">
+					<div class="mail-list" id="mailList">
+						<div class="empty-state">Loading messages...</div>
+					</div>
+					<div class="mail-detail" id="mailDetail">
+						<div class="empty-state">Select a message to view</div>
+					</div>
+				</div>
+				<div class="status-bar">
+					<span id="statusText">CurvedMail - Email software for everyone</span>
+					<span><span id="mailCount">0</span> messages</span>
+				</div>
+			</div>
+		</div>
+
+		<!-- Image Modal -->
+		<div class="modal-overlay" id="imageModal">
+			<div class="modal-window">
+				<div class="title-bar">
+					<div class="title-bar-text">
+						<span id="imageModalTitle">Image Viewer</span>
+					</div>
+					<div class="title-bar-controls">
+						<button class="title-bar-button" onclick="closeImageModal()">X</button>
+					</div>
+				</div>
+				<div class="window-body">
+					<div class="modal-content">
+						<img id="modalImage" class="modal-image" src="/placeholder.svg" alt="" />
+						<div class="modal-buttons">
+							<button onclick="downloadImage()">Download</button>
+							<button onclick="closeImageModal()">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Information Modal -->
+		<div class="modal-overlay" id="infoModal">
+			<div class="modal-window">
+				<div class="title-bar">
+					<div class="title-bar-text">
+						<span>About CurvedMail</span>
+					</div>
+					<div class="title-bar-controls">
+						<button class="title-bar-button" onclick="closeInfoModal()">X</button>
+					</div>
+				</div>
+				<div class="window-body">
+					<div class="modal-content info-content">
+						<div class="info-section">
+							<h2>About CurvedMail Mail Viewer</h2>
+							<p>CurvedMail Mail Viewer v2.1 is the premier email client for Windows 95/NT systems. Developed in 1997, it represents the cutting edge of electronic mail technology.</p>
+							<p><strong>Version:</strong> 2.1.0 Build 1997.06.15</p>
+							<p><strong>Released:</strong> June 15, 1997</p>
+							<p><strong>System Requirements:</strong> Windows 95 or NT 4.0, 16MB RAM, 10MB disk space</p>
+						</div>
+
+						<div class="info-section">
+							<h2>Development Team</h2>
+
+							<div class="team-member">
+								<strong>Dr. Margaret Chen</strong> - Lead Software Architect<br />
+								Pioneer in email protocol design. Previously worked on SMTP implementations at Bell Labs. Holds 3 patents in network communication.
+							</div>
+
+							<div class="team-member">
+								<strong>Robert "Bob" Fitzgerald</strong> - Senior Developer<br />
+								Responsible for the revolutionary curved window interface design. Former Microsoft contractor who worked on Windows 95 shell components.
+							</div>
+
+							<div class="team-member">
+								<strong>Jennifer Nakamura</strong> - UI/UX Designer<br />
+								Created the iconic CurvedMail visual style. Award-winning designer with background in print media and early web design.
+							</div>
+
+							<div class="team-member">
+								<strong>David Kowalski</strong> - Network Engineer<br />
+								Implemented POP3 and IMAP support. Previously developed networking solutions for Fortune 500 companies.
+							</div>
+
+							<div class="team-member">
+								<strong>Lisa Rodriguez</strong> - Quality Assurance Lead<br />
+								Ensured Y2K compliance and cross-platform compatibility. Veteran tester with 10 years experience in enterprise software.
+							</div>
+						</div>
+
+						<div class="info-section">
+							<h2>Features</h2>
+							<p>• Full POP3 and IMAP4 protocol support</p>
+							<p>• MIME attachment handling (up to 10MB per file)</p>
+							<p>• Address book with 1000+ contact capacity</p>
+							<p>• Spell checker with 50,000 word dictionary</p>
+							<p>• HTML email rendering (limited)</p>
+							<p>• Y2K compliant architecture</p>
+						</div>
+
+						<div class="info-section">
+							<h2>Contact Information</h2>
+							<p>
+								<strong>CurvedMail Corporation</strong><br />
+								1440 Technology Drive, Suite 200<br />
+								San Jose, CA 95110<br />
+								Phone: 1-800-CURVED-1<br />
+								Fax: (408) 555-0199<br />
+								Email: support@curvedmail.com<br />
+								Web: http://www.curvedmail.com
+							</p>
+						</div>
+
+						<div class="modal-buttons">
+							<button onclick="closeInfoModal()">Close</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			const mailDatabase = {
+				"gregory.meyer@CurvedMail.com": {
+					password: "greg",
+					emails: [
+						{
+							fromName: "Mark Simmons",
+							fromEmail: "mark.simmons@curvedmail.com",
+							subject: "Spring Sale | Up to 50% Off!",
+							content: "Hey Gregory,\n\nDon't miss out! Our spring sale is here: furniture, gardening tools, and outdoor essentials are now up to 50% off.\n\nOffer valid until April 2nd, 2005.\n\nCheers,\nMark from GardenTown",
+							timestamp: 1111536000, // 2005-03-23
+							images: [
+								{
+									name: "spring_sale.jpg",
+									url: "https://placehold.co/600x400",
+								},
+							],
+						},
+						{
+							fromName: "Local Police Department",
+							fromEmail: "alerts@greenhillpd.gov",
+							subject: "Public Safety Notice | Fungal Contamination Alert",
+							content:
+								"Dear Residents of East Greenhill,\n\nPlease be advised that an unusual fungal contamination has been detected in the northern woodland area near Lake Berrin. Residents are advised to avoid the area until further notice.\n\nSymptoms from exposure may include headaches, shortness of breath, and vivid hallucinations. Cleanup crews are being dispatched.\n\nStay indoors and report any unusual mold growth inside your home.\n\n- Greenhill Police Department\nMarch 23, 2005",
+							timestamp: 1111536000,
+							images: [
+								{
+									name: "police_alert.jpg",
+									url: "https://placehold.co/500x300",
+								},
+								{
+									name: "fungus_warning_map.jpg",
+									url: "https://placehold.co/600x400",
+								},
+							],
+						},
+						{
+							fromName: "Eleanor Meyer",
+							fromEmail: "eleanor.meyer@oldfriends.net",
+							subject: "Hey Greg, long time no see!",
+							content:
+								"Hey Greg!\n\nIt’s been forever since college. How’s life treating you out there? I heard you moved somewhere near the woods, sounds peaceful. We should catch up soon.\n\nAlso, have you noticed anything odd around your neighborhood lately? My cousin from Greenhill said people are getting sick from something in the air.\n\nTake care,\nEleanor",
+							timestamp: 1111881600,
+							images: [
+								{
+									name: "friends_photo.jpg",
+									url: "https://placehold.co/400x400",
+								},
+							],
+						},
+						{
+							fromName: "Greenhill Neighborhood Group",
+							fromEmail: "neighbors@greenhill.net",
+							subject: "Neighborhood Watch Meeting | Concerning Reports",
+							content:
+								"Dear Residents,\n\nWe’ll be holding a community meeting tonight at 8:00 PM at the town hall. Several households have reported a strange, sweet smell and unusual fungal growth on trees and walls.\n\nAttendance is encouraged. Masks will be provided.\n\nStay safe,\nGreenhill Neighborhood Watch Committee",
+							timestamp: 1112054400,
+							images: [
+								{
+									name: "town_hall_notice.jpg",
+									url: "https://placehold.co/600x350",
+								},
+							],
+						},
+						{
+							fromName: "MegaMart",
+							fromEmail: "offers@megamart.com",
+							subject: "Weekly Deals Just for You!",
+							content: "Hi Gregory,\n\nYour personalized offers are waiting: electronics, tools, and groceries discounted until Sunday!\n\n- MegaMart Online Team",
+							timestamp: 1112227200,
+							images: [
+								{
+									name: "weekly_offers.jpg",
+									url: "https://placehold.co/600x400",
+								},
+							],
+						},
+						{
+							fromName: "Officer Daniel Brooks",
+							fromEmail: "dbrooks@greenhillpd.gov",
+							subject: "RE: Follow-up on Incident Near Your Residence",
+							content:
+								"Mr. Meyer,\n\nThis is a follow-up regarding your report about the strange growth near your property. Please remain indoors if the odor intensifies. Our lab confirmed the fungus is similar to the one found by Project Unveil scientists.\n\nWe’ll send a team tomorrow morning.\n\nOfficer Brooks\nGreenhill Police Department",
+							timestamp: 1112390400,
+							images: [
+								{
+									name: "spore_sample.jpg",
+									url: "https://placehold.co/600x400",
+								},
+							],
+						},
+					],
+				},
+
+				"darren.hancock@CurvedMail.com": {
+					password: "alleyes",
+					emails: [
+						{
+							fromName: "Dr. Lucinda Patel",
+							fromEmail: "lpatel@projectunveil.org",
+							subject: "Field Sample Collection Report #042",
+							content: "Darren,\n\nGood work on the first field sample. The fungus appears highly adaptive and emits spores that react to light frequencies between 530–550 nm. Keep the sample sealed.\n\nWe'll analyze further when you return to base.\n\n- Dr. Patel, Project Unveil",
+							timestamp: 1109721600, // March 2005 start
+							images: [
+								{
+									name: "fungus_sample.jpg",
+									url: "https://placehold.co/600x400",
+								},
+							],
+						},
+						{
+							fromName: "BioSecure Systems",
+							fromEmail: "safety@biosecurelabs.com",
+							subject: "URGENT: Quarantine Protocols Updated",
+							content:
+								"Attention all Project Unveil staff,\n\nThe containment unit Alpha-3 is under review after reports of structural compromise. Any personnel who handled specimens must undergo a 48-hour isolation period.\n\nFailure to comply may result in disciplinary measures.\n\n- BioSecure Systems Administration",
+							timestamp: 1110844800,
+							images: [
+								{
+									name: "lab_alert.jpg",
+									url: "https://placehold.co/500x300",
+								},
+								{
+									name: "biohazard_notice.jpg",
+									url: "https://placehold.co/600x350",
+								},
+							],
+						},
+						{
+							fromName: "Courier Express",
+							fromEmail: "tracking@courierexpress.net",
+							subject: "Shipment Confirmation #X29B77",
+							content: "Dear Darren Hancock,\n\nYour package (scientific equipment) has been shipped. Estimated delivery: March 25th.\n\nThank you for choosing Courier Express.",
+							timestamp: 1111363200,
+							images: [
+								{
+									name: "delivery.jpg",
+									url: "https://placehold.co/600x400",
+								},
+							],
+						},
+						{
+							fromName: "Dr. Darren Hancock",
+							fromEmail: "darren.hancock@CurvedMail.com",
+							subject: "To Whoever Finds This",
+							content:
+								"If you’re reading this… I wasn’t able to contain it.\n\nThe growth spread faster than expected. It breathes. It reacts when we speak near it.\n\nProject Unveil was never about curing, it was about control.\n\nDon't come here. Don't open the samples.\n\n- Darren Hancock\n(Project Unveil, Field Scientist)\n\nMarch 26, 2005",
+							timestamp: 1111795200,
+							images: [
+								{
+									name: "lab_photo.jpg",
+									url: "https://placehold.co/700x400",
+								},
+								{
+									name: "final_note.jpg",
+									url: "https://placehold.co/500x300",
+								},
+							],
+						},
+					],
+				},
+			};
+
+			let currentUserEmail = null;
+			let currentEmails = [];
+			let selectedEmailIndex = null;
+			let glitchIntervals = [];
+			let currentImageUrl = "";
+			let currentImageName = "";
+
+			function scrambleText(text) {
+				const weirdChars = [
+					// Box/symbol characters
+					"█",
+					"▓",
+					"▒",
+					"░",
+					"╬",
+					"╣",
+					"║",
+					"╗",
+					"╝",
+					"╚",
+					"╔",
+					"╩",
+					"╦",
+					"╠",
+					"═",
+					"╬",
+					"¶",
+					"§",
+					"‡",
+					"†",
+					"¤",
+					"¢",
+					"£",
+					"¥",
+					"Ω",
+					"Ψ",
+					"Φ",
+					"Σ",
+					"Π",
+					"Θ",
+					"Δ",
+					"Λ",
+					"∞",
+					"∫",
+					"∑",
+					"√",
+					"≈",
+					"≠",
+					"≤",
+					"≥",
+
+					// Greek letters (lower + upper)
+					"α",
+					"β",
+					"γ",
+					"δ",
+					"ε",
+					"ζ",
+					"η",
+					"θ",
+					"ι",
+					"κ",
+					"λ",
+					"μ",
+					"ν",
+					"ξ",
+					"ο",
+					"π",
+					"ρ",
+					"σ",
+					"τ",
+					"υ",
+					"φ",
+					"χ",
+					"ψ",
+					"ω",
+					"Α",
+					"Β",
+					"Γ",
+					"Δ",
+					"Ε",
+					"Ζ",
+					"Η",
+					"Θ",
+					"Ι",
+					"Κ",
+					"Λ",
+					"Μ",
+					"Ν",
+					"Ξ",
+					"Ο",
+					"Π",
+					"Ρ",
+					"Σ",
+					"Τ",
+					"Υ",
+					"Φ",
+					"Χ",
+					"Ψ",
+					"Ω",
+
+					// Cyrillic (Russian-style)
+					"Д",
+					"Ж",
+					"З",
+					"И",
+					"Й",
+					"Л",
+					"П",
+					"Ф",
+					"Ц",
+					"Ч",
+					"Ш",
+					"Щ",
+					"Ъ",
+					"Ы",
+					"Ь",
+					"Э",
+					"Ю",
+					"Я",
+					"д",
+					"ж",
+					"з",
+					"и",
+					"й",
+					"л",
+					"п",
+					"ф",
+					"ц",
+					"ч",
+					"ш",
+					"щ",
+					"ъ",
+					"ы",
+					"ь",
+					"э",
+					"ю",
+					"я",
+
+					// Hebrew
+					"א",
+					"ב",
+					"ג",
+					"ד",
+					"ה",
+					"ו",
+					"ז",
+					"ח",
+					"ט",
+					"י",
+					"כ",
+					"ל",
+					"מ",
+					"נ",
+					"ס",
+					"ע",
+					"פ",
+					"צ",
+					"ק",
+					"ר",
+					"ש",
+					"ת",
+
+					// Japanese Katakana
+					"ア",
+					"イ",
+					"ウ",
+					"エ",
+					"オ",
+					"カ",
+					"キ",
+					"ク",
+					"ケ",
+					"コ",
+					"サ",
+					"シ",
+					"ス",
+					"セ",
+					"ソ",
+					"タ",
+					"チ",
+					"ツ",
+					"テ",
+					"ト",
+					"ナ",
+					"ニ",
+					"ヌ",
+					"ネ",
+					"ノ",
+					"ハ",
+					"ヒ",
+					"フ",
+					"ヘ",
+					"ホ",
+					"マ",
+					"ミ",
+					"ム",
+					"メ",
+					"モ",
+					"ヤ",
+					"ユ",
+					"ヨ",
+					"ラ",
+					"リ",
+					"ル",
+					"レ",
+					"ロ",
+					"ワ",
+					"ヲ",
+					"ン",
+
+					// Latin accented / special letters
+					"à",
+					"á",
+					"â",
+					"ã",
+					"ä",
+					"å",
+					"æ",
+					"ç",
+					"è",
+					"é",
+					"ê",
+					"ë",
+					"ì",
+					"í",
+					"î",
+					"ï",
+					"ñ",
+					"ò",
+					"ó",
+					"ô",
+					"õ",
+					"ö",
+					"ø",
+					"ù",
+					"ú",
+					"û",
+					"ü",
+					"ý",
+					"ÿ",
+					"ß",
+					"œ",
+					"þ",
+					"ð",
+				];
+
+				return text
+					.split("")
+					.map((char) => {
+						if (/[a-zA-Z0-9]/.test(char)) {
+							return weirdChars[Math.floor(Math.random() * weirdChars.length)];
+						}
+						return char;
+					})
+					.join("");
+			}
+
+			function clearGlitchEffects() {
+				glitchIntervals.forEach((interval) => clearInterval(interval));
+				glitchIntervals = [];
+			}
+
+			window.onload = function () {
+				const loggedInUser = localStorage.getItem("currentUser");
+				if (loggedInUser && mailDatabase[loggedInUser]) {
+					currentUserEmail = loggedInUser;
+					currentEmails = mailDatabase[loggedInUser].emails;
+
+					document.getElementById("loginWindow").style.display = "none";
+					document.getElementById("mailWindow").style.display = "block";
+					document.getElementById("currentUser").textContent = loggedInUser;
+
+					loadMailList();
+				}
+			};
+
+			function login() {
+				const username = document.getElementById("username").value;
+				const password = document.getElementById("password").value;
+				const errorMsg = document.getElementById("errorMsg");
+
+				if (mailDatabase[username] && mailDatabase[username].password === password) {
+					// Save the current user to localStorage
+					localStorage.setItem("currentUser", username);
+
+					currentUserEmail = username;
+					currentEmails = mailDatabase[username].emails;
+
+					document.getElementById("loginWindow").style.display = "none";
+					document.getElementById("mailWindow").style.display = "block";
+					document.getElementById("currentUser").textContent = username;
+
+					loadMailList();
+					errorMsg.style.display = "none";
+				} else {
+					errorMsg.style.display = "block";
+				}
+			}
+
+			function logout() {
+				// Remove the current user from localStorage
+				localStorage.removeItem("currentUser");
+
+				clearGlitchEffects();
+				currentUserEmail = null;
+				currentEmails = [];
+				selectedEmailIndex = null;
+
+				document.getElementById("loginWindow").style.display = "block";
+				document.getElementById("mailWindow").style.display = "none";
+				document.getElementById("username").value = "";
+				document.getElementById("password").value = "";
+				document.getElementById("errorMsg").style.display = "none";
+			}
+
+			function loadMailList() {
+				const mailList = document.getElementById("mailList");
+				const mailCount = document.getElementById("mailCount");
+
+				mailCount.textContent = currentEmails.length;
+
+				if (currentEmails.length === 0) {
+					mailList.innerHTML = '<div class="empty-state">No messages in inbox</div>';
+					return;
+				}
+				currentEmails.sort((a, b) => b.timestamp - a.timestamp);
+				let html = "";
+				currentEmails.forEach((email, index) => {
+					const date = new Date(email.timestamp * 1000);
+					const dateStr = date.toLocaleString("en-US", {
+						month: "2-digit",
+						day: "2-digit",
+						year: "2-digit",
+					});
+
+					const preview = email.content.length > 100 ? email.content.substring(0, 100) + "..." : email.content;
+
+					html += `
+                    <div class="mail-item" onclick="selectEmail(${index})">
+                        <div class="mail-subject">[${email.fromName}] ${email.subject}</div>
+                        <div class="mail-timestamp">${dateStr}</div>
+                        <div class="mail-preview">${preview}</div>
+                    </div>
+                `;
+				});
+
+				mailList.innerHTML = html;
+			}
+
+			function selectEmail(index) {
+				clearGlitchEffects();
+				selectedEmailIndex = index;
+				const email = currentEmails[index];
+				const mailDetail = document.getElementById("mailDetail");
+
+				// Update selected state in list
+				const items = document.querySelectorAll(".mail-item");
+				items.forEach((item, i) => {
+					if (i === index) {
+						item.classList.add("selected");
+					} else {
+						item.classList.remove("selected");
+					}
+				});
+
+				// Display email details
+				const date = new Date(email.timestamp * 1000);
+				const dateStr = date.toLocaleString("en-US", {
+					weekday: "long",
+					year: "numeric",
+					month: "long",
+					day: "numeric",
+				});
+
+				// Apply glitch class based on email flag
+				let glitchClass = "";
+				if (email.glitch === "flicker") {
+					glitchClass = "glitch-flicker";
+				} else if (email.glitch === "drift") {
+					glitchClass = "glitch-drift";
+				} else if (email.glitch === "static") {
+					glitchClass = "glitch-static";
+				}
+
+				// Build attachments HTML
+				let attachmentsHtml = "";
+				if (email.images && email.images.length > 0) {
+					attachmentsHtml = `
+                    <div class="email-attachments ${glitchClass}">
+                        <div class="attachments-header">Attachments (${email.images.length}):</div>
+                        <div class="attachment-grid">
+                            ${email.images
+								.map(
+									(img, imgIndex) => `
+                                <div class="attachment-item ${glitchClass}" onclick="openImageModal('${img.url}', '${img.name}')">
+                                    <img src="${img.url}" alt="${img.name}" class="attachment-image">
+                                    <div class="attachment-name">${img.name}</div>
+                                </div>
+                            `
+								)
+								.join("")}
+                        </div>
+                    </div>
+                `;
+				}
+
+				mailDetail.innerHTML = `
+                <div class="mail-detail-header ${glitchClass}">
+                    <div class="mail-detail-subject">${email.subject}</div>
+                    <div class="mail-detail-meta">
+                        <strong>Date:</strong> ${dateStr}<br>
+                        <strong>From:</strong> ${email.fromName} "${email.fromEmail}"<br>
+                        <strong>To:</strong> ${currentUserEmail}
+                    </div>
+                </div>
+                <div class="mail-detail-content ${email.glitch === "disturb" ? "glitch-scramble" : glitchClass}" id="emailContent">${email.content}</div>
+                ${attachmentsHtml}
+            `;
+
+				// Apply "disturb" glitch effect - random text scrambling
+				if (email.glitch === "disturb") {
+					const contentElement = document.getElementById("emailContent");
+					const originalContent = email.content;
+					let isRunning = true;
+
+					function glitchBurst() {
+						if (!isRunning) return;
+
+						const repeatCount = Math.floor(Math.random() * 4) + 2;
+						let count = 0;
+						let isScrambled = false;
+
+						function singleGlitch() {
+							if (!isRunning) return;
+
+							isScrambled = !isScrambled;
+							contentElement.textContent = isScrambled ? scrambleText(originalContent) : originalContent;
+
+							count++;
+
+							if (count < repeatCount * 2) {
+								const delay = Math.random() * 300 + 100;
+								setTimeout(singleGlitch, delay);
+							} else {
+								contentElement.textContent = originalContent;
+							}
+						}
+
+						singleGlitch();
+
+						const nextCycleDelay = Math.random() * 4000 + 4000;
+						setTimeout(glitchBurst, nextCycleDelay);
+					}
+
+					glitchBurst();
+
+					glitchIntervals.push(() => {
+						isRunning = false;
+					});
+				}
+			}
+
+			function openImageModal(url, name) {
+				currentImageUrl = url;
+				currentImageName = name;
+				document.getElementById("modalImage").src = url;
+				document.getElementById("imageModalTitle").textContent = name;
+				document.getElementById("imageModal").classList.add("active");
+			}
+
+			function closeImageModal() {
+				document.getElementById("imageModal").classList.remove("active");
+			}
+
+			function downloadImage() {
+				const link = document.createElement("a");
+				link.href = currentImageUrl;
+				link.download = currentImageName;
+				document.body.appendChild(link);
+				link.click();
+				document.body.removeChild(link);
+			}
+
+			function showInfo() {
+				document.getElementById("infoModal").classList.add("active");
+			}
+
+			function closeInfoModal() {
+				document.getElementById("infoModal").classList.remove("active");
+			}
+
+			// Close modals when clicking outside
+			document.getElementById("imageModal").addEventListener("click", function (e) {
+				if (e.target === this) {
+					closeImageModal();
+				}
+			});
+
+			document.getElementById("infoModal").addEventListener("click", function (e) {
+				if (e.target === this) {
+					closeInfoModal();
+				}
+			});
+
+			// Allow Enter key to submit login
+			document.getElementById("username").addEventListener("keypress", function (e) {
+				if (e.key === "Enter") login();
+			});
+			document.getElementById("password").addEventListener("keypress", function (e) {
+				if (e.key === "Enter") login();
+			});
+		</script>
+	</body>
+</html>

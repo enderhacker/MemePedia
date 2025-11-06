@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PROJECT UNVEIL</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #09090a;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-family: Consolas, monospace;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .container {
+    position: relative;
+    top: -60px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    z-index: 2;
+  }
+
+  #password-box {
+    background: #fff;
+    color: #000;
+    border: none;
+    padding: 14px 20px;
+    font-size: 18px;
+    width: 480px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+    outline: none;
+  }
+
+  #prompt {
+    margin-top: 8px;
+    font-size: 16px;
+    letter-spacing: 1px;
+    text-align: left;
+    color: #fff;
+  }
+
+  #logo {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0.95;
+    max-width: 260px;
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  #message {
+    position: absolute;
+    top: 25px;
+    text-align: center;
+    color: #0f0;
+    display: none;
+    font-size: 18px;
+    letter-spacing: 2px;
+    z-index: 3;
+  }
+
+</style>
+</head>
+<body>
+  <div id="message">ACCESS GRANTED</div>
+
+  <div class="container">
+    <input type="password" id="password-box" placeholder="">
+    <div id="prompt">Insert password...</div>
+  </div>
+
+  <img src="Pr0yectUnv3ilLogo.png" alt="Project Unveil Logo" id="logo">
+  
+  <audio id="success-sound" src="Sucess.mp3" preload="auto"></audio>
+
+<script>
+  const input = document.getElementById("password-box");
+  const message = document.getElementById("message");
+  const sound = document.getElementById("success-sound");
+
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      if (input.value === "TruthWillBeShown03") {
+        message.style.display = "block";
+        message.textContent = "ACCESS GRANTED";
+        message.style.color = "#0f0";
+
+        setTimeout(() => {
+          sound.currentTime = 0;
+          sound.play().catch(() => {});
+        }, 400);
+
+        setTimeout(() => {
+          window.location.href = "/a15c2ab34008389122288d06521382beb04dde0f0e7eae4f0e025e73838feecc";
+        }, 4000);
+      } else {
+        message.style.display = "block";
+        message.textContent = "ACCESS DENIED";
+        message.style.color = "#f00";
+        setTimeout(() => {
+          message.style.display = "none";
+          input.value = "";
+        }, 1500);
+      }
+    }
+  });
+</script>
+</body>
+</html>

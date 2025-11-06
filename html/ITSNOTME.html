@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IT'SNOTMELETMEOUT</title>
+    <style>
+        /* --- CAMBIO: Se carga la nueva fuente VCR OSD MONO --- */
+        @font-face {
+            font-family: 'VCR OSD MONO';
+            src: url('vcrosdmono.woff2') format('woff2'); /* El nuevo archivo de fuente */
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            background-color: #000;
+            background-image: url('facemelted.png');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            
+            color: #ff0000;
+            /* --- CAMBIO: Se establece la nueva fuente como prioritaria --- */
+            font-family: 'VCR OSD MONO', 'Courier New', monospace;
+            font-weight: normal; /* Esta fuente se ve mejor sin negrita */
+            text-transform: uppercase;
+            overflow-x: hidden;
+        }
+
+        #output {
+            font-size: 5vw;
+            line-height: 1.0;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div id="output"></div>
+
+    <script>
+        const output = document.getElementById('output');
+        const textToPrint = "IT'SNOTMELETMEOUT";
+        let charIndex = 0;
+
+        // EFECTO 1: ESCRITURA INFINITA (Sin cambios)
+        const typingInterval = setInterval(() => {
+            output.textContent += textToPrint[charIndex % textToPrint.length];
+            charIndex++;
+            window.scrollTo(0, document.body.scrollHeight);
+        }, 10);
+
+        // EFECTO 2: MOVIMIENTO ERRÁTICO (Sin cambios)
+        const movementInterval = setInterval(() => {
+            const randomX = Math.floor(Math.random() * 51) - 25;
+            const randomY = Math.floor(Math.random() * 51) - 25;
+            output.style.transform = `translate(${randomX}px, ${randomY}px)`;
+        }, 90);
+    </script>
+</body>
+</html>

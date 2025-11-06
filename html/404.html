@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>404 Not Found | Memepedia</title>
+		<style>
+			body {
+				margin: 0;
+				background: #f3efe9 url("grid.png");
+				font-family: Tahoma, Verdana, Arial, sans-serif;
+				color: #111;
+			}
+			#wrapper {
+				width: 800px;
+				margin: 20px auto;
+				border: 4px solid #222;
+				background: #fff;
+				box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15);
+			}
+			header {
+				background: linear-gradient(#ffd6a5, #ffb4a2);
+				padding: 12px 14px;
+				display: flex;
+				align-items: center;
+				gap: 12px;
+			}
+			.logo {
+				width: 72px;
+				height: 60px;
+				background: url("MemePediaArchive.jpg") center/contain no-repeat;
+				border: 1px solid #999;
+				width: 60px;
+			}
+			h1 {
+				margin: 0;
+				font-size: 22px;
+				color: #1b1b3a;
+				text-shadow: 1px 1px 0 #fff;
+			}
+			.tagline {
+				font-size: 12px;
+				color: #333;
+				margin-top: 4px;
+			}
+			.layout {
+				padding: 20px;
+				text-align: center;
+			}
+			.card {
+				background: #fff;
+				padding: 20px;
+				border: 1px solid #e0d8d2;
+				display: inline-block;
+			}
+			.marquee {
+				background: #1b1b3a;
+				color: #fff;
+				padding: 6px;
+				margin-bottom: 14px;
+				font-weight: bold;
+			}
+			.marquee marquee {
+				color: #fff;
+			}
+			.fiction-exit {
+				display: inline-block;
+				margin-top: 14px;
+				background: #fff;
+				border: 2px solid #111;
+				padding: 8px 12px;
+				font-weight: bold;
+				text-decoration: none;
+				color: #111;
+			}
+			.footer {
+				padding: 10px;
+				text-align: center;
+				font-size: 12px;
+				background: #f4f4f4;
+				border-top: 1px solid #ddd;
+			}
+			@media (max-width: 840px) {
+				#wrapper {
+					width: 96%;
+					margin: 12px auto;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrapper">
+			<header>
+				<div class="logo"></div>
+				<div>
+					<h1>Memepedia Error 404</h1>
+					<div class="tagline">The page you're looking for doesn't exist - or maybe it's just hiding.</div>
+				</div>
+			</header>
+
+			<div class="layout">
+				<div class="card">
+					<h2>Oops!</h2>
+					<p>It looks like this page has been moved or deleted. Try returning to the main site below.</p>
+					<a href="https://memepedia.com" class="fiction-exit">Back to Memepedia.com</a>
+				</div>
+			</div>
+
+			<footer class="footer">© Memepedia 1997. All rights preserved in the Wayback Machine.</footer>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,44 @@
+[
+	{
+		"file": "artisticvisions.png",
+		"label": "Artistic Visions",
+		"description": "The best art supplies for every artist.",
+		"redirectUrl": null
+	},
+	{
+		"file": "greencuts.png",
+		"label": "GreenCuts",
+		"description": "Affordable lawn care and mowing services near you.",
+		"redirectUrl": null
+	},
+	{
+		"file": "javajunction.png",
+		"label": "Java Junction",
+		"description": "Start your day right with a fresh cup from Java Junction Café.",
+		"redirectUrl": null
+	},
+	{
+		"file": "petpals.png",
+		"label": "PetPals",
+		"description": "Find trusted sitters and walkers for your furry friends.",
+		"redirectUrl": null
+	},
+	{
+		"file": "sweetdreamsbakery.png",
+		"label": "Sweet Dreams Bakery",
+		"description": "Homemade pastries, cakes, and cookies made with love.",
+		"redirectUrl": null
+	},
+	{
+		"file": "curvedmail.png",
+		"label": "CurvedMail",
+		"description": "Free email services for everyone.",
+		"redirectUrl": "/61c1878564b8b4ad1e616452ef28ed927f6723d1d5ced2f39fd842a1839d7ea4"
+	},
+	{
+		"file": "projectunveil.png",
+		"label": "PROJECT UNVEIL",
+		"description": "Uncover the truth.",
+		"redirectUrl": "/4b3c126cf6c073a2d6f962afd5f072b52b1432119602644c43308ca79ff4e08e"
+	}
+]

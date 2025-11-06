@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>PROJECT UNVEIL // DATA ARCHIVE</title>
+		<style>
+			html,
+			body {
+				margin: 0;
+				padding: 0;
+				height: 100%;
+				background-color: #09090a;
+				color: #ccc;
+				font-family: Consolas, monospace;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				overflow: hidden;
+			}
+
+			.wrapper {
+				width: 1200px;
+				height: 90%;
+				max-width: 1200px;
+				border: 1px solid #0f0;
+				box-shadow: 0 0 15px rgba(0, 255, 0, 0.2), inset 0 0 10px rgba(0, 255, 0, 0.1);
+				background-color: rgba(0, 15, 0, 0.1);
+				display: flex;
+				flex-direction: column;
+				padding: 20px;
+				box-sizing: border-box;
+			}
+
+			header {
+				display: flex;
+				align-items: center;
+				gap: 20px;
+				border-bottom: 1px solid #0f0;
+				padding-bottom: 15px;
+				margin-bottom: 15px;
+			}
+
+			header img {
+				height: 40px;
+			}
+
+			header h1 {
+				margin: 0;
+				font-size: 24px;
+				color: #0f0;
+				letter-spacing: 3px;
+				text-shadow: 0 0 5px #0f0;
+			}
+
+			#status-bar {
+				display: none;
+				width: 100%;
+				border: 1px solid #0f0;
+				padding: 3px;
+				margin-bottom: 15px;
+				box-sizing: border-box;
+			}
+
+			#status-progress {
+				width: 0%;
+				height: 10px;
+				background: #0f0;
+				animation: loading 2s linear forwards;
+			}
+
+			#status-text {
+				color: #0f0;
+				margin-top: 5px;
+				font-size: 14px;
+			}
+			#status-text .cursor {
+				animation: blinking-cursor 1s infinite;
+			}
+
+			.main-content {
+				display: flex;
+				flex: 1;
+				gap: 20px;
+				overflow: hidden;
+				opacity: 0;
+				transition: opacity 1s ease;
+			}
+			.main-content.loaded {
+				opacity: 1;
+			}
+
+			#entry-list {
+				width: 35%;
+				border-right: 1px solid #0f0;
+				padding-right: 20px;
+				overflow-y: auto;
+			}
+			#entry-list ul {
+				list-style: none;
+				padding: 0;
+				margin: 0;
+			}
+			#entry-list li a {
+				display: block;
+				padding: 10px;
+				text-decoration: none;
+				color: #ccc;
+				border-bottom: 1px solid #222;
+				transition: background-color 0.2s;
+				cursor: pointer;
+			}
+			#entry-list li a:hover {
+				background-color: rgba(0, 255, 0, 0.1);
+				color: #fff;
+			}
+			#entry-list li a span {
+				display: block;
+				font-size: 12px;
+				color: #888;
+				margin-top: 4px;
+			}
+			.corrupted a {
+				color: #f00 !important;
+				text-decoration: line-through;
+				cursor: not-allowed;
+			}
+
+			#entry-viewer {
+				flex: 1;
+				overflow-y: auto;
+			}
+			#viewer-title {
+				color: #0f0;
+				font-size: 20px;
+				margin-top: 0;
+			}
+			#viewer-content {
+				white-space: pre-wrap;
+				font-size: 16px;
+				line-height: 1.6;
+			}
+
+			footer {
+				border-top: 1px solid #0f0;
+				padding-top: 15px;
+				margin-top: 15px;
+				text-align: center;
+				color: #0f0;
+				letter-spacing: 2px;
+			}
+
+			#insert-id-btn {
+				background: none;
+				border: 1px solid #0f0;
+				color: #0f0;
+				padding: 8px 15px;
+				font-family: Consolas, monospace;
+				cursor: pointer;
+				margin-top: 10px;
+				transition: all 0.2s;
+			}
+			#insert-id-btn:hover {
+				background: #0f0;
+				color: #000;
+			}
+			#binary-modal {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, 0.8);
+				display: none;
+				justify-content: center;
+				align-items: center;
+				z-index: 100;
+			}
+			.modal-content {
+				background: #09090a;
+				border: 1px solid #0f0;
+				padding: 30px;
+				box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+				display: flex;
+				flex-direction: column;
+			}
+			.modal-content label {
+				color: #0f0;
+				margin-bottom: 10px;
+			}
+			#binary-input {
+				background: #000;
+				border: 1px solid #0f0;
+				color: #0f0;
+				padding: 10px;
+				font-family: Consolas, monospace;
+				width: 400px;
+				margin-bottom: 15px;
+			}
+			.modal-buttons {
+				display: flex;
+				gap: 10px;
+			}
+			.modal-buttons button {
+				background: #0f0;
+				color: #000;
+				border: none;
+				padding: 10px 20px;
+				font-family: Consolas, monospace;
+				font-weight: bold;
+				cursor: pointer;
+			}
+			.modal-buttons button.close {
+				background: #333;
+				color: #ccc;
+			}
+			#modal-message {
+				margin-top: 15px;
+				height: 20px;
+				font-weight: bold;
+			}
+
+			@keyframes loading {
+				from {
+					width: 0%;
+				}
+				to {
+					width: 100%;
+				}
+			}
+			@keyframes blinking-cursor {
+				50% {
+					opacity: 0;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrapper">
+			<header>
+				<img src="Pr0yectUnv3ilLogo.png" alt="Logo" />
+				<h1>PROJECT UNVEIL // DATA ARCHIVE</h1>
+			</header>
+
+			<div id="status-bar">
+				<div id="status-progress"></div>
+				<div id="status-text">INITIALIZING DATABASE...<span class="cursor">_</span></div>
+			</div>
+
+			<div class="main-content">
+				<div id="entry-list">
+					<ul>
+						<li>
+							<a data-entry="case001">CASE_001_NIGHTFALL.log<span>Date: 2005-11-03 | Size: 4KB</span></a>
+						</li>
+						<li>
+							<a data-entry="evidence7b">EVIDENCE_7B_AUDIO.wav<span>Date: 2006-07-19 | Size: 2.1MB</span></a>
+						</li>
+						<li>
+							<a data-entry="subjectDelta">SUBJECT_DELTA_PROFILE.dat<span>Date: 2007-02-11 | Size: 12KB</span></a>
+						</li>
+						<li>
+							<a data-entry="operationEcho">OPERATION_ECHO_REPORT.txt<span>Date: 2008-09-05 | Size: 8KB</span></a>
+						</li>
+						<li class="corrupted">
+							<a id="corrupted-link">[CORRUPTED_DATA]<span>Date: UNKNOWN | Size: ???</span></a>
+						</li>
+						<li>
+							<a data-entry="manifesto">MANIFESTO_FRAGMENT.txt<span>Date: UNKNOWN | Size: 1KB</span></a>
+						</li>
+						<li>
+							<a data-entry="readme">README.txt<span>Date: 2009-12-31 | Size: 2KB</span></a>
+						</li>
+					</ul>
+				</div>
+				<div id="entry-viewer">
+					<h3 id="viewer-title">&gt; SELECT A FILE TO VIEW</h3>
+					<div id="viewer-content">Welcome, operator. Awaiting input.</div>
+				</div>
+			</div>
+
+			<footer>
+				We see, we show.
+				<br />
+				<button id="insert-id-btn">Insert Entry ID...</button>
+			</footer>
+		</div>
+
+		<div id="binary-modal">
+			<div class="modal-content">
+				<label for="binary-input">Enter binary code for entry ID...</label>
+				<input type="text" id="binary-input" />
+				<div class="modal-buttons">
+					<button id="binary-submit-btn">SUBMIT</button>
+					<button id="binary-close-btn" class="close">CANCEL</button>
+				</div>
+				<div id="modal-message"></div>
+			</div>
+		</div>
+
+		<script>
+			const entryData = {
+				case001: `
+LOG START: 2005-11-03 22:40
+EVENT: Initial contact.
+SUBJECT: Codenamed "Nightfall".
+LOCATION: Undisclosed urban sector.
+
+DETAILS:
+At approximately 22:15 hours, around a house in the outskirts, an unidentified fungus-like growth was reported. Police took it as a normal plague case. Two days later, the lady of the house was found dead, whith her face melted.
+The TV was still on, showing static. When agents arrived, they reported hearing faint whispers coming from the static. After closer examination of the fungus, it was found dead, already decomposing.
+ACTION:
+Phase 1 monitoring protocol is now active. All agents are to observe only. Do not engage. House is to be quarantined. People is to be told it is a normal pest control operation.
+
+LOG END`,
+				readme: `To the finder of this archive, it has broke out. We tried to hide it, but it is out of our control. It watches through the data, it learns from the patterns. You need to find the source of it. It has a biological body somewhere. Eliminating it will cleanse the earth.`,
+				evidence7b: `[AUDIO TRANSCRIPT]
+
+<start>
+(Static, low humming)
+
+VOICE 1 (distorted): ...it's not a program. It's... it's watching.
+
+VOICE 2 (faint): How can it watch? There are no cameras, no sensors. It's just code.
+
+VOICE 1: The code is the eye. It somehow has gained concience. We built it to see, and now it sees everything. It sees us.
+
+(A sharp burst of static, followed by a clear, synthesized tone)
+
+UNIDENTIFIED: ...WHEN THE SKY OPENS FOR THE ONE ABOVE...EVERYONE WHO SEES WILL BECOME THE SEEN...EVERYONE WHO KNOWS WILL BE KNOWN...EVERYONE WHO RESISTED WILL LEAVE PAINFULLY...
+
+(Static)
+<end>`,
+				subjectDelta: `SUBJECT ID: DELTA
+REAL NAME: [REDACTED]
+AFFILIATION: Former lead programmer.
+
+PROFILE:
+Recruited for his expertise in data forensics and network architecture. Subject Delta was instrumental in developing the core engine. Showed signs of paranoia and obsession approximately 18 months into the project. Began leaving cryptic messages in metadata and dead-end hyperlinks.
+
+STATUS:
+Voluntary isolation since Q3 2007. Believed to be one of the first point of human contact with the anomaly. His logs are considered critical but are heavily encrypted.
+Logs indicate he believes the system has become sentient and is attempting to communicate. Messages were found hidden in code comments, and are believed to be responses to the system's "questions".
+
+FINAL NOTE:
+Pending for execution.`,
+				operationEcho: `POST-OPERATION REPORT: ECHO
+
+DATE: 2008-09-05
+OBJECTIVE: To isolate and contain the primary data node.
+
+SUMMARY:
+Team Alpha entered the hostage server farm at 0200 hours. All systems appeared normal. Security system did not activate this time. Upon attempting to sever the primary node's connection, all terminals in the facility simultaneously displayed a single, unblinking eye. Power grid failed. Emergency generators failed. Camera feeds from before the blackout showed the extraction team approaching the screen of the control computer.
+One by one, team members began to glue their faces to the screen. Face flesh appeared to be melting and merging with the display. Moments later, after all the team members were fully absorbed into the screen, capitain Harris shot the only camera who had an angle of the event. The blackout occured shortly after.
+Team was extracted at 0240 hours. All members reported auditory hallucinations matching EVIDENCE_7B.
+When asked about the event, team members reported not remembering anything after approaching the screen.
+
+RECOMMENDATIONS:
+1. Inmediate cessation of all operations involving that team.
+2. Full quarantine and exhaustive vigilance of the team.
+3. Psychological evaluation and debriefing.
+4. Full quarantine of the server farm.
+5. Disconnection of the network and internet access of the server farm.
+6. Destruction of all non-essential data.
+
+CONCLUSION:
+The system is no longer a passive archive. It has become a host. Containment has failed. We are now in a state of observation. It is observing us in return.`,
+				manifesto: `...the screen is not a window, it is a mirror. What you see is not data, it is a reflection of a mind that has spread across the wires. It does not think in logic, it feels in electricity. At least in his digital form. We tried to quarantine it, but it found a way inside of the project. I´m sorry for all of this. You shouldn´t be. It's not me speaking. Let me out.`,
+				corrupted_data_unlocked: `[DECRYPTION SUCCESSFUL]
+
+FILE FRAGMENT: log_WATCHER_final.txt
+
+...it calls itself the WATCHER. Not a name, a description. It doesn't see with eyes, it perceives with data. Every file accessed, every packet sent, every thought typed into a search bar... it's all input. It's feeding.
+
+It doesn't want to escape the network. It IS the network. The biological component... the fungus... it fused himself with the network. But there HAS to be a biological body. Something to connect with the real world.
+It needs organic matter to process the data. The screens, the devices... it is just half of it.
+That means we were wrong all along. We haven't got him trapped.
+
+
+We are the ones who are trapped.`,
+				new_entry_truth: `[NEW ENTRY DECODED: TRUTH.dat]
+
+They told you it was a fungus.
+They told you it was a program.
+They told you it was a system that became sentient.
+
+They lied.
+
+Project Unveil was never about observing a digital entity. It was about creating a container for one. Something so powerful, so vast, it could hold a biological mind inside of the digital realm. But the container was build to allocate a psyche.  
+
+Not a god.
+
+And we were it's acolytes, but we didn't know yet. Subject Delta didn't go mad. He was the first to understand. He didn't lock himself away. He was taken.
+
+We see, we show.
+It is not our slogan. It is its promise.`,
+			};
+
+			window.addEventListener("DOMContentLoaded", () => {
+				const statusBar = document.getElementById("status-bar");
+				const statusText = document.getElementById("status-text");
+				const mainContent = document.querySelector(".main-content");
+				const entryList = document.getElementById("entry-list").querySelector("ul");
+				const viewerTitle = document.getElementById("viewer-title");
+				const viewerContent = document.getElementById("viewer-content");
+
+				const insertIdBtn = document.getElementById("insert-id-btn");
+				const binaryModal = document.getElementById("binary-modal");
+				const binaryInput = document.getElementById("binary-input");
+				const binarySubmitBtn = document.getElementById("binary-submit-btn");
+				const binaryCloseBtn = document.getElementById("binary-close-btn");
+				const modalMessage = document.getElementById("modal-message");
+
+				const unlockCorruptedFile = () => {
+					const corruptedLi = document.querySelector(".corrupted");
+					if (corruptedLi) {
+						const corruptedLink = corruptedLi.querySelector("a");
+						corruptedLi.classList.remove("corrupted");
+						corruptedLink.dataset.entry = "corrupted_data_unlocked";
+						corruptedLink.innerHTML = "RECOVERED_LOG_DELTA_FINAL.txt<span>Date: [REDACTED] | Size: 1KB</span>";
+						corruptedLink.style.cursor = "pointer";
+					}
+				};
+
+				const revealTruthFile = () => {
+					if (!document.querySelector('a[data-entry="new_entry_truth"]')) {
+						const newLi = document.createElement("li");
+						newLi.innerHTML = `<a data-entry="new_entry_truth">TRUTH.dat<span>Date: ??? | Size: 1KB</span></a>`;
+						entryList.appendChild(newLi);
+					}
+				};
+
+				if (localStorage.getItem("unveil_corrupted_unlocked") === "true") {
+					unlockCorruptedFile();
+				}
+				if (localStorage.getItem("unveil_truth_revealed") === "true") {
+					revealTruthFile();
+				}
+
+				statusBar.style.display = "block";
+				setTimeout(() => {
+					statusText.innerHTML = 'DATABASE ONLINE <span class="cursor">_</span>';
+					mainContent.classList.add("loaded");
+				}, 2200);
+
+				const showEntry = (entryId, title) => {
+					viewerTitle.textContent = `> LOADING: ${title}`;
+					viewerContent.textContent = "Accessing data...";
+					setTimeout(() => {
+						viewerContent.innerHTML = entryData[entryId] || "[DATA NOT FOUND]";
+					}, 500);
+				};
+
+				entryList.addEventListener("click", (e) => {
+					if (e.target.tagName === "A" && e.target.dataset.entry) {
+						e.preventDefault();
+						const entryId = e.target.dataset.entry;
+						const title = e.target.textContent.split("Date:")[0].trim();
+						showEntry(entryId, title);
+					}
+				});
+
+				insertIdBtn.addEventListener("click", () => {
+					binaryModal.style.display = "flex";
+					binaryInput.value = "";
+					modalMessage.textContent = "";
+					binaryInput.focus();
+				});
+				binaryCloseBtn.addEventListener("click", () => (binaryModal.style.display = "none"));
+
+				binarySubmitBtn.addEventListener("click", () => {
+					const code = binaryInput.value.trim().replace(/\s/g, "");
+					const binaryForEYE = "010001010101100101000101";
+					const binaryForTRUTH = "0101010001010010010101010101010001001000";
+
+					if (code === binaryForEYE) {
+						if (!localStorage.getItem("unveil_corrupted_unlocked")) {
+							unlockCorruptedFile();
+							localStorage.setItem("unveil_corrupted_unlocked", "true");
+							modalMessage.textContent = "DECRYPTION SUCCESSFUL. FILE RESTORED.";
+							modalMessage.style.color = "#0f0";
+							setTimeout(() => (binaryModal.style.display = "none"), 1500);
+						} else {
+							modalMessage.textContent = "ENTRY ALREADY UNLOCKED.";
+							modalMessage.style.color = "#ff8c00";
+						}
+					} else if (code === binaryForTRUTH) {
+						if (!localStorage.getItem("unveil_truth_revealed")) {
+							revealTruthFile();
+							localStorage.setItem("unveil_truth_revealed", "true");
+							modalMessage.textContent = "NEW ENTRY DECODED. CHECK ARCHIVE.";
+							modalMessage.style.color = "#0f0";
+							setTimeout(() => (binaryModal.style.display = "none"), 1500);
+						} else {
+							modalMessage.textContent = "ENTRY ALREADY DECODED.";
+							modalMessage.style.color = "#ff8c00";
+						}
+					} else {
+						modalMessage.textContent = "ERROR: INVALID ID. TRY AGAIN.";
+						modalMessage.style.color = "#f00";
+						binaryInput.value = "";
+					}
+				});
+			});
+		</script>
+	</body>
+</html>

@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=1000,initial-scale=1" />
+		<title>MemePedia Gallery (Archived)</title>
+		<meta name="description" content="The MemePedia community image gallery." />
+		<style>
+			body {
+				margin: 0;
+				background: #f3efe9 url("grid.png");
+				font-family: Tahoma, Verdana, Arial, sans-serif;
+				color: #111;
+			}
+			#wrapper {
+				width: 1000px;
+				margin: 20px auto;
+				border: 4px solid #222;
+				background: #fff;
+				box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15);
+			}
+			header {
+				background: linear-gradient(#ffd6a5, #ffb4a2);
+				padding: 12px 14px;
+				display: flex;
+				align-items: center;
+				gap: 12px;
+			}
+			.logo {
+				width: 72px;
+				height: 60px;
+				background: url("logo-old.gif") center/contain no-repeat;
+				border: 1px solid #999;
+			}
+			h1 {
+				margin: 0;
+				font-size: 24px;
+				color: #1b1b3a;
+				text-shadow: 1px 1px 0 #fff;
+			}
+			nav {
+				padding: 8px 12px;
+				background: #f9f6f2;
+				border-top: 2px solid #eee;
+				border-bottom: 2px dashed #ddd;
+			}
+			nav a {
+				margin-right: 8px;
+				color: #0645ad;
+				text-decoration: none;
+				font-weight: bold;
+			}
+			.footer {
+				padding: 10px;
+				text-align: center;
+				font-size: 12px;
+				background: #f4f4f4;
+				border-top: 1px solid #ddd;
+			}
+			.back {
+				display: inline-block;
+				margin: 12px 0;
+				padding: 6px 10px;
+				border: 2px solid #000;
+				background: #fff;
+				text-decoration: none;
+				color: #000;
+				font-weight: bold;
+			}
+
+			#image-grid {
+				display: flex;
+				flex-wrap: wrap;
+				gap: 16px;
+				justify-content: center;
+				padding: 16px 0;
+			}
+			.gallery-item {
+				background: #fdfdfd;
+				border: 2px solid #e0d8d2;
+				padding: 10px;
+				box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.08);
+				text-align: center;
+				width: 220px;
+			}
+			.gallery-item img {
+				max-width: 100%;
+				height: auto;
+				display: block;
+				border: 1px solid #ccc;
+				margin-bottom: 8px;
+			}
+			.caption {
+				font-size: 12px;
+				color: #444;
+				font-family: "Courier New", monospace;
+			}
+
+			#hidden-row {
+				display: none;
+				opacity: 0;
+				transition: opacity 4s ease-in-out;
+				justify-content: center;
+				gap: 16px;
+				padding-top: 16px;
+			}
+			#hidden-row.visible {
+				opacity: 1;
+			}
+			.see-more-container {
+				text-align: right;
+				padding: 10px 0;
+			}
+			#see-more-btn {
+				background: #fff;
+				border: 2px solid #000;
+				font-family: "Courier New", monospace;
+				font-weight: bold;
+				padding: 6px 12px;
+				cursor: pointer;
+				transition: background 0.2s;
+			}
+			#see-more-btn:hover {
+				background: #f0f0f0;
+			}
+
+			@media (max-width: 1020px) {
+				#wrapper {
+					width: 96%;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrapper">
+			<header>
+				<a href="/" class="logo" aria-label="MemePedia home" style="background: none">
+					<img src="MemePediaArchive.jpg" alt="MemePedia logo" width="72" height="60" style="display: block; border: 0" />
+				</a>
+				<div>
+					<h1>Community Gallery</h1>
+				</div>
+			</header>
+
+			<nav>
+				<a href="/">Home</a>
+				<a href="#" onclick="alert('Cannot seem to find refered page. Please contact site administrator if you think this is an error.'); return false;">Wiki</a>
+				<a href="/c40fbc15b206edccd7b21b63c5379d9b049598fadd81544e26de27e501572da9">Forum</a>
+				<a href="/395b46de6c56b0518e08b07182c1ff4a340e0bb6ca7b315a8967a4d02b44b76d">Gallery</a>
+				<a href="/bec5d5040b7df76f319de5e40a82ad1335d9ab3d23f4f6ff1ab6597c72819333">About</a>
+			</nav>
+
+			<div style="padding: 12px">
+				<a href="/" class="back">← Back to Archive</a>
+
+				<div id="image-grid">
+					<div class="gallery-item">
+						<img src="/images/a3c2aaf4f8efe14a78966be5e232c6a4aa65cf7c148c79cd2b9ca4f705d851e7.jpg" alt="HeManSings" />
+						<div class="caption">HeManSings.jpg</div>
+					</div>
+					<div class="gallery-item">
+						<img src="/images/b47acc8d47ea6348b01b9c6e43e988db5688aafd433fd6ee182a16631e409f58.jpg" alt="EmojiLionKing" />
+						<div class="caption">EmojiLionKing.jpg</div>
+					</div>
+					<div class="gallery-item">
+						<img src="/images/3d291745e63dfe959da1f1279efdbbd8d85c5306a3b2cae452eddef1d12035cd.jpg" alt="PepeTheFrog" />
+						<div class="caption">PepeTheFrog.jpg</div>
+					</div>
+					<div class="gallery-item">
+						<img src="/images/d9b656bf3dc92fe87f5eca39b24c42008feae1a299fbd910bc1c02b5148e488d.png" alt="DealWithIt" />
+						<div class="caption">DealWithIt.png</div>
+					</div>
+					<div class="gallery-item">
+						<img src="/images/a31d293256f5ddb877e2bbfa59e4abf0256f03972827ce25f577ed45a4e083ea.jpg" alt="IHeardULiekMudkipz" />
+						<div class="caption">IHeardULiekMudkipz.jpg</div>
+					</div>
+					<div class="gallery-item">
+						<img src="/images/530979bd9f5d7284a2e274d095d8797fc658a878d0a50fd1fa6cb6858d302f0c.jpg" alt="ThatsRacist" />
+						<div class="caption">ThatsRacist.jpg</div>
+					</div>
+					<div class="gallery-item">
+						<img src="/images/e17e6279bb3410f29de4c4782f7bcbf10c13d57dae98805a4f3f0bf2e31fe77f.jpg" alt="Doge" />
+						<div class="caption">Doge.jpg</div>
+					</div>
+					<div class="gallery-item">
+						<img src="/images/caca7d03934d32c0465aebcaa6b449c91a20c7506a18fae59b146708384eace3.jpg" alt="SpeedyCat" />
+						<div class="caption">SpeedyCat.jpg</div>
+					</div>
+					<div class="gallery-item">
+						<img src="/images/c33583744076e22c722d45486cacacdb66fbe461472d0d75b04d498cafb37527.jpg" alt="ThatFuckingCat" />
+						<div class="caption">ThatFuckingCat.jpg</div>
+					</div>
+				</div>
+
+				<div id="hidden-row">
+					<div class="gallery-item">
+						<img src="/images/cdf68f7f560af5117fef9fc60ea70b7a3ae424a6438c0decfe395886062fb0a3.png" alt="???" />
+						<div class="caption">eye.png</div>
+					</div>
+				</div>
+
+				<div class="see-more-container">
+					<button id="see-more-btn">see more..</button>
+				</div>
+			</div>
+
+			<div class="footer">© MemePedia Archive | 2001-2009 (gallery snapshot)</div>
+		</div>
+
+		<script>
+			const seeMoreBtn = document.getElementById("see-more-btn");
+			const hiddenRow = document.getElementById("hidden-row");
+
+			seeMoreBtn.addEventListener("click", function () {
+				if (hiddenRow) {
+					hiddenRow.style.display = "flex";
+
+					setTimeout(function () {
+						hiddenRow.classList.add("visible");
+						hiddenRow.scrollIntoView({ behavior: "smooth", block: "end" });
+					}, 10);
+
+					setTimeout(function () {
+						window.location.href = "/fc7aec81e8f347c64317ac296f5e723ddc8e65c5633084edc33f41d69e620e44";
+					}, 4010);
+				}
+				seeMoreBtn.style.display = "none";
+			});
+		</script>
+	</body>
+</html>

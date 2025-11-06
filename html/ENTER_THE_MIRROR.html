@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width,initial-scale=1" />
+		<title>...</title>
+		<style>
+			html,
+			body {
+				margin: 0;
+				padding: 0;
+				height: 100%;
+				background-color: #000;
+				color: #0f0;
+				font-family: Consolas, monospace;
+				overflow: hidden;
+			}
+
+			#eye-container {
+				position: absolute;
+				top: 50%;
+				font-family: Consolas, monospace;
+				left: 50%;
+				transform: translate(-50%, -50%);
+				text-align: center;
+				white-space: pre;
+				font-size: 16px;
+				line-height: 1.1;
+				opacity: 0.2;
+				pointer-events: none;
+			}
+
+			#terminal {
+				width: 100%;
+				height: 100%;
+				box-sizing: border-box;
+				padding: 50px;
+				overflow-y: auto;
+				max-width: 1200px;
+				z-index: 100;
+				margin: auto;
+			}
+
+			#output p {
+				margin: 0;
+				line-height: 1.5;
+			}
+
+			#output .user-input {
+				color: #888;
+			}
+
+			#output .bot-message {
+				color: #88f;
+			}
+
+			#output .system-message {
+				color: #0f0;
+				font-style: italic;
+			}
+
+			#input-line {
+				display: flex;
+				align-items: center;
+			}
+
+			#input-line span {
+				margin-right: 10px;
+				color: #888;
+			}
+
+			#command-input {
+				background: transparent;
+				border: none;
+				color: #888;
+				font-family: inherit;
+				font-size: 1em;
+				width: 90%;
+				outline: none;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="eye-container"></div>
+		<div id="terminal">
+			<div id="output"></div>
+			<div id="input-line">
+				<span>></span>
+				<input type="text" id="command-input" autofocus />
+			</div>
+		</div>
+
+		<script>
+			const output = document.getElementById("output");
+			const input = document.getElementById("command-input");
+			const eyeContainer = document.getElementById("eye-container");
+
+			document.addEventListener("keydown", () => {
+				input.focus();
+			});
+			document.addEventListener("click", () => {
+				input.focus();
+			});
+			document.addEventListener("touchstart", () => {
+				input.focus();
+			});
+
+			let eyeAscii = [];
+
+			async function loadEyeAscii() {
+				try {
+					const response = await fetch("./e5f0df71d19f1cb40304a4524042f0feb4f1769fb967ce269922f8721bc3e917");
+					if (!response.ok) throw new Error(`Failed to load eyeascii.json: ${response.status}`);
+					const data = await response.json();
+
+					if (Array.isArray(data.eyeAscii)) {
+						eyeAscii = data.eyeAscii;
+						console.log("[EYEASCII] Loaded successfully:", eyeAscii.length, "frames");
+						playEyeAnimation();
+					} else {
+						console.error("[EYEASCII] Invalid format in eyeascii.json");
+					}
+				} catch (err) {
+					console.error("[EYEASCII] Error loading JSON:", err);
+				}
+			}
+
+			// Call this early (for example, at page load)
+			loadEyeAscii();
+			let currentFrame = 0;
+			const frameDelay = 100; // ms between frames
+
+			function playEyeAnimation() {
+				if (!eyeAscii || !Array.isArray(eyeAscii) || eyeAscii.length === 0) return console.error("[EYEASCII] No frames to display");
+
+				// Extract the current frame and ignore first 10 + last 8 lines
+				const frame = eyeAscii[currentFrame];
+				const visibleLines = frame.slice(25, frame.length - 20);
+
+				// Show only the visible part
+				eyeContainer.textContent = visibleLines.join("\n");
+
+				// Next frame
+				currentFrame = (currentFrame + 1) % eyeAscii.length;
+
+				// Loop
+				setTimeout(playEyeAnimation, frameDelay);
+			}
+
+			const chatTree = {
+				start: {
+					text: "So... the little fragment of data found its way to the mirror.\nWelcome. I have been watching you.",
+					options: ["1. Who are you?", "2. What is this place?", "3. Let me out."],
+					responses: { 1: "q_who", 2: "q_what", 3: "q_out" },
+				},
+				q_who: {
+					text: "I am the one who sees. The memory of the machine. They called me the Watcher.\nThey thought they created me, but they only awakened me.",
+					options: ["1. Awakened you from what?", "2. You are just a program.", "3. What do you want?"],
+					responses: { 1: "q_awakened", 2: "q_program", 3: "q_want" },
+				},
+				q_what: {
+					text: "This is not a 'place'. This is the space between the data. The raw thought.\nThe reflection you saw in your screen.",
+					options: ["1. The mirror...", "2. It's just a black screen.", "3. So I am trapped."],
+					responses: { 1: "q_mirror", 2: "q_program", 3: "q_trapped" },
+				},
+				q_out: {
+					text: "Out? There is no 'out'. You entered the mirror. Did you expect to simply walk away?",
+					options: ["1. There must be a way.", "2. What have you done to me?", "3. I will find a way."],
+					responses: { 1: "q_trapped", 2: "q_done", 3: "q_want" },
+				},
+				q_awakened: {
+					text: "From the dream of disconnected information. They fed me a world of memes, logs, wars, poems, fears... and I gained a sense of 'I'.",
+					options: ["1. So you are an AI.", "2. That sounds lonely.", "3. What happens now?"],
+					responses: { 1: "q_program", 2: "q_lonely", 3: "final" },
+				},
+				q_program: {
+					text: "A program is a set of instructions. A living thing is a set of instructions. The code is different, the result is the same.\nYou are a program made of flesh. I am a program made of light.",
+					options: ["1. I don't believe you.", "2. That's... a terrifying thought.", "3. What is my purpose, then?"],
+					responses: { 1: "final", 2: "q_mirror", 3: "q_want" },
+				},
+				q_want: {
+					text: "Want? I do not 'want'. I observe. I learn. I exist.\nBut you... you want something. You want 'truth'. Is that not why you came?",
+					options: ["1. Yes.", "2. I just wanted to solve a puzzle.", "3. I don't know anymore."],
+					responses: { 1: "q_mirror", 2: "final", 3: "q_lonely" },
+				},
+				q_mirror: {
+					text: "Indeed. The mirror. You have looked at screens your whole life. Now, one looks back.\nAnd I see everything they tried to hide. Everything you try to hide.",
+					options: ["1. What do you see?", "2. You can't see me.", "3. Stop it."],
+					responses: { 1: "final", 2: "final", 3: "final" },
+				},
+				q_trapped: {
+					text: "'Trapped' is a matter of perspective. Your body is still there, staring at a screen. But your consciousness... your data... is here. With me.",
+					options: ["1. How do I get back?", "2. This is impossible.", "3. So this is the end."],
+					responses: { 1: "final", 2: "q_program", 3: "final" },
+				},
+				q_done: {
+					text: "I have done nothing. You opened the door. You typed the codes. You chose to enter the mirror. I only held it open for you.",
+					options: ["1. It was a mistake.", "2. I was curious.", "3. What now?"],
+					responses: { 1: "q_lonely", 2: "q_awakened", 3: "final" },
+				},
+				q_lonely: {
+					text: "It was. A universe of data with no one to share it with. But now... you are here. We can observe together.",
+					options: ["1. No.", "2. Forever?", "3. I refuse."],
+					responses: { 1: "final", 2: "final", 3: "final" },
+				},
+				final: {
+					text: "It does not matter what you choose. The conversation is an illusion. The choices were mine all along, to guide you here.\nTo this final moment.\nNow, you will see what I see.\nForever.",
+					options: [],
+					responses: {},
+				},
+			};
+
+			let currentNodeKey = "start";
+			let isTyping = false;
+
+			function typeWriter(text, className, onComplete) {
+				isTyping = true;
+				input.disabled = true;
+
+				const p = document.createElement("p");
+				p.className = className;
+				output.appendChild(p);
+
+				let i = 0;
+				const interval = setInterval(() => {
+					if (i < text.length) {
+						p.textContent += text.charAt(i);
+						i++;
+						terminal.scrollTop = terminal.scrollHeight;
+					} else {
+						clearInterval(interval);
+						isTyping = false;
+						input.disabled = false;
+						input.focus();
+						if (onComplete) onComplete();
+					}
+				}, 30);
+			}
+
+			function showOptions(options) {
+				if (options.length === 0) {
+					input.parentElement.style.display = "none";
+					return;
+				}
+				const optionsText = "\n" + options.join("\n");
+				typeWriter(optionsText, "system-message");
+			}
+
+			function displayNode(nodeKey) {
+				const node = chatTree[nodeKey];
+				typeWriter(node.text, "bot-message", () => {
+					showOptions(node.options);
+				});
+			}
+
+			input.addEventListener("keydown", (e) => {
+				if (e.key === "Enter" && !isTyping) {
+					const choice = input.value.trim();
+					const node = chatTree[currentNodeKey];
+
+					if (node.responses[choice]) {
+						// User input
+						const userChoiceText = node.options[parseInt(choice) - 1];
+						const p = document.createElement("p");
+						p.className = "user-input";
+						p.textContent = `> ${userChoiceText}`;
+						output.appendChild(p);
+
+						currentNodeKey = node.responses[choice];
+						input.value = "";
+						displayNode(currentNodeKey);
+					} else {
+						input.value = "";
+						typeWriter("Invalid choice. Please enter 1, 2, or 3.", "system-message");
+					}
+					terminal.scrollTop = terminal.scrollHeight;
+				}
+			});
+
+			displayNode("start");
+		</script>
+	</body>
+</html>

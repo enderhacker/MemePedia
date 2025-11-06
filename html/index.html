@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=800,initial-scale=1" />
+		<title>MemePedia Archive</title>
+		<meta name="description" content="MemePedia - an unofficial archive of memes, inside jokes and old forum threads." />
+		<style>
+			body {
+				margin: 0;
+				background: #f3efe9 url("grid.png");
+				font-family: Tahoma, Verdana, Arial, sans-serif;
+				color: #111;
+			}
+			#wrapper {
+				width: 800px;
+				margin: 20px auto;
+				border: 4px solid #222;
+				background: #fff;
+				box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15);
+			}
+			header {
+				background: linear-gradient(#ffd6a5, #ffb4a2);
+				padding: 12px 14px;
+				display: flex;
+				align-items: center;
+				gap: 12px;
+			}
+			.logo {
+				width: 72px;
+				height: 60px;
+				background: url("logo-old.gif") center/contain no-repeat;
+				border: 1px solid #999;
+			}
+			h1 {
+				margin: 0;
+				font-size: 22px;
+				color: #1b1b3a;
+				text-shadow: 1px 1px 0 #fff;
+			}
+			.tagline {
+				font-size: 12px;
+				color: #333;
+				margin-top: 4px;
+			}
+			nav {
+				padding: 8px 12px;
+				background: #f9f6f2;
+				border-top: 2px solid #eee;
+				border-bottom: 2px dashed #ddd;
+			}
+			nav a {
+				margin-right: 8px;
+				color: #0645ad;
+				text-decoration: none;
+				font-weight: bold;
+			}
+			.layout {
+				display: flex;
+				gap: 12px;
+				padding: 12px;
+			}
+			.main {
+				flex: 1;
+			}
+			.side {
+				width: 220px;
+				background: #fff;
+				padding: 10px;
+				border-left: 2px dotted #ddd;
+			}
+			.card {
+				background: #fff;
+				padding: 10px;
+				margin-bottom: 12px;
+				border: 1px solid #e0d8d2;
+			}
+			.marquee {
+				background: #1b1b3a;
+				color: #fff;
+				padding: 6px;
+				margin-bottom: 10px;
+				font-weight: bold;
+			}
+			.marquee marquee {
+				color: #fff;
+			}
+			.small-gif {
+				width: 110px;
+				height: 78px;
+				border: 1px solid #ccc;
+				display: block;
+				margin-bottom: 6px;
+			}
+			.counter {
+				font-family: "Courier New", monospace;
+				background: #000;
+				color: #0f0;
+				padding: 4px 6px;
+				display: inline-block;
+				border-radius: 4px;
+			}
+			.wiki-list {
+				list-style: square;
+				padding-left: 18px;
+				margin: 8px 0;
+			}
+			.forum-entry {
+				border-bottom: 1px dashed #eee;
+				padding: 8px 0;
+				font-size: 13px;
+				color: #222;
+			}
+			.forum-meta {
+				font-size: 12px;
+				color: #666;
+				margin-top: 6px;
+			}
+			.ad {
+				padding: 8px;
+				border: 2px solid #ddd;
+				margin-bottom: 10px;
+				background: linear-gradient(#fff, #f0f0f0);
+				cursor: pointer;
+				text-align: center;
+			}
+			.ad img {
+				max-width: 100%;
+				height: auto;
+				display: block;
+				margin: 0 auto 6px;
+			}
+			.footer {
+				padding: 10px;
+				text-align: center;
+				font-size: 12px;
+				background: #f4f4f4;
+				border-top: 1px solid #ddd;
+			}
+
+			body,
+			p,
+			li {
+				font-size: 14px;
+				line-height: 1.4;
+			}
+
+			.fiction-exit {
+				position: fixed;
+				left: 12px;
+				bottom: 12px;
+				background: #fff;
+				border: 2px solid #111;
+				padding: 6px 8px;
+				font-weight: bold;
+				z-index: 999;
+				text-decoration: none;
+				color: #111;
+			}
+
+			@media (max-width: 840px) {
+				#wrapper {
+					width: 96%;
+					margin: 12px auto;
+				}
+				.layout {
+					flex-direction: column;
+				}
+				.side {
+					width: 100%;
+					border-left: none;
+					border-top: 2px dotted #ddd;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrapper">
+			<header>
+				<a href="/" class="logo" aria-label="MemePedia home" style="background: none">
+					<img src="MemePediaArchive.jpg" alt="MemePedia logo" width="72" height="60" style="display: block; border: 0" />
+				</a>
+				<div>
+					<h1>MemePedia Archive</h1>
+					<div class="tagline">An unofficial snapshot of memes, inside jokes and old forum threads.</div>
+				</div>
+			</header>
+
+			<nav>
+				<a href="/">Home</a>
+				<a href="#" onclick="alert('Cannot seem to find refered page. Please contact site administrator if you think this is an error.'); return false;">Wiki</a>
+				<a href="/c40fbc15b206edccd7b21b63c5379d9b049598fadd81544e26de27e501572da9">Forum</a>
+				<a href="/395b46de6c56b0518e08b07182c1ff4a340e0bb6ca7b315a8967a4d02b44b76d">Gallery</a>
+				<a href="/bec5d5040b7df76f319de5e40a82ad1335d9ab3d23f4f6ff1ab6597c72819333">About</a>
+				<span style="float: right; margin-right: 8px">
+					<img src="Komica.jpg" alt="hit counter" style="vertical-align: middle; height: 24px; border: 1px solid #555" />
+					<span class="counter" id="visits">000,000,000</span>
+				</span>
+			</nav>
+
+			<div class="layout">
+				<div class="main">
+					<div class="marquee"><marquee behavior="scroll" direction="left">Welcome to the MemePedia Archive - do not feed the trolls.</marquee></div>
+
+					<div class="card">
+						<h3 style="margin-top: 0">Featured Wiki Entries</h3>
+						<ul class="wiki-list">
+							<li><strong>Doge-Origins</strong>: a short note about early Doge edits and misattributions.</li>
+							<li><strong>Pixel-Bread</strong>: the 2005 bread-pixel craze explained.</li>
+							<li><strong>Reaction-GIFS</strong>: a catalog of reaction gifs and their captions.</li>
+							<li><strong>["+1" culture]</strong>: micro-history of upvote languages.</li>
+						</ul>
+						<p style="margin: 6px 0 0; font-size: 13px; color: #444">(Pages are snapshots - many external links are archived.)</p>
+					</div>
+
+					<div class="card">
+						<h3 style="margin-top: 0">Community Gallery</h3>
+						<a href="/395b46de6c56b0518e08b07182c1ff4a340e0bb6ca7b315a8967a4d02b44b76d"><img src="helloyesthisisdog.jpg" alt="gallery" style="width: 100%; border: 2px solid #eee" /></a>
+						<p style="font-size: 12px; color: #666; margin-top: 8px">Photos and gifs collected from old mirrors. Some audio files included.</p>
+					</div>
+
+					<div class="card">
+						<h3 style="margin-top: 0">Recent forum highlights</h3>
+
+						<div class="forum-entry">
+							<strong>OldSkool99</strong> | <em>Re: Pixel-Bread</em>
+							<div class="forum-meta">Posted Apr 12, 2004 - 09:14</div>
+							<div>anyone remember the original sprite? i have a floppy with it lol</div>
+						</div>
+
+						<div class="forum-entry">
+							<strong>Memetron</strong> | <em>Re: Doge-Origins</em>
+							<div class="forum-meta">Posted Jul 03, 2006 - 22:41</div>
+							<div>it was just a typo that took over. the dog never knew what hit him.</div>
+						</div>
+
+						<div class="forum-entry">
+							<strong>lurker</strong> | <em>Off-topic</em>
+							<div class="forum-meta">Posted Sep 19, 2007 - 02:02</div>
+							<div>does anyone still visit the old boards? nostalgia trip tonight.</div>
+						</div>
+
+						<div class="forum-entry">
+							<strong>PixelFanatic</strong> | <em>Re: Reaction-GIFS</em>
+							<div class="forum-meta">Posted Jan 11, 2008 - 14:27</div>
+							<div>i miss the days when gifs were low-res and full of charm.</div>
+						</div>
+
+						<div class="forum-entry">
+							<strong>TechGuru</strong> | <em>Has anyone else seen that weird proyect something ad?</em>
+							<div class="forum-meta">Posted Nov 05, 2009 - 18:33</div>
+							<div>I keep seeing ads for "Project Unveil" on some sites. Anyone know what that's about?</div>
+						</div>
+
+						<div class="forum-entry">
+							<strong>Admin</strong> | <em>Site Archive Notice</em>
+							<div class="forum-meta">Posted Dec 31, 2009 - 23:59</div>
+							<div>As of today, MemePedia is archived for preservation. No new posts or accounts will be active.</div>
+						</div>
+
+						<p style="margin-top: 8px; font-size: 12px; color: #666">(Forum is archived for preservation. No accounts are active.)</p>
+					</div>
+				</div>
+				<aside class="side">
+					<div class="card">
+						<h4 style="margin-top: 0">Quick Links</h4>
+						<p style="margin: 6px 0">
+							<a href="#" onclick="alert('Cannot seem to find refered page. Please contact site administrator if you think this is an error.'); return false;">All Entries</a><br />
+							<a href="#" id="random-meme">Random Meme</a><br />
+							<a href="#" onclick="alert('Cannot seem to find refered page. Please contact site administrator if you think this is an error.'); return false;">Submit (archived)</a>
+						</p>
+					</div>
+					<div id="ads-container">
+						<div class="card ad">
+							<img src="" alt="" />
+							<div style="font-weight: bold">Loading...</div>
+							<div style="font-size: 12px; color: #444; margin-top: 6px">Loading...</div>
+						</div>
+						<div class="card ad">
+							<img src="" alt="" />
+							<div style="font-weight: bold">Loading...</div>
+							<div style="font-size: 12px; color: #444; margin-top: 6px">Loading...</div>
+						</div>
+					</div>
+					<div class="card">
+						<h4 style="margin: 0 0 6px 0">About this snapshot</h4>
+						<p style="font-size: 13px; color: #555; margin: 0">Feel free to ask the mods if you need something!</p>
+					</div>
+				</aside>
+			</div>
+			<div class="footer">
+				<div style="margin-bottom: 6px">© MemePedia Archive | 2001-2009 (archival snapshot)</div>
+			</div>
+		</div>
+
+		<script>
+			(() => {
+				const link = document.getElementById("random-meme");
+				const IMAGES = ["HeManSings.jpg", "UnveilLogoName.png", "EmojiLionKing.jpg", "PepeTheFrog.jpg", "DealWithIt.png", "IHeardULiekMudkipz.jpg", "ThatsRacist.jpg", "Doge.jpg"];
+				const CORRUPTED = "UnveilLogoName.png";
+
+				function openViewer() {
+					const win = window.open("", "randomMemeWindow", "width=900,height=700,scrollbars=yes,resizable=yes");
+					if (!win) return;
+					const doc = win.document;
+
+					const randomImage = () => IMAGES[Math.floor(Math.random() * IMAGES.length)];
+					let img = randomImage();
+					while (img === CORRUPTED) img = randomImage();
+
+					doc.open();
+					doc.write(`<!doctype html>
+		<html>
+		<head>
+			<meta charset="utf-8">
+			<meta name="viewport" content="width=device-width,initial-scale=1">
+			<title>Random Meme - MemePedia Meme Viewer</title>
+			<style>
+				body{margin:0;font-family:"Comic Sans MS","Trebuchet MS",Arial,sans-serif;background:#004466 url("/tiling-bg.gif") repeat;color:#fff;}
+				.page{width:880px;margin:12px auto;border:4px solid #000;background:url("/paper-texture.png") #f8f0e0;padding:8px;}
+				.header{background:linear-gradient(#ff66cc,#ffcc00);padding:8px;border:2px solid #000;color:#000;display:flex;align-items:center;gap:10px;}
+				.logo{width:88px;height:64px;display:flex;align-items:center;justify-content:center;border:2px outset #fff;}
+				.title{font-size:24px;text-shadow:2px 2px 0 #fff;}
+				.topbar{background:#222;color:#0f0;padding:6px;font-family:courier,monospace;margin-top:6px;border-top:2px solid #000;}
+				.layout{display:table;width:100%;margin-top:10px;}
+				.col-left{display:table-cell;width:200px;vertical-align:top;padding:8px;border-right:2px dashed #333;background:linear-gradient(#ffeebb,#fff2cc)}
+				.col-main{display:table-cell;padding:12px;vertical-align:top;}
+				.btn{display:inline-block;padding:6px 10px;background:#fff;color:#000;border:2px outset #ccc;margin-right:6px;cursor:pointer;text-decoration:none;border-radius:4px;font-weight:bold}
+				.meme-wrap{width:100%;height:520px;display:flex;align-items:center;justify-content:center;background:#000;border:4px solid #fff;padding:12px;box-sizing:border-box;}
+				.meme-wrap img{max-width:100%;max-height:100%;border:4px solid #ffb6c1;background:#222}
+				.note{font-size:12px;color:#000;margin-top:8px;background:#fff;padding:6px;border:2px groove #999;}
+				.retro-gif{display:block;margin:6px auto;}
+				.marq{margin-top:8px;background:#000;color:#0f0;padding:4px;border:2px solid #0f0;text-align:center;font-weight:bold;}
+				.blink{animation:blink 1s steps(2,start) infinite}@keyframes blink{50%{opacity:0}}
+				a.retro-link{color:#0033cc;text-decoration:underline;font-weight:bold;}
+			</style>
+		</head>
+		<body>
+			<audio id="corrupted-sfx" src="corrupted_sound.mp3" preload="auto"></audio>
+			<div class="page">
+				<div class="header">
+					<div class="logo"><img src="MemePediaArchive.jpg" width="88" height="64" alt="MemePedia logo"></div>
+					<div class="title">MemePedia - Random Meme Viewer</div>
+				</div>
+				<div class="topbar">Visitor counter:
+					<span style="background:#000;color:#0f0;padding:2px 6px;border-radius:3px;font-family:courier,monospace">
+						${String(Date.now() % 1000000).padStart(6, "0")}
+					</span>
+					&nbsp;|&nbsp;<span class="blink">The Best Memes In Town!</span>
+				</div>
+				<div class="layout">
+					<div class="col-left">
+						<img src="UnderConstruction.png" alt="under construction" width="160" class="retro-gif">
+						<p><a href="#" class="retro-link" id="guestbook">Sign Guestbook</a></p>
+						<p><a href="#" class="retro-link" id="home">Back to MemePedia</a></p>
+						<p class="note">Tip: click "Another" for a new random image. Right-click to save as.</p>
+					</div>
+					<div class="col-main">
+						<div style="margin-bottom:8px">
+							<button id="another" class="btn">Another</button>
+							<button id="openraw" class="btn">Open image in new tab</button>
+							<button id="view-large" class="btn">Pop-out (100%)</button>
+						</div>
+						<div class="marq"><marquee behavior="alternate" scrollamount="4">
+							Welcome to The MemePedia Meme Viewer | Enjoy a list of well-selected memes! Contact our mods to add more memes!
+						</marquee></div>
+						<div class="meme-wrap"><img id="meme" src="${img}" alt="Random Meme"></div>
+						<div style="margin-top:8px;display:flex;gap:8px;align-items:center">
+							<div style="margin-left:auto;color:#000;background:#fff;padding:4px;border:2px inset #aaa;font-size:12px">
+								This page best viewed at 800x600
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<script>
+				const IMAGES=${JSON.stringify(IMAGES)};
+				const CORRUPTED="${CORRUPTED}";
+				const meme=document.getElementById("meme"),
+					  sfx=document.getElementById("corrupted-sfx");
+				const another=document.getElementById("another"),
+					  openraw=document.getElementById("openraw"),
+					  viewLarge=document.getElementById("view-large");
+
+				const pick=()=>IMAGES[Math.floor(Math.random()*IMAGES.length)];
+
+				function setMeme(src){ meme.src=src; }
+
+				another.onclick=()=>{
+					let img=pick();
+					if(img===CORRUPTED){
+						[another,openraw,viewLarge].forEach(b=>b.disabled=true);
+						sfx.currentTime=0; sfx.play();
+						setTimeout(()=>{
+							alert('unexpected image at "img src=UnveilLogoName.png", restoring data...');
+							let safe; do{safe=pick();}while(safe===CORRUPTED);
+							setMeme(safe);
+							[another,openraw,viewLarge].forEach(b=>b.disabled=false);
+						},10000);
+					}else setMeme(img);
+				};
+
+				openraw.onclick=()=>window.open(meme.src,"_blank");
+				viewLarge.onclick=()=>{
+					const w=window.open("","_blank");
+					w.document.write(\`<!doctype html><html><head><meta charset="utf-8"><title>Full Size Meme</title></head>
+					<body style="margin:0;background:#111;display:flex;align-items:center;justify-content:center;height:100vh">
+						<img src="\${meme.src}" style="max-width:100%;max-height:100%;">
+					</body></html>\`);
+					w.document.close();
+				};
+
+				document.getElementById("guestbook").onclick=e=>{e.preventDefault();alert("Guestbook is archived - entries are read-only.");};
+				document.getElementById("home").onclick=e=>{e.preventDefault();if(window.opener&&!window.opener.closed)window.opener.focus();};
+			<\/script>
+		</body></html>`);
+					doc.close();
+				}
+
+				link?.addEventListener("click", (e) => {
+					e.preventDefault();
+					openViewer();
+				});
+			})();
+
+			// --- Ads Loader ---
+			window.addEventListener("DOMContentLoaded", async () => {
+				try {
+					const res = await fetch("/api/getAd");
+					const ads = await res.json();
+					const container = document.getElementById("ads-container");
+					container.innerHTML = "";
+					ads.forEach((ad) => {
+						const div = document.createElement("div");
+						div.className = "card ad";
+						div.innerHTML = `
+				<img src="${ad.imageUrl}" alt="${ad.title}">
+				<div style="font-weight:bold">${ad.title}</div>
+				<div style="font-size:12px;color:#444;margin-top:6px">${ad.description}</div>`;
+						div.onclick = () => (ad.redirectUrl ? (location.href = ad.redirectUrl) : alert("Cannot seem to find referred page. Please contact site administrator if you think this is an error."));
+						container.appendChild(div);
+					});
+				} catch (e) {
+					console.error("Failed to load ads:", e);
+				}
+			});
+
+			(() => {
+				const el = document.getElementById("visits");
+				if (!el) return;
+
+				fetch("/api/getVisits")
+					.then((res) => (res.ok ? res.json() : Promise.reject()))
+					.then((data) => {
+						if (typeof data.visits === "number" && !isNaN(data.visits)) {
+							const padded = data.visits.toString().padStart(9, "0");
+							el.textContent = padded.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+						} else throw new Error();
+					})
+					.catch(() => (el.style.display = "none"));
+			})();
+		</script>
+	</body>
+</html>
