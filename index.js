@@ -141,11 +141,31 @@ publishFile("/395b46de6c56b0518e08b07182c1ff4a340e0bb6ca7b315a8967a4d02b44b76d",
 publishFile("/fc7aec81e8f347c64317ac296f5e723ddc8e65c5633084edc33f41d69e620e44", "./html/ITSNOTME.html");
 publishFile("/a15c2ab34008389122288d06521382beb04dde0f0e7eae4f0e025e73838feecc", "./html/projectunveil.html");
 publishFile("/4b3c126cf6c073a2d6f962afd5f072b52b1432119602644c43308ca79ff4e08e", "./html/unveil.html");
-publishFile("/e5f0df71d19f1cb40304a4524042f0feb4f1769fb967ce269922f8721bc3e917", "./data/eyeascii.json");
 publishFile("/0a04702c2d3c4ce70f0b876f70ab37ce13108c79c756fcbbdda8e4e927207869", "./html/ENTER_THE_MIRROR.html");
-// publishFile("/ac57241fc9a4a09696dff89272598c2594365686d25e84137d207fd4c49f6f2b", "./html/index.html");
 
-app.all("/{splat*}", (req, res) => {
+publishFile("/e5f0df71d19f1cb40304a4524042f0feb4f1769fb967ce269922f8721bc3e917", "./data/eyeascii.json");
+
+publishFile("/e2d59fbab9a76cfd9b1d8a9b7db60ad2e4c77cf5d324b4e9b5a6a1a9cb5162c9", "./images/curvedmail.jpg");
+publishFile("/72a44cb9a9bfa47f93e04f5a8d1a37961a2efb8bc44c18f4038d20b5e9b4cf10", "./images/DealWithIt.png");
+publishFile("/0bce4769b4cbe2280f27e8e7699a13b7e3c43efc861ffb9ef3b6995bbcc23f5d", "./images/Doge.jpg");
+publishFile("/6a5142ac9b9b985f27e861bbd4e33c6ad2d2af7e05a284e79b83e68266dcbfc7", "./images/EmojiLionKing.jpg");
+publishFile("/f1a327eb1b8293f0df25acb6e4f12b3a986ef06c63a57f539a7a4f12f4517e2e", "./images/eye.png");
+publishFile("/c34949df4e831b0d8a8eb4b8f7c6e3ed4cb0d1ce8126f8f22d9ac6a9e5139b26", "./images/face.png");
+publishFile("/b92fcae4d2e6a43162a6e2b64b963e7126ef92c4c6b7c84508d3227f4cc6ed78", "./images/face2.png");
+publishFile("/26a37df7c937e1ff047ae0c3b6dcb51ccf15e8b8da4d02d80e961f2a8260e23e", "./images/facemelted.png");
+publishFile("/84f5ce8c30a621f6ef34a8a38b9a12c1c75c187d6f442b27a6edc6cc40413a9b", "./images/helloyesthisisdog.jpg");
+publishFile("/79b81ff2a8cf7ebad4d95c1b7351f24a83e7a8d319da2f6e9a0b3af2bb12e597", "./images/HeManSings.jpg");
+publishFile("/e03d9c1d3a47a9652d873b1e8d01b4cf5c28d173cba7e8b480a2196b4283d251", "./images/IHeardULiekMudkipz.jpg");
+publishFile("/ac57241fc9a4a09696dff89272598c2594365686d25e84137d207fd4c49f6f2b", "./images/Komica.jpg");
+publishFile("/9fd8a9b27cf86d9129f1edc6c2d47e25cb8f3cfe11984d1a67b946f00ee4b8c4", "./images/MemePediaArchive.jpg");
+publishFile("/48a87d19adf0f0dcfbf41e41bcb2875b90a8b5f5b46c929e8d29b20368cd9618", "./images/PepeTheFrog.jpg");
+publishFile("/fb2c487d2f19a7c3122f0f46a75ed6f9ab1b6f4cb1eb68cf27b2f91b62b9572a", "./images/SpeedyCat.jpg");
+publishFile("/2a17b51cb39a0c6c67c0eec8a4c511c2cbe4159cb2b83c973b3d1aeb6a14586a", "./images/ThatFuckingCat.jpg");
+publishFile("/e7421d2c7b4d2a8a4236c7b2c3f1a8b6d2c937e14efad237b0de5a6fa7a9d5cb", "./images/ThatsRacist.jpg");
+publishFile("/a5f3b9b2c85a8c5baf95f7c83c6a429f2b9e7a3df7d12b8e4325bfb9b47ed820", "./images/UnderConstruction.png");
+publishFile("/3e4a0bdf58f4a7a99f3c2b14cb987e6cdd46a3d8bf64b1b6b3a92a0dfb7814b6", "./images/UnveilLogoName.png");
+
+app.use(function (req, res) {
 	res.status(404).sendFile(path.join(__dirname, "html", "404.html"));
 });
 
