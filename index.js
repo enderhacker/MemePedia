@@ -142,6 +142,7 @@ publishFile("/fc7aec81e8f347c64317ac296f5e723ddc8e65c5633084edc33f41d69e620e44",
 publishFile("/a15c2ab34008389122288d06521382beb04dde0f0e7eae4f0e025e73838feecc", "./html/projectunveil.html");
 publishFile("/4b3c126cf6c073a2d6f962afd5f072b52b1432119602644c43308ca79ff4e08e", "./html/unveil.html");
 publishFile("/0a04702c2d3c4ce70f0b876f70ab37ce13108c79c756fcbbdda8e4e927207869", "./html/ENTER_THE_MIRROR.html");
+publishFile("/157dd9d6f7d7fb22f4c950a8f6713276b53b92a00eb4f195f7400dfb958fcca6", "./html/newspaper.html");
 
 publishFile("/e5f0df71d19f1cb40304a4524042f0feb4f1769fb967ce269922f8721bc3e917", "./data/eyeascii.json");
 
@@ -167,7 +168,6 @@ publishFile("/e7421d2c7b4d2a8a4236c7b2c3f1a8b6d2c937e14efad237b0de5a6fa7a9d5cb",
 publishFile("/a5f3b9b2c85a8c5baf95f7c83c6a429f2b9e7a3df7d12b8e4325bfb9b47ed820", "./images/UnderConstruction.png");
 publishFile("/3e4a0bdf58f4a7a99f3c2b14cb987e6cdd46a3d8bf64b1b6b3a92a0dfb7814b6", "./images/UnveilLogoName.png");
 
-// 157dd9d6f7d7fb22f4c950a8f6713276b53b92a00eb4f195f7400dfb958fcca6
 // 9089f976186daa17b7e9bb4b3c0ddcaa1882c93bbde3013456043e505b624c67
 // e4fc780f974374a885e0246a100a3405285edf85e9e97e27583702fe0afff0df
 // ded2d40110abb9075e42bb31f69a6799bf25e515a8403549d4a8f0706877da9e

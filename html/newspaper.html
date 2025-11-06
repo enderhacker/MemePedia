@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>The Universal Tribune - March 23, 2005</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+				box-sizing: border-box;
+			}
+
+			body {
+				font-family: Georgia, serif;
+				background-color: #1a1a1a;
+				color: #222;
+				line-height: 1.6;
+			}
+
+			/* Preserved Archive Banner */
+			.archive-banner {
+				background: linear-gradient(135deg, #ff4500 0%, #ff6b35 100%);
+				color: white;
+				padding: 12px 20px;
+				text-align: center;
+				font-weight: bold;
+				font-size: 13px;
+				border-bottom: 3px solid #cc3300;
+				box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+			}
+
+			.archive-banner strong {
+				font-size: 14px;
+			}
+
+			/* Main Container */
+			.container {
+				max-width: 900px;
+				margin: 0 auto;
+				background-color: #f5f0e8;
+				box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+			}
+
+			/* Header */
+			header {
+				background: linear-gradient(180deg, #003366 0%, #004d99 100%);
+				padding: 30px 20px;
+				text-align: center;
+				border-bottom: 5px solid #ffcc00;
+				position: relative;
+				overflow: hidden;
+			}
+
+			header::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background-image: repeating-linear-gradient(90deg, transparent, transparent 35px, rgba(255, 255, 255, 0.05) 35px, rgba(255, 255, 255, 0.05) 70px);
+				pointer-events: none;
+			}
+
+			.masthead {
+				position: relative;
+				z-index: 1;
+			}
+
+			.publication-date {
+				font-size: 11px;
+				color: #ffcc00;
+				letter-spacing: 2px;
+				text-transform: uppercase;
+				margin-bottom: 8px;
+				font-weight: bold;
+			}
+
+			.title {
+				font-size: 72px;
+				color: #ffcc00;
+				font-weight: bold;
+				text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+				font-family: "Times New Roman", serif;
+				letter-spacing: 3px;
+				margin: 10px 0;
+				line-height: 1;
+			}
+
+			.subtitle {
+				color: #ffffff;
+				font-size: 14px;
+				letter-spacing: 1px;
+				margin-top: 5px;
+			}
+
+			.tagline {
+				color: #ffcc00;
+				font-size: 12px;
+				margin-top: 15px;
+				border-top: 1px solid #ffcc00;
+				border-bottom: 1px solid #ffcc00;
+				padding: 8px 0;
+				font-style: italic;
+			}
+
+			/* Navigation */
+			nav {
+				background-color: #e8e0d8;
+				display: flex;
+				flex-wrap: wrap;
+				border-bottom: 2px solid #003366;
+			}
+
+			nav a {
+				flex: 1;
+				padding: 12px 15px;
+				text-decoration: none;
+				color: #003366;
+				font-weight: bold;
+				font-size: 13px;
+				text-transform: uppercase;
+				text-align: center;
+				border-right: 1px solid #bbb;
+				transition: background-color 0.3s;
+				cursor: pointer;
+				min-width: 80px;
+			}
+
+			nav a:last-child {
+				border-right: none;
+			}
+
+			nav a:hover {
+				background-color: #ffcc00;
+				color: #003366;
+			}
+
+			nav a.active {
+				background-color: #ffcc00;
+				color: #003366;
+				border-bottom: 3px solid #003366;
+			}
+
+			/* Main Content Area */
+			.content-wrapper {
+				display: flex;
+				padding: 20px;
+				gap: 20px;
+			}
+
+			main {
+				flex: 3;
+			}
+
+			aside {
+				flex: 1;
+			}
+
+			/* Featured Article */
+			.featured-article {
+				background-color: #ffffff;
+				border: 3px solid #003366;
+				padding: 25px;
+				margin-bottom: 20px;
+				box-shadow: inset 0 0 0 1px #ffcc00;
+			}
+
+			.featured-label {
+				display: inline-block;
+				background-color: #003366;
+				color: #ffcc00;
+				padding: 4px 10px;
+				font-size: 10px;
+				text-transform: uppercase;
+				font-weight: bold;
+				letter-spacing: 1px;
+				margin-bottom: 10px;
+			}
+
+			.article-headline {
+				font-size: 32px;
+				color: #003366;
+				margin-bottom: 10px;
+				line-height: 1.2;
+				font-weight: bold;
+			}
+
+			.article-subheadline {
+				font-size: 16px;
+				color: #666;
+				margin-bottom: 15px;
+				font-style: italic;
+			}
+
+			.article-meta {
+				color: #666;
+				font-size: 11px;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+				margin-bottom: 15px;
+				border-bottom: 1px solid #ddd;
+				padding-bottom: 10px;
+			}
+
+			.article-content {
+				font-size: 13px;
+				line-height: 1.7;
+				color: #222;
+			}
+
+			.article-content p {
+				margin-bottom: 12px;
+			}
+
+			.article-content strong {
+				color: #003366;
+				font-weight: bold;
+			}
+
+			/* Sidebar */
+			.sidebar-box {
+				background-color: #ffffff;
+				border: 3px solid #ff6b35;
+				padding: 15px;
+				margin-bottom: 15px;
+			}
+
+			.sidebar-title {
+				background-color: #ff6b35;
+				color: white;
+				padding: 8px;
+				font-weight: bold;
+				font-size: 12px;
+				text-transform: uppercase;
+				margin: -15px -15px 10px -15px;
+			}
+
+			.sidebar-content {
+				font-size: 11px;
+				line-height: 1.5;
+			}
+
+			.sidebar-link {
+				color: #003366;
+				text-decoration: none;
+				font-weight: bold;
+				cursor: pointer;
+				display: block;
+				margin: 8px 0;
+			}
+
+			.sidebar-link:hover {
+				color: #ff6b35;
+				text-decoration: underline;
+			}
+
+			/* Footer */
+			footer {
+				background-color: #003366;
+				color: #ffcc00;
+				text-align: center;
+				padding: 20px;
+				font-size: 10px;
+				border-top: 5px solid #ffcc00;
+				text-transform: uppercase;
+				letter-spacing: 1px;
+			}
+
+			footer a {
+				color: #ffcc00;
+				text-decoration: none;
+			}
+
+			footer a:hover {
+				text-decoration: underline;
+			}
+
+			/* Decorative Elements */
+			.divider {
+				border-top: 2px dashed #ffcc00;
+				margin: 15px 0;
+			}
+
+			.box-ad {
+				background-color: #ffcc00;
+				border: 2px solid #003366;
+				padding: 15px;
+				text-align: center;
+				margin-bottom: 15px;
+				font-size: 11px;
+				color: #003366;
+				font-family: Arial, sans-serif;
+				position: relative;
+				overflow: hidden;
+				transition: opacity 0.8s ease-in-out;
+				opacity: 1;
+				cursor: pointer;
+			}
+
+			.box-ad:hover {
+				background-color: #ffe680;
+			}
+
+			.box-ad .ad-title {
+				font-weight: bold;
+				margin-bottom: 5px;
+				display: block;
+			}
+
+			.box-ad .ad-date {
+				font-style: italic;
+				font-size: 10px;
+				display: block;
+				margin-top: 5px;
+			}
+
+			.ad-header {
+				font-weight: bold;
+				text-align: center;
+				color: #003366;
+				font-size: 12px;
+			}
+
+			/* Responsive */
+			@media (max-width: 768px) {
+				.content-wrapper {
+					flex-direction: column;
+				}
+
+				aside {
+					flex: 1;
+				}
+
+				.title {
+					font-size: 48px;
+				}
+
+				nav {
+					flex-direction: column;
+				}
+
+				nav a {
+					border-right: none;
+					border-bottom: 1px solid #bbb;
+				}
+
+				nav a:last-child {
+					border-bottom: none;
+				}
+
+				.article-item {
+					flex-direction: column;
+				}
+
+				.article-item-image {
+					width: 100%;
+					height: 100px;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div class="archive-banner"><strong>⚠️ ARCHIVED EDITION</strong> — This is a preserved copy of The Universal Tribune from March 23, 2005. The newspaper ceased publication in 2014.</div>
+
+		<div class="container">
+			<header>
+				<div class="masthead">
+					<div class="publication-date">WEDNESDAY, MARCH 23, 2005</div>
+					<h1 class="title">THE UNIVERSAL TRIBUNE</h1>
+					<div class="subtitle">EST. 1987 • YOUR WORLD. INFORMED.</div>
+					<div class="tagline">"In Pursuit of Truth, In Service of Community"</div>
+				</div>
+			</header>
+
+			<nav>
+				<a class="active" onclick="navigateTo('home')">Home</a>
+				<a onclick="navigateTo('world')">World News</a>
+				<a onclick="navigateTo('science')">Science</a>
+				<a onclick="navigateTo('business')">Business</a>
+				<a onclick="navigateTo('tech')">Technology</a>
+				<a onclick="navigateTo('sports')">Sports</a>
+				<a onclick="navigateTo('opinion')">Opinion</a>
+				<a onclick="navigateTo('archives')">Archives</a>
+			</nav>
+
+			<div class="content-wrapper">
+				<main>
+					<!-- Featured Article -->
+					<article class="featured-article">
+						<div class="featured-label">⚠️ Breaking Science Alert</div>
+						<h2 class="article-headline">MYSTERIOUS FUNGUS DISCOVERED THAT CAN CONTROL HUMANS</h2>
+						<p class="article-subheadline">Experts Warn About "Neuramyces"; First Case Raises Serious Concerns</p>
+						<div class="article-meta">By Dr. Mitchell Hayes, Science Correspondent | Reported from Nashville, Tennessee</div>
+						<div class="article-content">
+							<p>
+								Scientists at the International Health Organization announced today (March 23, 2005) the discovery of a previously unknown parasitic fungus that appears to exert control over the human nervous system. The organism, tentatively named <strong>Neuramyces</strong>, has
+								been confirmed in only one patient so far.
+							</p>
+
+							<p>
+								The infected individual, a 34-year-old research assistant from Nashville, remains alive but is reportedly under the fungus's influence for extended periods, moving only to eat or perform basic survival tasks. Early observations suggest the fungus may exhibit
+								intelligent behavior in managing the host's actions, making calculated decisions about when and how to move.
+							</p>
+
+							<p>
+								<strong>"This is not a typical infection,"</strong> explained Dr. Elena Rossi, lead investigator.
+								<strong>"Neuramyces seems capable of controlling movement and behavior in a deliberate manner. We cannot rule out the possibility of other cases or undiscovered transmission routes."</strong>
+							</p>
+
+							<p>
+								No cure is currently known. The patient remains under strict observation at a secure facility, while scientists urgently investigate the fungus’s origins, potential spread, and neurological effects. Researchers are recommending extreme caution and advising that masks
+								be worn in areas where exposure is possible, as airborne transmission has not been ruled out.
+							</p>
+
+							<p>
+								Authorities are urging the public to avoid contact with potentially contaminated surfaces and to report any unusual neurological symptoms immediately. While only one case has been documented, experts warn that the fungus could be far more widespread than currently
+								understood.
+							</p>
+						</div>
+					</article>
+				</main>
+
+				<aside>
+					<!-- Archive Notice -->
+					<div class="sidebar-box" style="background-color: #fff3cd; border-color: #cc3300">
+						<div class="sidebar-title" style="background-color: #cc3300">This Edition</div>
+						<div class="sidebar-content">
+							<div style="font-weight: bold; color: #003366; margin-bottom: 8px">March 23, 2005</div>
+							<p>Volume 18, No. 82</p>
+							<div class="divider"></div>
+							<div class="sidebar-link" onclick="alert('Subscription service no longer available')">📰 View Full Edition (PDF)</div>
+							<div class="sidebar-link" onclick="alert('Subscription service no longer available')">📧 Email This Article</div>
+						</div>
+					</div>
+
+					<!-- Quick News -->
+					<div class="sidebar-box">
+						<div class="sidebar-title">Quick Links</div>
+						<div class="sidebar-content">
+							<div class="sidebar-link" onclick="navigateTo('world')">World</div>
+							<div class="sidebar-link" onclick="navigateTo('business')">Business</div>
+							<div class="sidebar-link" onclick="navigateTo('tech')">Technology</div>
+							<div class="sidebar-link" onclick="navigateTo('opinion')">Opinion</div>
+							<div class="sidebar-link" onclick="navigateTo('archives')">Search Archives</div>
+						</div>
+					</div>
+
+					<!-- Advertisement -->
+					<span class="ad-header">Advertisement:</span>
+					<div class="box-ad" id="ad-box">
+						<!-- Ad content will be injected here -->
+					</div>
+
+					<script>
+						(function () {
+							const ads = [
+								{ title: "New Dell Computers", text: "Starting at $99! Click here to view more.", date: "March 23, 2005", url: null },
+								{ title: "PROJECT UNVEIL", text: "Uncover the truth", date: "March 23, 2005", url: "/4b3c126cf6c073a2d6f962afd5f072b52b1432119602644c43308ca79ff4e08e" },
+								{ title: "CurvedMail", text: "Free email services for everyone. Click here to view more.", date: "March 23, 2005", url: "/61c1878564b8b4ad1e616452ef28ed927f6723d1d5ced2f39fd842a1839d7ea4" },
+								{ title: "Fresh Bakery Deals", text: "Delicious bread and pastries daily. Click here to view more.", date: "March 23, 2005", url: null },
+								{ title: "Lawn Mowing Service", text: "Keep your garden neat and tidy. Click here to view more.", date: "March 23, 2005", url: null },
+								{ title: "Pet Care", text: "Reliable care for your pets. Click here to view more.", date: "March 23, 2005", url: null },
+								{ title: "Local Art Classes", text: "Learn painting and drawing. Click here to view more.", date: "March 23, 2005", url: null },
+								{ title: "Car Wash Specials", text: "Shiny cars at low prices. Click here to view more.", date: "March 23, 2005", url: null },
+								{ title: "Gym Membership", text: "Get fit now with special offers. Click here to view more.", date: "March 23, 2005", url: null },
+								{ title: "Book Store", text: "New releases and bestsellers. Click here to view more.", date: "March 23, 2005", url: null },
+								{ title: "Music Lessons", text: "Learn guitar or piano today. Click here to view more.", date: "March 23, 2005", url: null },
+								{ title: "Organic Market", text: "Fresh fruits and veggies daily. Click here to view more.", date: "March 23, 2005", url: null },
+								{ title: "Coffee Shop", text: "Warm drinks and snacks. Click here to view more.", date: "March 23, 2005", url: null },
+								{ title: "Tech Gadgets Sale", text: "Latest electronics on discount. Click here to view more.", date: "March 23, 2005", url: null },
+								{ title: "House Cleaning", text: "Professional cleaning services. Click here to view more.", date: "March 23, 2005", url: null },
+								{ title: "Photography Studio", text: "Capture your best moments. Click here to view more.", date: "March 23, 2005", url: null },
+							];
+
+							const adBox = document.getElementById("ad-box");
+							let currentAdIndex;
+
+							function showAd(ad) {
+								// Fade out
+								adBox.style.opacity = 0;
+								setTimeout(() => {
+									adBox.innerHTML = `
+                <span class="ad-title">${ad.title}</span>
+                ${ad.text}<br>
+                <span class="ad-date">${ad.date}</span>
+            `;
+
+									// Update click behavior
+									adBox.onclick = function () {
+										if (ad.url) window.location.href = ad.url;
+									};
+
+									// Fade in
+									adBox.style.opacity = 1;
+								}, 400); // half the transition for smooth effect
+							}
+
+							// On page load, pick a random ad that has no URL
+							const nonLinkedAds = ads.filter((ad) => !ad.url);
+							currentAdIndex = Math.floor(Math.random() * nonLinkedAds.length);
+							showAd(nonLinkedAds[currentAdIndex]);
+
+							// Rotate ads every 8 seconds
+							setInterval(() => {
+								let nextAdIndex;
+								do {
+									nextAdIndex = Math.floor(Math.random() * ads.length);
+								} while (nextAdIndex === currentAdIndex);
+								currentAdIndex = nextAdIndex;
+								showAd(ads[currentAdIndex]);
+							}, 60100);
+						})();
+					</script>
+
+					<!-- Today's Date -->
+					<div class="sidebar-box">
+						<div class="sidebar-title">Weather</div>
+						<div class="sidebar-content" style="text-align: center">
+							<div style="font-size: 24px; margin: 10px 0">🌥️</div>
+							<div>Nashville, Tennessee</div>
+							<div>High: 13°C | Low: 7°C</div>
+							<div style="font-size: 11px; margin-top: 8px">Partly Cloudy to Mostly Cloudy</div>
+						</div>
+					</div>
+
+					<!-- Most Read -->
+					<div class="sidebar-box">
+						<div class="sidebar-title">Most Read Today</div>
+						<div class="sidebar-content">
+							<div style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #ddd">
+								<div style="font-weight: bold; color: #003366; cursor: pointer" onclick="alert('Full article would load here')">1. Mysterious Fungus Threatens...</div>
+							</div>
+							<div style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #ddd">
+								<div style="font-weight: bold; color: #003366; cursor: pointer" onclick="alert('Full article would load here')">2. Stock Markets Rally on...</div>
+							</div>
+							<div style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #ddd">
+								<div style="font-weight: bold; color: #003366; cursor: pointer" onclick="alert('Full article would load here')">3. Pope Benedict Begins...</div>
+							</div>
+						</div>
+					</div>
+				</aside>
+			</div>
+
+			<footer>
+				<div style="margin-bottom: 8px">© 1987-2014 The Universal Tribune | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">Contact Us</a></div>
+				<div style="font-size: 9px; color: #aaa">This archived edition is preserved for historical and educational purposes. Original publication ceased March 2014.</div>
+			</footer>
+		</div>
+
+		<script>
+			function navigateTo(section) {
+				alert(`Navigation to "${section}" section would occur here.\n\nThis is a preserved archive copy and links are not functional.`);
+			}
+		</script>
+	</body>
+</html>

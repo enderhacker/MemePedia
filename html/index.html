@@ -183,9 +183,125 @@
 					border-top: 2px dotted #ddd;
 				}
 			}
+
+			#popup-overlay {
+				display: none;
+				position: fixed;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				background: rgba(0, 0, 0, 0.5);
+				justify-content: center;
+				align-items: center;
+				z-index: 1000;
+			}
+
+			#popup {
+				background: #fdf5e6;
+				border: 4px solid #c58a4a;
+				padding: 20px 25px;
+				width: 360px;
+				max-width: 90%;
+				box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.2);
+				text-align: center;
+			}
+
+			#popup h2 {
+				margin: 0 0 10px 0;
+				font-size: 20px;
+				color: #1b1b3a;
+				text-shadow: 1px 1px 0 #fff;
+			}
+
+			#popup p {
+				margin: 8px 0;
+				font-size: 14px;
+				text-align: left;
+			}
+
+			#popup button {
+				background: #d6a86a;
+				border: 2px outset #ffdba0;
+				padding: 6px 12px;
+				cursor: pointer;
+				font-weight: bold;
+				transition: 0.1s;
+			}
+
+			#popup button:hover {
+				background: #c58a4a;
+				border: 2px outset #ffdba0;
+				color: #fff;
+			}
+
+			/* Checkbox container */
+			.checkbox-label {
+				position: relative;
+				display: block;
+				margin: 12px 0;
+				font-size: 13px;
+				cursor: pointer;
+				text-align: left;
+				user-select: none;
+				padding-left: 24px;
+			}
+
+			/* Hide default checkbox */
+			.checkbox-label input[type="checkbox"] {
+				position: absolute;
+				opacity: 0;
+				cursor: pointer;
+				height: 0;
+				width: 0;
+			}
+
+			/* Custom checkbox box */
+			.checkbox-tick {
+				position: absolute;
+				left: 0;
+				top: 0;
+				width: 16px;
+				height: 16px;
+				background: #ffdba0;
+				border: 2px outset #d6a86a;
+			}
+
+			/* Tick mark */
+			.checkbox-label input:checked + .checkbox-tick::after {
+				content: "";
+				position: absolute;
+				left: 4px;
+				top: 0px;
+				width: 5px;
+				height: 10px;
+				border: solid #c58a4a;
+				border-width: 0 2px 2px 0;
+				transform: rotate(45deg);
+			}
 		</style>
 	</head>
 	<body>
+		<div id="popup-overlay">
+			<div id="popup">
+				<h2>Welcome to MemePedia!</h2>
+				<p>The best page for memes. This site is best viewed on a computer or laptop with an internet connection, at least 16MB of RAM and 10MB of disk space. Phones are not recommended. For best experience, use Google Chrome.</p>
+				<label class="checkbox-label"> <input type="checkbox" id="dont-show-again" />Do not show this message again<span class="checkbox-tick"></span> </label>
+				<button id="close-popup">OK</button>
+			</div>
+		</div>
+		<script>
+			if (!localStorage.getItem("hideMemePediaPopup")) {
+				document.getElementById("popup-overlay").style.display = "flex";
+			}
+
+			document.getElementById("close-popup").addEventListener("click", function () {
+				if (document.getElementById("dont-show-again").checked) {
+					localStorage.setItem("hideMemePediaPopup", "true");
+				}
+				document.getElementById("popup-overlay").style.display = "none";
+			});
+		</script>
 		<div id="wrapper">
 			<header>
 				<a href="/" class="logo" aria-label="MemePedia home" style="background: none">
@@ -309,29 +425,40 @@
 			(() => {
 				const link = document.getElementById("random-meme");
 				const IMAGES = [
-					"79b81ff2a8cf7ebad4d95c1b7351f24a83e7a8d319da2f6e9a0b3af2bb12e597",
-					"3e4a0bdf58f4a7a99f3c2b14cb987e6cdd46a3d8bf64b1b6b3a92a0dfb7814b6",
-					"6a5142ac9b9b985f27e861bbd4e33c6ad2d2af7e05a284e79b83e68266dcbfc7",
-					"48a87d19adf0f0dcfbf41e41bcb2875b90a8b5f5b46c929e8d29b20368cd9618",
-					"72a44cb9a9bfa47f93e04f5a8d1a37961a2efb8bc44c18f4038d20b5e9b4cf10",
-					"e03d9c1d3a47a9652d873b1e8d01b4cf5c28d173cba7e8b480a2196b4283d251",
-					"e7421d2c7b4d2a8a4236c7b2c3f1a8b6d2c937e14efad237b0de5a6fa7a9d5cb",
-					"0bce4769b4cbe2280f27e8e7699a13b7e3c43efc861ffb9ef3b6995bbcc23f5d",
+					"/79b81ff2a8cf7ebad4d95c1b7351f24a83e7a8d319da2f6e9a0b3af2bb12e597",
+					"/3e4a0bdf58f4a7a99f3c2b14cb987e6cdd46a3d8bf64b1b6b3a92a0dfb7814b6",
+					"/6a5142ac9b9b985f27e861bbd4e33c6ad2d2af7e05a284e79b83e68266dcbfc7",
+					"/48a87d19adf0f0dcfbf41e41bcb2875b90a8b5f5b46c929e8d29b20368cd9618",
+					"/72a44cb9a9bfa47f93e04f5a8d1a37961a2efb8bc44c18f4038d20b5e9b4cf10",
+					"/e03d9c1d3a47a9652d873b1e8d01b4cf5c28d173cba7e8b480a2196b4283d251",
+					"/e7421d2c7b4d2a8a4236c7b2c3f1a8b6d2c937e14efad237b0de5a6fa7a9d5cb",
+					"/0bce4769b4cbe2280f27e8e7699a13b7e3c43efc861ffb9ef3b6995bbcc23f5d",
 				];
-				const CORRUPTED = "3e4a0bdf58f4a7a99f3c2b14cb987e6cdd46a3d8bf64b1b6b3a92a0dfb7814b6";
+				const CORRUPTED = "/3e4a0bdf58f4a7a99f3c2b14cb987e6cdd46a3d8bf64b1b6b3a92a0dfb7814b6";
 
 				function openViewer() {
-					const win = window.open("", "randomMemeWindow", "width=900,height=700,scrollbars=yes,resizable=yes");
+					const win = window.open("", "randomMemeWindow", "width=1000,height=800,scrollbars=yes,resizable=yes");
 					if (!win) return;
 					const doc = win.document;
 
-					const randomImage = () => IMAGES[Math.floor(Math.random() * IMAGES.length)];
-					let img = randomImage();
-					while (img === CORRUPTED) img = randomImage();
+					let currentImg = null; // track currently displayed image
+
+					const pick = (exclude = null) => {
+						let options = IMAGES.filter((i) => i !== exclude);
+						return options[Math.floor(Math.random() * options.length)];
+					};
+
+					const showImage = (img) => {
+						currentImg = img;
+						meme.src = img;
+					};
+
+					let initialImg = pick(); // first image (cannot be CORRUPTED)
+					while (initialImg === CORRUPTED) initialImg = pick();
 
 					doc.open();
 					doc.write(`<!doctype html>
-		<html>
+<html>
 		<head>
 			<meta charset="utf-8">
 			<meta name="viewport" content="width=device-width,initial-scale=1">
@@ -380,61 +507,57 @@
 						<div style="margin-bottom:8px">
 							<button id="another" class="btn">Another</button>
 							<button id="openraw" class="btn">Open image in new tab</button>
-							<button id="view-large" class="btn">Pop-out (100%)</button>
 						</div>
 						<div class="marq"><marquee behavior="alternate" scrollamount="4">
 							Welcome to The MemePedia Meme Viewer | Enjoy a list of well-selected memes! Contact our mods to add more memes!
 						</marquee></div>
-						<div class="meme-wrap"><img id="meme" src="${img}" alt="Random Meme"></div>
+						<div class="meme-wrap"><img id="meme" src="${initialImg}" alt="Random Meme"></div>
 						<div style="margin-top:8px;display:flex;gap:8px;align-items:center">
-							<div style="margin-left:auto;color:#000;background:#fff;padding:4px;border:2px inset #aaa;font-size:12px">
-								This page best viewed at 800x600
-							</div>
+							<div style="margin-left:auto;color:#000;background:#fff;padding:4px;border:2px inset #aaa;font-size:12px">Memes uploaded by our community! Feel free to share yours ;)</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<script>
-				const IMAGES=${JSON.stringify(IMAGES)};
-				const CORRUPTED="${CORRUPTED}";
-				const meme=document.getElementById("meme"),
-					  sfx=document.getElementById("corrupted-sfx");
-				const another=document.getElementById("another"),
-					  openraw=document.getElementById("openraw"),
-					  viewLarge=document.getElementById("view-large");
+<script>
+const IMAGES = ${JSON.stringify(IMAGES)};
+const CORRUPTED = "${CORRUPTED}";
+const meme = document.getElementById("meme");
+const sfx = document.getElementById("corrupted-sfx");
+const another = document.getElementById("another");
+const openraw = document.getElementById("openraw");
 
-				const pick=()=>IMAGES[Math.floor(Math.random()*IMAGES.length)];
+let currentImg = "${initialImg}";
 
-				function setMeme(src){ meme.src=src; }
+const pickImage = (exclude) => {
+  const options = IMAGES.filter(i => i !== exclude);
+  return options[Math.floor(Math.random() * options.length)];
+};
 
-				another.onclick=()=>{
-					let img=pick();
-					if(img===CORRUPTED){
-						[another,openraw,viewLarge].forEach(b=>b.disabled=true);
-						sfx.currentTime=0; sfx.play();
-						setTimeout(()=>{
-							alert('unexpected image at "img src=UnveilLogoName.png", restoring data...');
-							let safe; do{safe=pick();}while(safe===CORRUPTED);
-							setMeme(safe);
-							[another,openraw,viewLarge].forEach(b=>b.disabled=false);
-						},10000);
-					}else setMeme(img);
-				};
+const showMeme = (img) => {
+  currentImg = img;
+  meme.src = img;
+};
 
-				openraw.onclick=()=>window.open(meme.src,"_blank");
-				viewLarge.onclick=()=>{
-					const w=window.open("","_blank");
-					w.document.write(\`<!doctype html><html><head><meta charset="utf-8"><title>Full Size Meme</title></head>
-					<body style="margin:0;background:#111;display:flex;align-items:center;justify-content:center;height:100vh">
-						<img src="\${meme.src}" style="max-width:100%;max-height:100%;">
-					</body></html>\`);
-					w.document.close();
-				};
+another.onclick = () => {
+  let img = pickImage(currentImg);
+  showMeme(img);
+  if (img === CORRUPTED) {
+    [another, openraw].forEach(b => b.disabled = true);
+    sfx.currentTime = 0; sfx.play();
+    setTimeout(() => {
+      alert('Unexpected image detected, restoring...');
+      let safe;
+      do { safe = pickImage(null); } while (safe === CORRUPTED);
+      showMeme(safe);
+      [another, openraw].forEach(b => b.disabled = false);
+    }, 5000);
+  }
+};
 
-				document.getElementById("guestbook").onclick=e=>{e.preventDefault();alert("Guestbook is archived - entries are read-only.");};
-				document.getElementById("home").onclick=e=>{e.preventDefault();if(window.opener&&!window.opener.closed)window.opener.focus();};
-			<\/script>
-		</body></html>`);
+openraw.onclick = () => window.open(meme.src, "_blank");
+<\/script>
+</body>
+</html>`);
 					doc.close();
 				}
 
