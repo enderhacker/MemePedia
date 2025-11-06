@@ -1,61 +1,73 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>IT'SNOTMELETMEOUT</title>
-    <style>
-        /* --- CAMBIO: Se carga la nueva fuente VCR OSD MONO --- */
-        @font-face {
-            font-family: 'VCR OSD MONO';
-            src: url('vcrosdmono.woff2') format('woff2'); /* El nuevo archivo de fuente */
-        }
+	<head>
+		<meta charset="UTF-8" />
+		<title>IT'SNOTMELETMEOUT</title>
+		<style>
+			@font-face {
+				font-family: "VCR OSD MONO";
+				src: url("vcrosdmono.woff2") format("woff2");
+			}
 
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            background-color: #000;
-            background-image: url('facemelted.png');
-            background-size: cover;
-            background-position: center center;
-            background-attachment: fixed;
-            
-            color: #ff0000;
-            /* --- CAMBIO: Se establece la nueva fuente como prioritaria --- */
-            font-family: 'VCR OSD MONO', 'Courier New', monospace;
-            font-weight: normal; /* Esta fuente se ve mejor sin negrita */
-            text-transform: uppercase;
-            overflow-x: hidden;
-        }
+			body,
+			html {
+				margin: 0;
+				padding: 0;
+				width: 100%;
+				background-color: #000;
+				background-image: url("/26a37df7c937e1ff047ae0c3b6dcb51ccf15e8b8da4d02d80e961f2a8260e23e");
+				background-size: cover;
+				background-position: center center;
+				background-attachment: fixed;
 
-        #output {
-            font-size: 5vw;
-            line-height: 1.0;
-            word-break: break-all;
-        }
-    </style>
-</head>
-<body>
-    <div id="output"></div>
+				color: #ff0000;
+				font-family: "VCR OSD MONO", "Courier New", monospace;
+				font-weight: normal;
+				text-transform: uppercase;
+				overflow: hidden;
+			}
 
-    <script>
-        const output = document.getElementById('output');
-        const textToPrint = "IT'SNOTMELETMEOUT";
-        let charIndex = 0;
+			#output {
+				font-size: 5vw;
+				line-height: 1;
+				word-break: break-all;
+				overflow: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="output"></div>
 
-        // EFECTO 1: ESCRITURA INFINITA (Sin cambios)
-        const typingInterval = setInterval(() => {
-            output.textContent += textToPrint[charIndex % textToPrint.length];
-            charIndex++;
-            window.scrollTo(0, document.body.scrollHeight);
-        }, 10);
+		<script>
+			const output = document.getElementById("output");
+			const text = "ItsNotMeLetMeOut ";
+			let i = Math.floor(Math.random() * text.length);
+			let buffer = "";
+			let lastScroll = 0;
 
-        // EFECTO 2: MOVIMIENTO ERRÁTICO (Sin cambios)
-        const movementInterval = setInterval(() => {
-            const randomX = Math.floor(Math.random() * 51) - 25;
-            const randomY = Math.floor(Math.random() * 51) - 25;
-            output.style.transform = `translate(${randomX}px, ${randomY}px)`;
-        }, 90);
-    </script>
-</body>
+			function type() {
+				buffer += text[i++ % text.length];
+				if (buffer.length >= 50) {
+					output.textContent += buffer;
+					buffer = "";
+					const now = performance.now();
+					if (now - lastScroll > 100) {
+						window.scrollTo(0, document.body.scrollHeight);
+						lastScroll = now;
+					}
+				}
+				requestAnimationFrame(type);
+			}
+
+			function shake() {
+				const x = (Math.random() - 0.5) * 50;
+				const y = (Math.random() - 0.5) * 50;
+				output.style.transform = `translate(${x}px, ${y}px)`;
+				setTimeout(shake, 90);
+			}
+
+			type();
+			shake();
+		</script>
+	</body>
 </html>

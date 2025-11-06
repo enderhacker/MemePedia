@@ -1,74 +1,139 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=1000,initial-scale=1" />
-<title>About & Credits - MemePedia Archive</title>
-<meta name="description" content="About the MemePedia Archive project.">
-<style>
-body { margin:0; background:#f3efe9 url('grid.png'); font-family:Tahoma, Verdana, Arial, sans-serif; color:#111; }
-#wrapper { width:1000px; margin:20px auto; border:4px solid #222; background:#fff; box-shadow:6px 6px 0 rgba(0,0,0,0.15); }
-header { background:linear-gradient(#ffd6a5,#ffb4a2); padding:12px 14px; display:flex; align-items:center; gap:12px; }
-.logo { width:72px; height:60px; background:url('logo-old.gif') center/contain no-repeat; border:1px solid #999; }
-h1 { margin:0; font-size:24px; color:#1b1b3a; text-shadow:1px 1px 0 #fff; }
-nav { padding:8px 12px; background:#f9f6f2; border-top:2px solid #eee; border-bottom:2px dashed #ddd; }
-nav a { margin-right:8px; color:#0645ad; text-decoration:none; font-weight:bold; }
-.footer { padding:10px; text-align:center; font-size:12px; background:#f4f4f4; border-top:1px solid #ddd; }
-.back { display:inline-block; margin:12px 0; padding:6px 10px; border:2px solid #000; background:#fff; text-decoration:none; color:#000; font-weight:bold; }
-.card { background:#fff; padding:10px 15px; margin-bottom:12px; border:1px solid #e0d8d2; }
-.card h3 { margin-top: 5px; }
-.card ul { list-style: square; padding-left: 20px; }
-.card li { margin-bottom: 8px; }
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=1000,initial-scale=1" />
+		<title>About & Credits - MemePedia Archive</title>
+		<meta name="description" content="About the MemePedia Archive project." />
+		<style>
+			body {
+				margin: 0;
+				background: #f3efe9 url("grid.png");
+				font-family: Tahoma, Verdana, Arial, sans-serif;
+				color: #111;
+			}
+			#wrapper {
+				width: 1000px;
+				margin: 20px auto;
+				border: 4px solid #222;
+				background: #fff;
+				box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15);
+			}
+			header {
+				background: linear-gradient(#ffd6a5, #ffb4a2);
+				padding: 12px 14px;
+				display: flex;
+				align-items: center;
+				gap: 12px;
+			}
+			.logo {
+				width: 72px;
+				height: 60px;
+				background: url("logo-old.gif") center/contain no-repeat;
+				border: 1px solid #999;
+			}
+			h1 {
+				margin: 0;
+				font-size: 24px;
+				color: #1b1b3a;
+				text-shadow: 1px 1px 0 #fff;
+			}
+			nav {
+				padding: 8px 12px;
+				background: #f9f6f2;
+				border-top: 2px solid #eee;
+				border-bottom: 2px dashed #ddd;
+			}
+			nav a {
+				margin-right: 8px;
+				color: #0645ad;
+				text-decoration: none;
+				font-weight: bold;
+			}
+			.footer {
+				padding: 10px;
+				text-align: center;
+				font-size: 12px;
+				background: #f4f4f4;
+				border-top: 1px solid #ddd;
+			}
+			.back {
+				display: inline-block;
+				margin: 12px 0;
+				padding: 6px 10px;
+				border: 2px solid #000;
+				background: #fff;
+				text-decoration: none;
+				color: #000;
+				font-weight: bold;
+			}
+			.card {
+				background: #fff;
+				padding: 10px 15px;
+				margin-bottom: 12px;
+				border: 1px solid #e0d8d2;
+			}
+			.card h3 {
+				margin-top: 5px;
+			}
+			.card ul {
+				list-style: square;
+				padding-left: 20px;
+			}
+			.card li {
+				margin-bottom: 8px;
+			}
 
-@media (max-width:1020px){
-  #wrapper{width:96%;}
-}
-</style>
-</head>
-<body>
-<div id="wrapper">
-  <header>
-    <a href="/" class="logo" aria-label="MemePedia home" style="background:none;">
-      <img src="/9fd8a9b27cf86d9129f1edc6c2d47e25cb8f3cfe11984d1a67b946f00ee4b8c4" alt="MemePedia logo" width="72" height="60" style="display:block;border:0;">
-    </a>
-    <div>
-      <h1>About & Credits</h1>
-    </div>
-  </header>
+			@media (max-width: 1020px) {
+				#wrapper {
+					width: 96%;
+				}
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrapper">
+			<header>
+				<a href="/" class="logo" aria-label="MemePedia home" style="background: none">
+					<img src="/9fd8a9b27cf86d9129f1edc6c2d47e25cb8f3cfe11984d1a67b946f00ee4b8c4" alt="MemePedia logo" width="72" height="60" style="display: block; border: 0" />
+				</a>
+				<div>
+					<h1>About & Credits</h1>
+				</div>
+			</header>
 
-  <nav>
-    <a href="/">Home</a>
-    <a href="#" onclick="alert('Cannot seem to find refered page. Please contact site administrator if you think this is an error.'); return false;">Wiki</a>
-    <a href="/c40fbc15b206edccd7b21b63c5379d9b049598fadd81544e26de27e501572da9">Forum</a>
-    <a href="/395b46de6c56b0518e08b07182c1ff4a340e0bb6ca7b315a8967a4d02b44b76d">Gallery</a>
-    <a href="/bec5d5040b7df76f319de5e40a82ad1335d9ab3d23f4f6ff1ab6597c72819333">About</a>
-  </nav>
+			<nav>
+				<a href="/">Home</a>
+				<a href="#" onclick="alert('Cannot seem to find refered page. Please contact site administrator if you think this is an error.'); return false;">Wiki</a>
+				<a href="/c40fbc15b206edccd7b21b63c5379d9b049598fadd81544e26de27e501572da9">Forum</a>
+				<a href="/395b46de6c56b0518e08b07182c1ff4a340e0bb6ca7b315a8967a4d02b44b76d">Gallery</a>
+				<a href="/bec5d5040b7df76f319de5e40a82ad1335d9ab3d23f4f6ff1ab6597c72819333">About</a>
+			</nav>
 
-  <div style="padding:12px;">
-    <a href="/" class="back">← Back to Archive</a>
+			<div style="padding: 12px">
+				<a href="/" class="back">← Back to Archive</a>
 
-    <div class="card">
-        <h3>About This Project</h3>
-        <p>The MemePedia Archive is an unofficial, non-profit preservation project. Our goal is to create a static snapshot of the original MemePedia community, capturing the look and feel of the early 2000s web for future generations to explore. All content is presented as-is for historical and educational purposes.</p>
-    </div>
+				<div class="card">
+					<h3>About This Project</h3>
+					<p>
+						The MemePedia Archive is an unofficial, non-profit preservation project. Our goal is to create a static snapshot of the original MemePedia community, capturing the look and feel of the early 2000s web for future generations to explore. All content is presented as-is for
+						historical and educational purposes.
+					</p>
+				</div>
 
-    <div class="card">
-        <h3>Project Team</h3>
-        <ul>
-            <li><strong>Lead Archivist & Curator:</strong> Alex "8-Bit" Chen</li>
-            <li><strong>Lead Developer:</strong> J. "Kernel" Rodriguez</li>
-            <li><strong>UI/UX & Retro Design:</strong> Sam "Pixel" Carter</li>
-            <li><strong>Content Curators:</strong> Maria "GIF-Lord" Ivanova, David "Lurker" Jones</li>
-            <li><strong>Special Thanks:</strong> The original MemePedia community (2001-2009)</li>
-        </ul>
-    </div>
+				<div class="card">
+					<h3>Project Team</h3>
+					<ul>
+						<li><strong>Lead Archivist & Curator:</strong> Alex "8-Bit" Chen</li>
+						<li><strong>Lead Developer:</strong> J. "Kernel" Rodriguez</li>
+						<li><strong>UI/UX & Retro Design:</strong> Sam "Pixel" Carter</li>
+						<li><strong>Content Curators:</strong> Maria "GIF-Lord" Ivanova, David "Lurker" Jones</li>
+						<li><strong>Special Thanks:</strong> The original MemePedia community (2001-2009)</li>
+					</ul>
+				</div>
+			</div>
 
-  </div>
-
-  <div class="footer">
-    © MemePedia Archive | 2001-2009 (project snapshot)
-  </div>
-</div>
-
-</body>
+			<div class="footer">© MemePedia Archive | 2001-2009 (project snapshot)</div>
+		</div>
+	</body>
 </html>
