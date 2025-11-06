@@ -10,8 +10,17 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "express": "^5.1.0",
     "express.js": "^1.0.0",
     "sequelize": "^6.37.7",
     "sqlite3": "^5.1.7"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enderhacker/Memepedia.git"
+  },
+  "bugs": {
+    "url": "https://github.com/enderhacker/Memepedia/issues"
+  },
+  "homepage": "https://github.com/enderhacker/Memepedia#readme"
 }
