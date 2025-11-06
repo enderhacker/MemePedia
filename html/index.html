@@ -569,11 +569,14 @@ openraw.onclick = () => window.open(meme.src, "_blank");
 
 			// --- Ads Loader ---
 			window.addEventListener("DOMContentLoaded", async () => {
-				try {
-					const res = await fetch("/api/getAd");
-					const ads = await res.json();
-					const container = document.getElementById("ads-container");
-					container.innerHTML = '<h4 style="margin: 5px 0px;">Advertisements:</h4>';
+				const container = document.getElementById("ads-container");
+				container.innerHTML = '<h4 style="margin: 5px 0px;">Advertisements:</h4>';
+
+				let currentAds = []; // store current ads
+
+				// Function to render ads
+				const renderAds = (ads) => {
+					container.querySelectorAll(".ad").forEach((ad) => ad.remove()); // remove old ad elements
 					ads.forEach((ad) => {
 						const div = document.createElement("div");
 						div.className = "card ad";
@@ -581,12 +584,33 @@ openraw.onclick = () => window.open(meme.src, "_blank");
 				<img src="${ad.imageUrl}" alt="${ad.title}">
 				<div style="font-weight:bold">${ad.title}</div>
 				<div style="font-size:12px;color:#444;margin-top:6px">${ad.description}</div>`;
-						div.onclick = () => (ad.redirectUrl ? (location.href = ad.redirectUrl) : alert("Cannot seem to find referred page. Please contact site administrator if you think this is an error."));
+						div.onclick = () => {
+							if (ad.redirectUrl) location.href = ad.redirectUrl;
+							else alert("Cannot seem to find referred page. Please contact site administrator if you think this is an error.");
+						};
 						container.appendChild(div);
 					});
-				} catch (e) {
-					console.error("Failed to load ads:", e);
-				}
+				};
+
+				// Function to fetch ads
+				const fetchAds = async () => {
+					try {
+						const res = await fetch("/api/getAd");
+						if (!res.ok) throw new Error("Network response was not ok");
+						const ads = await res.json();
+						currentAds = ads; // update current ads
+						renderAds(ads);
+					} catch (e) {
+						console.warn("Failed to fetch new ads, keeping previous ones.");
+						renderAds(currentAds); // re-render old ads
+					}
+				};
+
+				// Initial load
+				await fetchAds();
+
+				// Rotate ads every 15 seconds
+				setInterval(fetchAds, 15000);
 			});
 
 			(() => {

@@ -30,6 +30,30 @@
 		"redirectUrl": null
 	},
 	{
+		"file": "tastebudtreats.png",
+		"label": "Tastebud Treats",
+		"description": "Snacks and sweets to delight every craving.",
+		"redirectUrl": null
+	},
+	{
+		"file": "flowerfields.png",
+		"label": "Flower Fields",
+		"description": "Fresh flowers delivered to your door daily.",
+		"redirectUrl": null
+	},
+	{
+		"file": "pixelperfect.png",
+		"label": "Pixel Perfect",
+		"description": "Custom web design and graphics for retro websites.",
+		"redirectUrl": null
+	},
+	{
+		"file": "frostbite.png",
+		"label": "Frostbite Ice Cream",
+		"description": "Cool off with our deliciously crazy flavors.",
+		"redirectUrl": null
+	},
+	{
 		"file": "curvedmail.png",
 		"label": "CurvedMail",
 		"description": "Free email services for everyone.",
