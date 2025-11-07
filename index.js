@@ -15,6 +15,7 @@ app.use((req, res, next) => {
 	res.removeHeader("Connection");
 	next();
 });
+app.use(express.json());
 
 function publishFile(urlPath, filePath) {
 	const resolvedPath = path.resolve(filePath);
@@ -133,6 +134,68 @@ app.get("/api/getVisits", async (req, res) => {
 	}
 });
 
+// --- Serve emails ---
+const mailDBPath = path.resolve("./data/mailDatabase.json");
+let mailDatabase = {};
+if (fs.existsSync(mailDBPath)) {
+	mailDatabase = JSON.parse(fs.readFileSync(mailDBPath, "utf-8"));
+}
+if (!mailDatabase || typeof mailDatabase !== "object") {
+	console.error("❌ Invalid mail database format.");
+	return;
+}
+app.post("/api/getEmails", (req, res) => {
+	try {
+		console.log("\n📩 Incoming /api/getEmails request");
+
+		const { username, password } = req.body;
+		console.log("➡️ Raw body:", req.body);
+
+		// --- Basic structure validation ---
+		if (typeof username !== "string" || typeof password !== "string") {
+			console.warn("⚠️ Invalid body structure. Expected strings for username/password.");
+			return res.status(200).json({ success: false, error: "Invalid body" });
+		}
+
+		// --- Decode Base64 safely ---
+		let decodedUser, decodedPass;
+		try {
+			decodedUser = Buffer.from(username, "base64").toString("utf8").trim().toLowerCase();
+			decodedPass = Buffer.from(password, "base64").toString("utf8").trim();
+			console.log(`🧩 Decoded username: ${decodedUser}`);
+			console.log(`🔑 Decoded password: ${decodedPass}`);
+		} catch (e) {
+			console.error("❌ Error decoding Base64:", e);
+			return res.status(200).json({ success: false });
+		}
+
+		// --- Validation ---
+		if (!decodedUser || !decodedPass || decodedUser.length < 1 || decodedPass.length < 1 || !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(decodedUser)) {
+			console.warn("⚠️ Validation failed for decoded credentials.");
+			return res.status(200).json({ success: false });
+		}
+
+		// --- Read mail database ---
+		const user = mailDatabase[decodedUser];
+		console.log(user ? `📬 Found user in database: ${decodedUser}` : `❌ No user found for ${decodedUser}`);
+
+		// --- Auth check ---
+		if (!user || user.password !== decodedPass) {
+			console.warn(`🚫 Authentication failed for ${decodedUser}`);
+			return res.status(200).json({ success: false });
+		}
+
+		console.log(`✅ Authentication successful for ${decodedUser}`);
+		console.log(`📨 Sending ${user.emails.length} emails.`);
+
+		// --- Success ---
+		res.status(200).json({ success: true, emails: user.emails });
+	} catch (err) {
+		console.error("💥 getEmails error:", err);
+		res.status(400).json({ success: false });
+	}
+});
+
 // --- Publish Pages ---
 publishFile("/bec5d5040b7df76f319de5e40a82ad1335d9ab3d23f4f6ff1ab6597c72819333", "./html/about.html");
 publishFile("/61c1878564b8b4ad1e616452ef28ed927f6723d1d5ced2f39fd842a1839d7ea4", "./html/curvedmail.html");
@@ -169,7 +232,7 @@ publishFile("/a5f3b9b2c85a8c5baf95f7c83c6a429f2b9e7a3df7d12b8e4325bfb9b47ed820",
 publishFile("/3e4a0bdf58f4a7a99f3c2b14cb987e6cdd46a3d8bf64b1b6b3a92a0dfb7814b6", "./images/UnveilLogoName.png");
 publishFile("/9089f976186daa17b7e9bb4b3c0ddcaa1882c93bbde3013456043e505b624c67", "./images/Pr0yectUnv3ilLogo.png");
 
-publishFile("/e4fc780f974374a885e0246a100a3405285edf85e9e97e27583702fe0afff0df", "./sounds/Success.png");
+publishFile("/e4fc780f974374a885e0246a100a3405285edf85e9e97e27583702fe0afff0df", "./sounds/Success.mp3");
 publishFile("/ded2d40110abb9075e42bb31f69a6799bf25e515a8403549d4a8f0706877da9e", "./sounds/Blurred.mp3");
 
 // c3d794cff5e81c280aee4fd3f0968bf84164742833ad463b18e5144d1306bed5
