@@ -88,8 +88,32 @@
 				list-style: square;
 				padding-left: 20px;
 			}
-			.card li {
+			.project-team {
+				display: flex;
+				flex-direction: row;
+				flex-wrap: wrap;
+				gap: 10px;
+				justify-content: center;
+			}
+			.project-member {
 				margin-bottom: 8px;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				max-width: 160px;
+				min-width: 160px;
+				width: 160px;
+			}
+			.project-image {
+				margin-bottom: 10px;
+				width: 128px;
+				height: 128px;
+				min-width: 128px;
+				min-height: 128px;
+				border-radius: 50%;
+				cursor: pointer;
+				border: 1px solid #ccc;
+				transition: transform 0.2s ease;
 			}
 
 			@media (max-width: 1020px) {
@@ -134,14 +158,134 @@
 
 				<div class="card">
 					<h3>Project Team</h3>
-					<ul>
-						<li><strong>Lead Curator:</strong> Alex Chen</li>
-						<li><strong>Lead Developer:</strong> John Rodriguez</li>
-						<li><strong>UI/UX & Design:</strong> Sam Carter</li>
-						<li><strong>Content Curators:</strong> Maria Ivanova, David Jones</li>
-						<li><strong>Special Thanks:</strong> The original MemePedia community; The Universal Tribune</li>
-					</ul>
+					<div class="project-team">
+						<div class="project-member">
+							<img class="project-image" id="founder" alt="Darren Hancock" />
+							<strong>Founder & Developer:</strong> Darren Hancock
+						</div>
+						<div class="project-member">
+							<img class="project-image" id="designer" alt="Sam Carter" />
+							<strong>UI/UX & Design:</strong> Sam Carter
+						</div>
+						<div class="project-member">
+							<img class="project-image" id="curators" alt="Maria Ivanova" />
+							<strong>Content Curator:</strong> Maria Ivanova
+						</div>
+						<div class="project-member">
+							<img class="project-image" id="strategist" alt="Emily Rhodes" />
+							<strong>Content Strategist:</strong> Emily Rhodes
+						</div>
+						<div class="project-member">
+							<img class="project-image" id="backend" alt="Victor Lee" />
+							<strong>Backend Engineer:</strong> Victor Lee
+						</div>
+					</div>
 				</div>
+
+				<script>
+					document.addEventListener("DOMContentLoaded", () => {
+						const members = {
+							founder: {
+								id: "founder",
+								main: "/c3d794cff5e81c280aee4fd3f0968bf84164742833ad463b18e5144d1306bed5",
+								alt: "/275eb533ada364dc9d91471375f9e2b4c0bf1654cec1fb447ae9fa6fd6139bfe",
+							},
+							designer: {
+								id: "designer",
+								main: "/9ba828a78ae3d0111e6ac0e3d1aa4e151b87312448cb58fa5af94072bfa97221",
+								alt: "/59ca95861f6c8c46448bfa578a9a4950626ba265561035f47d800836bd2265fc",
+							},
+							curators: {
+								id: "curators",
+								main: "/2d7b42abeaff03d4fae6f720d3dd4b82cd2ebacdb0d3aa7115e3f69140ed27ca",
+								alt: "/c15283f4b728f88e85ab7bec3fe7057c810b8c00a8f0363e05f13081d82da18a",
+							},
+							strategist: {
+								id: "strategist",
+								main: "/52670cb900db3145ba4d17b169b01466393921b0b41c24022ccd06dc153f2dab",
+								alt: "/14fab1d66d89658fd002348fb2934366c40465ebcf8ac4f686ed1ab0945ec491",
+							},
+							backend: {
+								id: "backend",
+								main: "/87dbeaeabef1ac5fabbc312e4f50a594e5f2bfdc3e3531b050e9319dd87e84dd",
+								alt: "/8eb590f2bb544ba251569354919adcfe2b38dffc5b4a60662a10036e8be8fcc0",
+							},
+						};
+
+						let stage = 0; // 0 = first phase, 1 = flicker, 2 = redirect
+						let clicked = new Set();
+						let flickerInterval = null;
+
+						// Initialize all images
+						for (const { id, main } of Object.values(members)) {
+							const img = document.getElementById(id);
+							if (img) img.src = main;
+						}
+
+						// Click handlers
+						for (const { id } of Object.values(members)) {
+							const img = document.getElementById(id);
+							if (!img) continue;
+
+							img.addEventListener("click", () => {
+								clicked.add(id);
+
+								if (clicked.size === Object.keys(members).length) {
+									if (stage === 0) {
+										switchImages();
+										stage = 1;
+										clicked.clear();
+									} else if (stage === 1) {
+										switchToDarkMode();
+										stage = 2;
+										clicked.clear();
+									} else if (stage === 2) {
+										window.location.href = "/example";
+									}
+								}
+							});
+						}
+
+						function switchImages() {
+							for (const { id, alt } of Object.values(members)) {
+								const img = document.getElementById(id);
+								if (img) img.src = alt;
+							}
+						}
+
+						function switchToDarkMode() {
+							const style = document.createElement("style");
+							style.textContent = `
+			* {
+				background-color: #111 !important;
+				color: #f5f5f5 !important;
+				transition: all 0.5s ease;
+			}
+		`;
+							document.head.appendChild(style);
+
+							function startFlicker() {
+								function flicker() {
+									const contrast = (Math.random() * 3 + 2).toFixed(2); // 2–5
+									const brightness = (Math.random() + 0.5).toFixed(2); // 0.5–1.5
+									const x = (Math.random() * 4 - 2).toFixed(2); // -2px to 2px
+									const y = (Math.random() * 4 - 2).toFixed(2); // -2px to 2px
+
+									document.querySelectorAll(".project-image").forEach((img) => {
+										img.style.filter = `contrast(${contrast}) brightness(${brightness})`;
+										img.style.transform = `translate(${x}px, ${y}px)`;
+									});
+
+									// Re-run at a random delay between 50–100ms
+									setTimeout(flicker, Math.random() * 50 + 50);
+								}
+
+								flicker(); // start it once
+							}
+							startFlicker();
+						}
+					});
+				</script>
 			</div>
 
 			<footer class="footer">© MemePedia | 2001-2009</footer>

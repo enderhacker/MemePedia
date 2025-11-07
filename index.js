@@ -232,14 +232,30 @@ publishFile("/a5f3b9b2c85a8c5baf95f7c83c6a429f2b9e7a3df7d12b8e4325bfb9b47ed820",
 publishFile("/3e4a0bdf58f4a7a99f3c2b14cb987e6cdd46a3d8bf64b1b6b3a92a0dfb7814b6", "./images/UnveilLogoName.png");
 publishFile("/9089f976186daa17b7e9bb4b3c0ddcaa1882c93bbde3013456043e505b624c67", "./images/Pr0yectUnv3ilLogo.png");
 
+publishFile("/c3d794cff5e81c280aee4fd3f0968bf84164742833ad463b18e5144d1306bed5", "./images/about_original_DarrenHancock.jpeg");
+publishFile("/9ba828a78ae3d0111e6ac0e3d1aa4e151b87312448cb58fa5af94072bfa97221", "./images/about_original_SamCarter.jpeg");
+publishFile("/2d7b42abeaff03d4fae6f720d3dd4b82cd2ebacdb0d3aa7115e3f69140ed27ca", "./images/about_original_MariaIvanova.jpeg");
+publishFile("/52670cb900db3145ba4d17b169b01466393921b0b41c24022ccd06dc153f2dab", "./images/about_original_EmilyRhodes.jpeg");
+publishFile("/87dbeaeabef1ac5fabbc312e4f50a594e5f2bfdc3e3531b050e9319dd87e84dd", "./images/about_original_VictorLee.jpeg");
+publishFile("/275eb533ada364dc9d91471375f9e2b4c0bf1654cec1fb447ae9fa6fd6139bfe", "./images/about_distorted_DarrenHancock.png");
+publishFile("/59ca95861f6c8c46448bfa578a9a4950626ba265561035f47d800836bd2265fc", "./images/about_distorted_SamCarter.png");
+publishFile("/c15283f4b728f88e85ab7bec3fe7057c810b8c00a8f0363e05f13081d82da18a", "./images/about_distorted_MariaIvanova.png");
+publishFile("/14fab1d66d89658fd002348fb2934366c40465ebcf8ac4f686ed1ab0945ec491", "./images/about_distorted_EmilyRhodes.png");
+publishFile("/8eb590f2bb544ba251569354919adcfe2b38dffc5b4a60662a10036e8be8fcc0", "./images/about_distorted_VictorLee.png");
+
 publishFile("/e4fc780f974374a885e0246a100a3405285edf85e9e97e27583702fe0afff0df", "./sounds/Success.mp3");
 publishFile("/ded2d40110abb9075e42bb31f69a6799bf25e515a8403549d4a8f0706877da9e", "./sounds/Blurred.mp3");
 
-// c3d794cff5e81c280aee4fd3f0968bf84164742833ad463b18e5144d1306bed5
-// 9ba828a78ae3d0111e6ac0e3d1aa4e151b87312448cb58fa5af94072bfa97221
-// 2d7b42abeaff03d4fae6f720d3dd4b82cd2ebacdb0d3aa7115e3f69140ed27ca
-// 52670cb900db3145ba4d17b169b01466393921b0b41c24022ccd06dc153f2dab
-// 87dbeaeabef1ac5fabbc312e4f50a594e5f2bfdc3e3531b050e9319dd87e84dd
+// 6da53329402540dee8230bdce3c339b2438767b6fcf3ec6f9df20ea996ce5ee7
+// ad01dbe10a4e567094a3861103089fad02b2e9327051db89d748f320cb538e88
+// e69ef03be5ba8d0ad520267dad768ee0c9e7ea90489e3f99abde2bba1a9adf11
+// b4840da99696ec91badda36e0d399f4063ea1a5992e27e1df278aa3420627b78
+// dbb21a75f47c1e246f9a1d048ef317f3b23a0886aac915ffa4fe9f4f228f686a
+// 1246896f4c76bcc92b86cf9866cef6d7724448a511b6e5de225f8c77199cc2cf
+// 6dba972e8d9e63ed9b48ec21539f388820cc56740c67deff44f80a93cd912143
+// 9e63db98b1d098843c9ec445d31a429a181c94cf6e5369078438b15fa62ef9ae
+// 1c0a9d9b9432efa048ee2a9afdfaab1f663a9bdbe3cfeb2723fcc432ae2ea66e
+// f43510989d61ec5905c6896c1c535003879a1e942ff946a81cf5ba0fcf724410
 
 app.use(function (req, res) {
 	res.status(404).sendFile(path.join(__dirname, "html", "404.html"));
