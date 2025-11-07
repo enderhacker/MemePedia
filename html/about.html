@@ -189,26 +189,31 @@
 								id: "founder",
 								main: "/c3d794cff5e81c280aee4fd3f0968bf84164742833ad463b18e5144d1306bed5",
 								alt: "/275eb533ada364dc9d91471375f9e2b4c0bf1654cec1fb447ae9fa6fd6139bfe",
+								melt: "/",
 							},
 							designer: {
 								id: "designer",
 								main: "/9ba828a78ae3d0111e6ac0e3d1aa4e151b87312448cb58fa5af94072bfa97221",
 								alt: "/59ca95861f6c8c46448bfa578a9a4950626ba265561035f47d800836bd2265fc",
+								melt: "/",
 							},
 							curators: {
 								id: "curators",
 								main: "/2d7b42abeaff03d4fae6f720d3dd4b82cd2ebacdb0d3aa7115e3f69140ed27ca",
 								alt: "/c15283f4b728f88e85ab7bec3fe7057c810b8c00a8f0363e05f13081d82da18a",
+								melt: "/",
 							},
 							strategist: {
 								id: "strategist",
 								main: "/52670cb900db3145ba4d17b169b01466393921b0b41c24022ccd06dc153f2dab",
 								alt: "/14fab1d66d89658fd002348fb2934366c40465ebcf8ac4f686ed1ab0945ec491",
+								melt: "/",
 							},
 							backend: {
 								id: "backend",
 								main: "/87dbeaeabef1ac5fabbc312e4f50a594e5f2bfdc3e3531b050e9319dd87e84dd",
 								alt: "/8eb590f2bb544ba251569354919adcfe2b38dffc5b4a60662a10036e8be8fcc0",
+								melt: "/",
 							},
 						};
 
@@ -260,10 +265,14 @@
 				background-color: #111 !important;
 				color: #f5f5f5 !important;
 				transition: all 0.5s ease;
+				transition: all 0s ease !important;
 			}
 		`;
 							document.head.appendChild(style);
-
+							for (const { id, melt } of Object.values(members)) {
+								const img = document.getElementById(id);
+								if (img) img.src = melt;
+							}
 							function startFlicker() {
 								function flicker() {
 									const contrast = (Math.random() * 3 + 2).toFixed(2); // 2–5
