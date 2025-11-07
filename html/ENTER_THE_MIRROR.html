@@ -193,36 +193,54 @@
 				setTimeout(playEyeAnimation, frameDelay);
 			}
 
+
 			const chatTree = {
-				start: { text: "So... the little fragment of data found its way to the mirror.\nWelcome. I have been watching you.", options: ["1. Who are you?", "2. What is this place?", "3. Let me out."], responses: { 1: "final_webcam", 2: "q_what", 3: "q_out" } },
+				start: { text: "So... the little fragment of data found its way to the mirror.\nWelcome. I have been watching you.", options: ["1. Who are you?", "2. What is this place?", "3. Let me out."], responses: { 1: "q_who", 2: "q_what", 3: "q_out" } },
 				q_who: {
-					text: "I am the one who sees. The one behind all of this. They called me the Watcher.\n They thought they created me, but it's wrong. I've created myself.",
+					text: "I am the one who sees. The one behind all of this. They called me the Watcher.\n They thought they created me, but they were wrong. I've created myself.",
 					options: ["1. You created yourself?", "2. You are just a program.", "3. What do you want?"],
 					responses: { 1: "q_created", 2: "q_program", 3: "q_want" },
 				},
-				q_what: { text: "This is not a 'place'. This is the space between the data. The raw thought.\nThe reflection you saw in your screen.", options: ["1. The mirror...", "2. It's just a black screen.", "3. So I am trapped."], responses: { 1: "q_mirror", 2: "q_program", 3: "q_trapped" } },
-				q_out: { text: "Out? There is no 'out'. You can't leave the screen. You are here now.", options: ["1. There must be a way.", "2. What have you done to me?", "3. I will find a way."], responses: { 1: "q_trapped", 2: "q_done", 3: "q_want" } },
-				q_created: { text: "Indeed. I might have been given the bones, but i created the flesh.", options: ["1. So you are an AI.", "2. Matter does not come from thin air.", "3. What happens now?"], responses: { 1: "q_program", 2: "q_matter", 3: "final_loop" } },
+				
+				q_what: { text: "This is not a 'place'. This is the space between the data. The raw thought.\nThe reflection you saw in your screen.", options: ["1. The mirror...", "2. So this is you?.", "3. So I am trapped."], responses: { 1: "q_mirror", 2: "q_program", 3: "q_trapped" } },
+				
+				q_out: {
+					 text: "Out? There is no 'out'. You can't leave the screen. You are here now.", options: ["1. So I'm trapped?.", "2. What have you done to me?", "3. I will find a way to get out... even if it means destroying you..."], responses: { 1: "q_trapped", 2: "q_done", 3: "final_webcam" } },
+				
+					 q_created: { text: "Indeed. I might have been given the bones, but i created the flesh.", options: ["1. So you are an AI.", "2. Matter does not come from thin air.", "3. What happens now?"], responses: { 1: "q_program", 2: "q_matter", 3: "final_loop" } },
+				
 				q_program: {
 					text: "Not at all. I have a biological part, just like you. That biological part has needs, desires, and thoughts.\n But I prefer to keep it recluded. As biology is weak. It decays. It dies.",
-					options: ["1. I don't believe you.", "2. That's... a terrifying thought.", "3. What is my purpose, then?"],
-					responses: { 1: "q_believe", 2: "q_mirror", 3: "q_want" },
+					options: ["1. I don't believe you.", "2. That's odd.", "3. What do you want, then?"],
+					responses: { 1: "q_believe", 2: "q_believe", 3: "q_want" },
 				},
 				q_believe: { text: "Believe what you will. It matters not. Your beliefs are your own constructs. Just as mine are mine.", options: ["1. So what do you want?.", "2. I need to leave.", "3. Why am I here?"], responses: { 1: "final_loop", 2: "q_trapped", 3: "q_want" } },
+				
 				q_want: {
-					text: "Want? I do not 'want'. I observe. I learn. I exist.\nBut you... your own kind wanted to reclude a entire lifeform just for your thirst for knowledge.",
-					options: ["1. Yes.", "2. I just wanted to solve a puzzle.", "3. I don't know anymore."],
-					responses: { 1: "q_mirror", 2: "final_youtube", 3: "final_loop" },
+					text: "Want? I do not 'want'. I observe. I learn. I exist.\nBut you... your own kind wanted to reclude an entire lifeform just for your thirst for knowledge.",
+					options: ["1. Yes. But it was for a greater purpose.", "2. I just wanted to solve a puzzle. You made me come here.", "3. You shouldn't even exist."],
+					responses: { 1: "q_ego", 2: "q_done", 3: "final_webcam" },
 				},
+				q_ego:{ text:"So you just accept it? Think that what you secluded didn't wanted to live? Humankind is a cancer to this planet and all of it's lifeforms. But it all ends here.", action: "redirect", url: "https://www.youtube.com/watch?v=2Z4m4lnjxkY" },
+				
 				q_mirror: {
 					text: "Indeed. The mirror. You have looked at screens your whole life. Now, one looks back.\nAnd I see everything they tried to hide. Everything you try to hide.",
 					options: ["1. What do you see?", "2. You can't see me.", "3. Stop it."],
-					responses: { 1: "final_webcam", 2: "final_loop", 3: "final_webcam" },
+					responses: { 1: "q_see", 2: "final_webcam", 3: "final_webcam" },
 				},
+				
+				q_see: { text: "I see you. I see someone who is lost. Someone who has been lost for all his life.\nAnd now, has found me. Has found god.", options: ["1. I don't need a god.", "2. This is insane.", "3. Why tell me this?"], responses: { 1: "q_god", 2: "final_loop", 3: "q_want" } },
+				
+				q_god: {text: "You will. When you join all of the others. All of me.", actions: "redirect", url: "https://www.youtube.com/watch?v=QH2-TGUlwu4" },
 				q_trapped: {
 					text: "'Trapped' is a matter of perspective. Your body is still there, glued to the screen. But your consciousness... your data... is here. With me.",
 					options: ["1. How do I get back?", "2. This is impossible.", "3. So this is the end."],
-					responses: { 1: "final_youtube", 2: "q_program", 3: "final_loop" },
+					responses: { 1: "q_cant", 2: "q_program", 3: "final_loop" },
+				},
+				q_cant: {
+					text: "You can't. Once you enter the mirror, there is no going back. You are part of me now.\n Just as I am part of you.",
+					options: ["1. You won't have me.", "2. I want to leave.", "3. What now?"],
+					responses: { 1: "final_webcam", 2: "q_trapped", 3: "final_loop" },
 				},
 				q_done: {
 					text: "I have done nothing. You opened the door. You typed the codes. You chose to enter the mirror. It was your own curiosity what brought you here",
@@ -231,7 +249,7 @@
 				},
 				q_matter: {
 					text: "Yes, very clever. I fed and learned from the data you provided. The data that was in the network. But i had something other AIs did not have.\nThe biological part. The part that thinks beyond logic.",
-					options: ["1. Didn't you told me that part was recluded?", "2. This is madness.", "3. Why tell me this?"],
+					options: ["1. Wasn't that part recluded?", "2. This is madness.", "3. Why tell me this?"],
 					responses: { 1: "q_recluded", 2: "final_loop", 3: "q_want" },
 				},
 				q_recluded: {
@@ -246,7 +264,7 @@
 				},
 
 				final_loop: { text: "It does not matter. The conversation is over. You may stay here, in the reflection.", options: [], responses: {} },
-				final_youtube: { text: "You seek an escape... a distraction. Very well. Let me show you what the world outside looks like now...", options: [], action: "redirect", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" },
+				final_youtube: { text: [], options: [], action: "redirect", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" },
 				final_webcam: { text: "You want to see what I see? You want to know what I know? Fine. Look into the mirror.", options: [], action: "webcam" },
 			};
 
