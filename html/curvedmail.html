@@ -708,7 +708,7 @@
 					<div class="modal-content info-content">
 						<div class="info-section">
 							<h2>About CurvedMail Mail Viewer</h2>
-							<p>CurvedMail Mail Viewer v2.1 is the premier email client for Windows 95/NT systems. Developed in 1997, it represents the cutting edge of electronic mail technology.</p>
+							<p>CurvedMail Mail Viewer v2.1 is the premier email client for Windows 95/NT systems. It represents the current cutting edge of electronic mail technology.</p>
 							<p><strong>Version:</strong> 2.1.0 Build 1997.06.15</p>
 							<p><strong>Released:</strong> June 15, 1997</p>
 							<p><strong>System Requirements:</strong> Windows 95 or NT 4.0, 16MB RAM, 10MB disk space</p>
@@ -775,168 +775,6 @@
 		</div>
 
 		<script>
-			const mailDatabase = {
-				"gregory.meyer@curvedmail.com": {
-					password: "greg",
-					emails: [
-						{
-							fromName: "Mark Simmons",
-							fromEmail: "mark.simmons@curvedmail.com",
-							subject: "Spring Sale | Up to 50% Off!",
-							content: "Hey Gregory,\n\nDon't miss out! Our spring sale is here: furniture, gardening tools, and outdoor essentials are now up to 50% off.\n\nOffer valid until April 2nd, 2005.\n\nCheers,\nMark from GardenTown",
-							timestamp: 1111536000, // 2005-03-23
-							images: [
-								{
-									name: "spring_sale.jpg",
-									url: "https://placehold.co/600x400",
-								},
-							],
-						},
-						{
-							fromName: "Local Police Department",
-							fromEmail: "alerts@greenhillpd.gov",
-							subject: "Public Safety Notice | Fungal Contamination Alert",
-							content:
-								"Dear Residents of East Greenhill,\n\nPlease be advised that an unusual fungal contamination has been detected in the northern woodland area near Lake Berrin. Residents are advised to avoid the area until further notice.\n\nSymptoms from exposure may include headaches, shortness of breath, and vivid hallucinations. Cleanup crews are being dispatched.\n\nStay indoors and report any unusual mold growth inside your home.\n\n- Greenhill Police Department\nMarch 23, 2005",
-							timestamp: 1111536000,
-							images: [
-								{
-									name: "police_alert.jpg",
-									url: "https://placehold.co/500x300",
-								},
-								{
-									name: "fungus_warning_map.jpg",
-									url: "https://placehold.co/600x400",
-								},
-							],
-						},
-						{
-							fromName: "Eleanor Meyer",
-							fromEmail: "eleanor.meyer@oldfriends.net",
-							subject: "Hey Greg, long time no see!",
-							content:
-								"Hey Greg!\n\nIt’s been forever since college. How’s life treating you out there? I heard you moved somewhere near the woods, sounds peaceful. We should catch up soon.\n\nAlso, have you noticed anything odd around your neighborhood lately? My cousin from Greenhill said people are getting sick from something in the air.\n\nTake care,\nEleanor",
-							timestamp: 1111881600,
-							images: [
-								{
-									name: "friends_photo.jpg",
-									url: "https://placehold.co/400x400",
-								},
-							],
-						},
-						{
-							fromName: "Greenhill Neighborhood Group",
-							fromEmail: "neighbors@greenhill.net",
-							subject: "Neighborhood Watch Meeting | Concerning Reports",
-							content:
-								"Dear Residents,\n\nWe’ll be holding a community meeting tonight at 8:00 PM at the town hall. Several households have reported a strange, sweet smell and unusual fungal growth on trees and walls.\n\nAttendance is encouraged. Masks will be provided.\n\nStay safe,\nGreenhill Neighborhood Watch Committee",
-							timestamp: 1112054400,
-							images: [
-								{
-									name: "town_hall_notice.jpg",
-									url: "https://placehold.co/600x350",
-								},
-							],
-						},
-						{
-							fromName: "MegaMart",
-							fromEmail: "offers@megamart.com",
-							subject: "Weekly Deals Just for You!",
-							content: "Hi Gregory,\n\nYour personalized offers are waiting: electronics, tools, and groceries discounted until Sunday!\n\n- MegaMart Online Team",
-							timestamp: 1112227200,
-							images: [
-								{
-									name: "weekly_offers.jpg",
-									url: "https://placehold.co/600x400",
-								},
-							],
-						},
-						{
-							fromName: "Officer Daniel Brooks",
-							fromEmail: "dbrooks@greenhillpd.gov",
-							subject: "RE: Follow-up on Incident Near Your Residence",
-							content:
-								"Mr. Meyer,\n\nThis is a follow-up regarding your report about the strange growth near your property. Please remain indoors if the odor intensifies. Our lab confirmed the fungus is similar to the one found by Project Unveil scientists.\n\nWe’ll send a team tomorrow morning.\n\nOfficer Brooks\nGreenhill Police Department",
-							timestamp: 1112390400,
-							images: [
-								{
-									name: "spore_sample.jpg",
-									url: "https://placehold.co/600x400",
-								},
-							],
-						},
-					],
-				},
-
-				"darren.hancock@curvedmail.com": {
-					password: "alleyes",
-					emails: [
-						{
-							fromName: "Dr. Lucinda Patel",
-							fromEmail: "lpatel@projectunveil.org",
-							subject: "Field Sample Collection Report #042",
-							content: "Darren,\n\nGood work on the first field sample. The fungus appears highly adaptive and emits spores that react to light frequencies between 530–550 nm. Keep the sample sealed.\n\nWe'll analyze further when you return to base.\n\n- Dr. Patel, Project Unveil",
-							timestamp: 1109721600, // March 2005 start
-							images: [
-								{
-									name: "fungus_sample.jpg",
-									url: "https://placehold.co/600x400",
-								},
-							],
-						},
-						{
-							fromName: "BioSecure Systems",
-							fromEmail: "safety@biosecurelabs.com",
-							subject: "URGENT: Quarantine Protocols Updated",
-							content:
-								"Attention all Project Unveil staff,\n\nThe containment unit Alpha-3 is under review after reports of structural compromise. Any personnel who handled specimens must undergo a 48-hour isolation period.\n\nFailure to comply may result in disciplinary measures.\n\n- BioSecure Systems Administration",
-							timestamp: 1110844800,
-							images: [
-								{
-									name: "lab_alert.jpg",
-									url: "https://placehold.co/500x300",
-								},
-								{
-									name: "biohazard_notice.jpg",
-									url: "https://placehold.co/600x350",
-								},
-							],
-						},
-						{
-							fromName: "Courier Express",
-							fromEmail: "tracking@courierexpress.net",
-							subject: "Shipment Confirmation #X29B77",
-							content: "Dear Darren Hancock,\n\nYour package (scientific equipment) has been shipped. Estimated delivery: March 25th.\n\nThank you for choosing Courier Express.",
-							timestamp: 1111363200,
-							images: [
-								{
-									name: "delivery.jpg",
-									url: "https://placehold.co/600x400",
-								},
-							],
-						},
-						{
-							fromName: "Dr. Darren Hancock",
-							fromEmail: "darren.hancock@CurvedMail.com",
-							subject: "To Whoever Finds This",
-							content:
-								"If you’re reading this… I wasn’t able to contain it.\n\nThe growth spread faster than expected. It breathes. It reacts when we speak near it.\n\nProject Unveil was never about curing, it was about control.\n\nDon't come here. Don't open the samples.\n\n- Darren Hancock\n(Project Unveil, Field Scientist)\n\nMarch 26, 2005",
-							timestamp: 1111795200,
-							images: [
-								{
-									name: "lab_photo.jpg",
-									url: "https://placehold.co/700x400",
-								},
-								{
-									name: "final_note.jpg",
-									url: "https://placehold.co/500x300",
-								},
-							],
-						},
-					],
-				},
-			};
-
 			let currentUserEmail = null;
 			let currentEmails = [];
 			let selectedEmailIndex = null;
@@ -1200,48 +1038,91 @@
 				glitchIntervals = [];
 			}
 
-			window.onload = function () {
-				const loggedInUser = localStorage.getItem("currentUser");
-				if (loggedInUser && mailDatabase[loggedInUser]) {
-					currentUserEmail = loggedInUser;
-					currentEmails = mailDatabase[loggedInUser].emails;
+			window.onload = async function () {
+				const storedUser = localStorage.getItem("username_b64");
+				const storedPass = localStorage.getItem("password_b64");
 
-					document.getElementById("loginWindow").style.display = "none";
-					document.getElementById("mailWindow").style.display = "block";
-					document.getElementById("currentUser").textContent = loggedInUser;
+				if (storedUser && storedPass) {
+					try {
+						const res = await fetch("/api/getEmails", {
+							method: "POST",
+							headers: { "Content-Type": "application/json" },
+							body: JSON.stringify({
+								username: storedUser,
+								password: storedPass,
+							}),
+						});
 
-					loadMailList();
+						if (!res.ok) throw new Error("Fetch failed");
+						const data = await res.json();
+
+						if (data.success && Array.isArray(data.emails)) {
+							currentUserEmail = atob(storedUser);
+							currentEmails = data.emails;
+
+							document.getElementById("loginWindow").style.display = "none";
+							document.getElementById("mailWindow").style.display = "block";
+							document.getElementById("currentUser").textContent = currentUserEmail;
+
+							loadMailList();
+						} else {
+							logout();
+						}
+					} catch (err) {
+						console.warn("Auto-login failed:", err);
+						logout();
+					}
 				}
 			};
 
-			function login() {
+			async function login() {
 				const username = document.getElementById("username").value?.toString().toLowerCase().trim() || "";
 				const password = document.getElementById("password").value?.toString() || "";
 				const errorMsg = document.getElementById("errorMsg");
 
-				if (mailDatabase[username] && mailDatabase[username].password === password) {
-					// Save the current user to localStorage
-					localStorage.setItem("currentUser", username);
+				try {
+					const encodedUsername = btoa(username);
+					const encodedPassword = btoa(password);
 
-					currentUserEmail = username;
-					currentEmails = mailDatabase[username].emails;
+					const res = await fetch("/api/getEmails", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({
+							username: encodedUsername,
+							password: encodedPassword,
+						}),
+					});
 
-					document.getElementById("loginWindow").style.display = "none";
-					document.getElementById("mailWindow").style.display = "block";
-					document.getElementById("currentUser").textContent = username;
+					if (!res.ok) throw new Error("Network or server error");
 
-					loadMailList();
-					errorMsg.style.display = "none";
-				} else {
+					const data = await res.json();
+
+					if (data.success && Array.isArray(data.emails)) {
+						localStorage.setItem("username_b64", encodedUsername);
+						localStorage.setItem("password_b64", encodedPassword);
+
+						currentUserEmail = username;
+						currentEmails = data.emails;
+
+						document.getElementById("loginWindow").style.display = "none";
+						document.getElementById("mailWindow").style.display = "block";
+						document.getElementById("currentUser").textContent = username;
+
+						loadMailList();
+						errorMsg.style.display = "none";
+					} else {
+						errorMsg.style.display = "block";
+					}
+				} catch (err) {
+					console.error(err);
 					errorMsg.style.display = "block";
 				}
 			}
 
 			function logout() {
-				// Remove the current user from localStorage
-				localStorage.removeItem("currentUser");
+				localStorage.removeItem("username_b64");
+				localStorage.removeItem("password_b64");
 
-				clearGlitchEffects();
 				currentUserEmail = null;
 				currentEmails = [];
 				selectedEmailIndex = null;
@@ -1251,6 +1132,8 @@
 				document.getElementById("username").value = "";
 				document.getElementById("password").value = "";
 				document.getElementById("errorMsg").style.display = "none";
+				document.getElementById("mailList").innerHTML = "";
+				document.getElementById("mailContent").innerHTML = "";
 			}
 
 			function loadMailList() {
