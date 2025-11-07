@@ -382,7 +382,6 @@
 				<a onclick="navigateTo('tech')">Technology</a>
 				<a onclick="navigateTo('sports')">Sports</a>
 				<a onclick="navigateTo('opinion')">Opinion</a>
-				<a onclick="navigateTo('archives')">Archives</a>
 			</nav>
 
 			<div class="content-wrapper">
@@ -544,14 +543,14 @@
 			</div>
 
 			<footer>
-				<div style="margin-bottom: 8px">© 1987-2014 The Universal Tribune | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a> | <a href="#">Contact Us</a></div>
+				<div style="margin-bottom: 8px">© 1987-2014 The Universal Tribune | <a href="#" onclick="navigateTo('Privacy')">Privacy Policy</a> | <a href="#" onclick="navigateTo('Terms')">Terms of Service</a> | <a href="#" onclick="navigateTo('Contact')">Contact Us</a></div>
 				<div style="font-size: 9px; color: #aaa">This archived edition is preserved for historical and educational purposes. Original publication ceased March 2014.</div>
 			</footer>
 		</div>
 
 		<script>
 			function navigateTo(section) {
-				alert(`Navigation to "${section}" section would occur here.\n\nThis is a preserved archive copy and links are not functional.`);
+				alert(`This is a preserved archive copy and links are not functional.`);
 			}
 		</script>
 	</body>

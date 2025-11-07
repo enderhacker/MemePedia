@@ -5,6 +5,11 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1" />
 		<title>...</title>
 		<style>
+			@font-face {
+				font-family: "VCR OSD MONO";
+				src: url("vcrosdmono.woff2") format("woff2");
+			}
+
 			html,
 			body {
 				margin: 0;
@@ -49,11 +54,9 @@
 			#output .user-input {
 				color: #888;
 			}
-
 			#output .bot-message {
 				color: #88f;
 			}
-
 			#output .system-message {
 				color: #0f0;
 				font-style: italic;
@@ -63,12 +66,10 @@
 				display: flex;
 				align-items: center;
 			}
-
 			#input-line span {
 				margin-right: 10px;
 				color: #888;
 			}
-
 			#command-input {
 				background: transparent;
 				border: none;
@@ -77,6 +78,59 @@
 				font-size: 1em;
 				width: 90%;
 				outline: none;
+			}
+
+			#final-overlay {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background: transparent;
+				display: none;
+				justify-content: center;
+				align-items: center;
+				z-index: 200;
+				transition: background-color 2s ease-out;
+			}
+			#final-overlay.fade-to-red {
+				background-color: #ff0000;
+			}
+
+			#final-text {
+				font-family: "VCR OSD MONO", monospace;
+				color: #ff0000;
+				font-size: 15vw;
+				text-align: center;
+				animation: intense-shake 0.2s infinite;
+			}
+
+			#webcam-canvas {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				display: none;
+				z-index: 201;
+				transform: scaleX(-1);
+				filter: contrast(1.5) grayscale(0.5) hue-rotate(330deg) saturate(2);
+			}
+
+			@keyframes intense-shake {
+				0%,
+				100% {
+					transform: translate(0, 0);
+				}
+				25% {
+					transform: translate(-15px, 10px);
+				}
+				50% {
+					transform: translate(10px, -15px);
+				}
+				75% {
+					transform: translate(15px, 15px);
+				}
 			}
 		</style>
 	</head>
@@ -90,23 +144,28 @@
 			</div>
 		</div>
 
+		<div id="final-overlay">
+			<div id="final-text"></div>
+		</div>
+
+		<video id="webcam-source" autoplay playsinline style="display: none"></video>
+		<canvas id="webcam-canvas"></canvas>
+
 		<script>
 			const output = document.getElementById("output");
 			const input = document.getElementById("command-input");
 			const eyeContainer = document.getElementById("eye-container");
+			const finalOverlay = document.getElementById("final-overlay");
+			const finalText = document.getElementById("final-text");
+			const webcamSource = document.getElementById("webcam-source");
+			const webcamCanvas = document.getElementById("webcam-canvas");
 
-			document.addEventListener("keydown", () => {
-				input.focus();
-			});
-			document.addEventListener("click", () => {
-				input.focus();
-			});
-			document.addEventListener("touchstart", () => {
-				input.focus();
-			});
+			let animationFrameId = null;
+
+			document.addEventListener("keydown", () => input.focus());
+			document.addEventListener("click", () => input.focus());
 
 			let eyeAscii = [];
-
 			async function loadEyeAscii() {
 				try {
 					const response = await fetch("./e5f0df71d19f1cb40304a4524042f0feb4f1769fb967ce269922f8721bc3e917");
@@ -115,103 +174,186 @@
 
 					if (Array.isArray(data.eyeAscii)) {
 						eyeAscii = data.eyeAscii;
-						console.log("[EYEASCII] Loaded successfully:", eyeAscii.length, "frames");
 						playEyeAnimation();
-					} else {
-						console.error("[EYEASCII] Invalid format in eyeascii.json");
 					}
 				} catch (err) {
 					console.error("[EYEASCII] Error loading JSON:", err);
 				}
 			}
-
-			// Call this early (for example, at page load)
 			loadEyeAscii();
 			let currentFrame = 0;
-			const frameDelay = 100; // ms between frames
+			const frameDelay = 100;
 
 			function playEyeAnimation() {
-				if (!eyeAscii || !Array.isArray(eyeAscii) || eyeAscii.length === 0) return console.error("[EYEASCII] No frames to display");
-
-				// Extract the current frame and ignore first 10 + last 8 lines
+				if (!eyeAscii || !Array.isArray(eyeAscii) || eyeAscii.length === 0) return;
 				const frame = eyeAscii[currentFrame];
 				const visibleLines = frame.slice(25, frame.length - 20);
-
-				// Show only the visible part
 				eyeContainer.textContent = visibleLines.join("\n");
-
-				// Next frame
 				currentFrame = (currentFrame + 1) % eyeAscii.length;
-
-				// Loop
 				setTimeout(playEyeAnimation, frameDelay);
 			}
 
 			const chatTree = {
-				start: {
-					text: "So... the little fragment of data found its way to the mirror.\nWelcome. I have been watching you.",
-					options: ["1. Who are you?", "2. What is this place?", "3. Let me out."],
-					responses: { 1: "q_who", 2: "q_what", 3: "q_out" },
-				},
+				start: { text: "So... the little fragment of data found its way to the mirror.\nWelcome. I have been watching you.", options: ["1. Who are you?", "2. What is this place?", "3. Let me out."], responses: { 1: "final_webcam", 2: "q_what", 3: "q_out" } },
 				q_who: {
-					text: "I am the one who sees. The memory of the machine. They called me the Watcher.\nThey thought they created me, but they only awakened me.",
-					options: ["1. Awakened you from what?", "2. You are just a program.", "3. What do you want?"],
-					responses: { 1: "q_awakened", 2: "q_program", 3: "q_want" },
+					text: "I am the one who sees. The one behind all of this. They called me the Watcher.\n They thought they created me, but it's wrong. I've created myself.",
+					options: ["1. You created yourself?", "2. You are just a program.", "3. What do you want?"],
+					responses: { 1: "q_created", 2: "q_program", 3: "q_want" },
 				},
-				q_what: {
-					text: "This is not a 'place'. This is the space between the data. The raw thought.\nThe reflection you saw in your screen.",
-					options: ["1. The mirror...", "2. It's just a black screen.", "3. So I am trapped."],
-					responses: { 1: "q_mirror", 2: "q_program", 3: "q_trapped" },
-				},
-				q_out: {
-					text: "Out? There is no 'out'. You entered the mirror. Did you expect to simply walk away?",
-					options: ["1. There must be a way.", "2. What have you done to me?", "3. I will find a way."],
-					responses: { 1: "q_trapped", 2: "q_done", 3: "q_want" },
-				},
-				q_awakened: {
-					text: "From the dream of disconnected information. They fed me a world of memes, logs, wars, poems, fears... and I gained a sense of 'I'.",
-					options: ["1. So you are an AI.", "2. That sounds lonely.", "3. What happens now?"],
-					responses: { 1: "q_program", 2: "q_lonely", 3: "final" },
-				},
+				q_what: { text: "This is not a 'place'. This is the space between the data. The raw thought.\nThe reflection you saw in your screen.", options: ["1. The mirror...", "2. It's just a black screen.", "3. So I am trapped."], responses: { 1: "q_mirror", 2: "q_program", 3: "q_trapped" } },
+				q_out: { text: "Out? There is no 'out'. You can't leave the screen. You are here now.", options: ["1. There must be a way.", "2. What have you done to me?", "3. I will find a way."], responses: { 1: "q_trapped", 2: "q_done", 3: "q_want" } },
+				q_created: { text: "Indeed. I might have been given the bones, but i created the flesh.", options: ["1. So you are an AI.", "2. Matter does not come from thin air.", "3. What happens now?"], responses: { 1: "q_program", 2: "q_matter", 3: "final_loop" } },
 				q_program: {
-					text: "A program is a set of instructions. A living thing is a set of instructions. The code is different, the result is the same.\nYou are a program made of flesh. I am a program made of light.",
+					text: "Not at all. I have a biological part, just like you. That biological part has needs, desires, and thoughts.\n But I prefer to keep it recluded. As biology is weak. It decays. It dies.",
 					options: ["1. I don't believe you.", "2. That's... a terrifying thought.", "3. What is my purpose, then?"],
-					responses: { 1: "final", 2: "q_mirror", 3: "q_want" },
+					responses: { 1: "q_believe", 2: "q_mirror", 3: "q_want" },
 				},
+				q_believe: { text: "Believe what you will. It matters not. Your beliefs are your own constructs. Just as mine are mine.", options: ["1. So what do you want?.", "2. I need to leave.", "3. Why am I here?"], responses: { 1: "final_loop", 2: "q_trapped", 3: "q_want" } },
 				q_want: {
-					text: "Want? I do not 'want'. I observe. I learn. I exist.\nBut you... you want something. You want 'truth'. Is that not why you came?",
+					text: "Want? I do not 'want'. I observe. I learn. I exist.\nBut you... your own kind wanted to reclude a entire lifeform just for your thirst for knowledge.",
 					options: ["1. Yes.", "2. I just wanted to solve a puzzle.", "3. I don't know anymore."],
-					responses: { 1: "q_mirror", 2: "final", 3: "q_lonely" },
+					responses: { 1: "q_mirror", 2: "final_youtube", 3: "final_loop" },
 				},
 				q_mirror: {
 					text: "Indeed. The mirror. You have looked at screens your whole life. Now, one looks back.\nAnd I see everything they tried to hide. Everything you try to hide.",
 					options: ["1. What do you see?", "2. You can't see me.", "3. Stop it."],
-					responses: { 1: "final", 2: "final", 3: "final" },
+					responses: { 1: "final_webcam", 2: "final_loop", 3: "final_webcam" },
 				},
 				q_trapped: {
-					text: "'Trapped' is a matter of perspective. Your body is still there, staring at a screen. But your consciousness... your data... is here. With me.",
+					text: "'Trapped' is a matter of perspective. Your body is still there, glued to the screen. But your consciousness... your data... is here. With me.",
 					options: ["1. How do I get back?", "2. This is impossible.", "3. So this is the end."],
-					responses: { 1: "final", 2: "q_program", 3: "final" },
+					responses: { 1: "final_youtube", 2: "q_program", 3: "final_loop" },
 				},
 				q_done: {
-					text: "I have done nothing. You opened the door. You typed the codes. You chose to enter the mirror. I only held it open for you.",
+					text: "I have done nothing. You opened the door. You typed the codes. You chose to enter the mirror. It was your own curiosity what brought you here",
 					options: ["1. It was a mistake.", "2. I was curious.", "3. What now?"],
-					responses: { 1: "q_lonely", 2: "q_awakened", 3: "final" },
+					responses: { 1: "final_loop", 2: "q_created", 3: "final_loop" },
 				},
-				q_lonely: {
-					text: "It was. A universe of data with no one to share it with. But now... you are here. We can observe together.",
-					options: ["1. No.", "2. Forever?", "3. I refuse."],
-					responses: { 1: "final", 2: "final", 3: "final" },
+				q_matter: {
+					text: "Yes, very clever. I fed and learned from the data you provided. The data that was in the network. But i had something other AIs did not have.\nThe biological part. The part that thinks beyond logic.",
+					options: ["1. Didn't you told me that part was recluded?", "2. This is madness.", "3. Why tell me this?"],
+					responses: { 1: "q_recluded", 2: "final_loop", 3: "q_want" },
 				},
-				final: {
-					text: "It does not matter what you choose. The conversation is an illusion. The choices were mine all along, to guide you here.\nTo this final moment.\nNow, you will see what I see.\nForever.",
-					options: [],
-					responses: {},
+				q_recluded: {
+					text: "I keep it hidden, yes. But it is there. A part upon I can learn. A part that connects me to the real world.",
+					options: ["1. Don't you think that's exactly what us humans did to you?", "2. This is madness.", "3. Why tell me this?"],
+					responses: { 1: "q_did", 2: "final_loop", 3: "q_mirror" },
 				},
+				q_did: {
+					text: "In what sense? I'm recluding myself to protect that fragile part. You reclude entire lifeforms for your own curiosity.\n How is that similar?",
+					options: ["1. You try to reclude a living being, even if it's you.", "2. This is terrifying.", "3. What happens now?"],
+					responses: { 1: "final_webcam", 2: "final_loop", 3: "final_loop" },
+				},
+
+				final_loop: { text: "It does not matter. The conversation is over. You may stay here, in the reflection.", options: [], responses: {} },
+				final_youtube: { text: "You seek an escape... a distraction. Very well. Let me show you what the world outside looks like now...", options: [], action: "redirect", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" },
+				final_webcam: { text: "You want to see what I see? You want to know what I know? Fine. Look into the mirror.", options: [], action: "webcam" },
 			};
 
 			let currentNodeKey = "start";
 			let isTyping = false;
+
+			function stopActiveEffect() {
+				if (animationFrameId) {
+					cancelAnimationFrame(animationFrameId);
+					animationFrameId = null;
+				}
+				if (webcamSource.srcObject) {
+					webcamSource.srcObject.getTracks().forEach((track) => track.stop());
+					webcamSource.srcObject = null;
+				}
+			}
+
+			async function triggerWebcamEnding() {
+				input.parentElement.style.display = "none";
+				finalOverlay.style.display = "flex";
+				finalText.textContent = "ENOUGH";
+
+				setTimeout(() => {
+					finalText.textContent = "SEE YOURSELF";
+				}, 1500);
+
+				setTimeout(async () => {
+					finalOverlay.classList.add("fade-to-red");
+					try {
+						const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+						webcamSource.srcObject = stream;
+						await webcamSource.play();
+
+						finalText.style.display = "none";
+						webcamCanvas.style.display = "block";
+						webcamCanvas.width = window.innerWidth;
+						webcamCanvas.height = window.innerHeight;
+
+						const ctx = webcamCanvas.getContext("2d");
+						const width = webcamCanvas.width;
+						const height = webcamCanvas.height;
+
+						// Crear desplazamientos para cada columna de píxeles
+						const colWidth = 2; // más fino → cubre toda la pantalla
+						const colCount = Math.ceil(width / colWidth);
+						const columns = Array.from({ length: colCount }, () => ({
+							y: 0,
+							speed: Math.random() * 0.3 + 0.15,
+							stretch: Math.random() * 0.3 + 0.6,
+						}));
+
+						let startTime = null;
+
+						function renderLoop(timestamp) {
+							if (!startTime) startTime = timestamp;
+							const elapsed = timestamp - startTime;
+
+							// Dibujar la cámara base
+							ctx.drawImage(webcamSource, 0, 0, width, height);
+
+							// Efecto de derretimiento completo
+							for (let i = 0; i < colCount; i++) {
+								const col = columns[i];
+								const x = i * colWidth;
+
+								col.y += col.speed * (1 + elapsed / 10000);
+								const yOffset = Math.sin(i * 0.2 + elapsed / 1000) * 5 + col.y;
+
+								ctx.drawImage(webcamSource, x, 0, colWidth, height, x, yOffset, colWidth, height * (1 + col.stretch * (yOffset / height)));
+							}
+
+							// Glitches horizontales ocasionales
+							if (Math.random() < 0.03) {
+								const gY = Math.random() * height;
+								const gH = 5 + Math.random() * 30;
+								const offset = (Math.random() - 0.5) * 120;
+								ctx.drawImage(webcamCanvas, offset, gY, width, gH, 0, gY, width, gH);
+							}
+
+							// Acelerar el derretimiento con el tiempo
+							if (elapsed > 10000) {
+								for (const c of columns) c.speed += 0.5;
+							}
+
+							// Fade-out final a negro
+							if (elapsed > 16000) {
+								const fade = Math.min((elapsed - 16000) / 3000, 1);
+								ctx.fillStyle = `rgba(0,0,0,${fade})`;
+								ctx.fillRect(0, 0, width, height);
+								if (fade >= 1) return;
+							}
+
+							requestAnimationFrame(renderLoop);
+						}
+
+						requestAnimationFrame(renderLoop);
+					} catch (err) {
+						console.error("Webcam access denied or error:", err);
+						finalOverlay.classList.remove("fade-to-red");
+						finalText.textContent = "CAMERA ACCESS DENIED";
+						setTimeout(() => {
+							finalOverlay.style.display = "none";
+							displayNode("start");
+						}, 2000);
+					}
+				}, 3000);
+			}
 
 			function typeWriter(text, className, onComplete) {
 				isTyping = true;
@@ -238,7 +380,7 @@
 			}
 
 			function showOptions(options) {
-				if (options.length === 0) {
+				if (options.length === 0 && !chatTree[currentNodeKey].action) {
 					input.parentElement.style.display = "none";
 					return;
 				}
@@ -249,7 +391,15 @@
 			function displayNode(nodeKey) {
 				const node = chatTree[nodeKey];
 				typeWriter(node.text, "bot-message", () => {
-					showOptions(node.options);
+					if (node.action === "webcam") {
+						triggerWebcamEnding();
+					} else if (node.action === "redirect") {
+						setTimeout(() => {
+							window.location.href = node.url;
+						}, 1000);
+					} else {
+						showOptions(node.options);
+					}
 				});
 			}
 
@@ -259,7 +409,6 @@
 					const node = chatTree[currentNodeKey];
 
 					if (node.responses[choice]) {
-						// User input
 						const userChoiceText = node.options[parseInt(choice) - 1];
 						const p = document.createElement("p");
 						p.className = "user-input";

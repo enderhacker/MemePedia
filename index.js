@@ -167,10 +167,11 @@ publishFile("/2a17b51cb39a0c6c67c0eec8a4c511c2cbe4159cb2b83c973b3d1aeb6a14586a",
 publishFile("/e7421d2c7b4d2a8a4236c7b2c3f1a8b6d2c937e14efad237b0de5a6fa7a9d5cb", "./images/ThatsRacist.jpg");
 publishFile("/a5f3b9b2c85a8c5baf95f7c83c6a429f2b9e7a3df7d12b8e4325bfb9b47ed820", "./images/UnderConstruction.png");
 publishFile("/3e4a0bdf58f4a7a99f3c2b14cb987e6cdd46a3d8bf64b1b6b3a92a0dfb7814b6", "./images/UnveilLogoName.png");
+publishFile("/9089f976186daa17b7e9bb4b3c0ddcaa1882c93bbde3013456043e505b624c67", "./images/Pr0yectUnv3ilLogo.png");
 
-// 9089f976186daa17b7e9bb4b3c0ddcaa1882c93bbde3013456043e505b624c67
-// e4fc780f974374a885e0246a100a3405285edf85e9e97e27583702fe0afff0df
-// ded2d40110abb9075e42bb31f69a6799bf25e515a8403549d4a8f0706877da9e
+publishFile("/e4fc780f974374a885e0246a100a3405285edf85e9e97e27583702fe0afff0df", "./sounds/Success.png");
+publishFile("/ded2d40110abb9075e42bb31f69a6799bf25e515a8403549d4a8f0706877da9e", "./sounds/Blurred.mp3");
+
 // c3d794cff5e81c280aee4fd3f0968bf84164742833ad463b18e5144d1306bed5
 // 9ba828a78ae3d0111e6ac0e3d1aa4e151b87312448cb58fa5af94072bfa97221
 // 2d7b42abeaff03d4fae6f720d3dd4b82cd2ebacdb0d3aa7115e3f69140ed27ca

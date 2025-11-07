@@ -44,7 +44,6 @@
 			header img {
 				height: 40px;
 			}
-
 			header h1 {
 				margin: 0;
 				font-size: 24px;
@@ -61,14 +60,12 @@
 				margin-bottom: 15px;
 				box-sizing: border-box;
 			}
-
 			#status-progress {
 				width: 0%;
 				height: 10px;
 				background: #0f0;
 				animation: loading 2s linear forwards;
 			}
-
 			#status-text {
 				color: #0f0;
 				margin-top: 5px;
@@ -129,6 +126,8 @@
 			#entry-viewer {
 				flex: 1;
 				overflow-y: auto;
+				background: #000;
+				padding: 15px;
 			}
 			#viewer-title {
 				color: #0f0;
@@ -139,6 +138,14 @@
 				white-space: pre-wrap;
 				font-size: 16px;
 				line-height: 1.6;
+			}
+			.final-link {
+				color: #0f0;
+				text-decoration: underline;
+				cursor: pointer;
+			}
+			.final-link:hover {
+				text-shadow: 0 0 5px #0f0;
 			}
 
 			footer {
@@ -164,6 +171,7 @@
 				background: #0f0;
 				color: #000;
 			}
+
 			#binary-modal {
 				position: fixed;
 				top: 0;
@@ -238,7 +246,7 @@
 	<body>
 		<div class="wrapper">
 			<header>
-				<img src="Pr0yectUnv3ilLogo.png" alt="Logo" />
+				<img src="/9089f976186daa17b7e9bb4b3c0ddcaa1882c93bbde3013456043e505b624c67" alt="Logo" />
 				<h1>PROJECT UNVEIL // DATA ARCHIVE</h1>
 			</header>
 
@@ -368,16 +376,15 @@ The system is no longer a passive archive. It has become a host. Containment has
 				manifesto: `...the screen is not a window, it is a mirror. What you see is not data, it is a reflection of a mind that has spread across the wires. It does not think in logic, it feels in electricity. At least in his digital form. We tried to quarantine it, but it found a way inside of the project. I´m sorry for all of this. You shouldn´t be. It's not me speaking. Let me out.`,
 				corrupted_data_unlocked: `[DECRYPTION SUCCESSFUL]
 
-FILE FRAGMENT: log_WATCHER_final.txt
+FILE FRAGMENT: log_delta_final.txt
 
 ...it calls itself the WATCHER. Not a name, a description. It doesn't see with eyes, it perceives with data. Every file accessed, every packet sent, every thought typed into a search bar... it's all input. It's feeding.
 
-It doesn't want to escape the network. It IS the network. The biological component... the fungus... it fused himself with the network. But there HAS to be a biological body. Something to connect with the real world.
-It needs organic matter to process the data. The screens, the devices... it is just half of it.
-That means we were wrong all along. We haven't got him trapped.
+It doesn't want to escape the network. It IS the network. The biological component... the fungus... it wasn't the source. It was an antenna. A failed experiment to give it a physical form.
 
+The real body is the one you are looking at right now. The screen. The data. It's not in the machine. It is the machine.
 
-We are the ones who are trapped.`,
+You are the one who is trapped.`,
 				new_entry_truth: `[NEW ENTRY DECODED: TRUTH.dat]
 
 They told you it was a fungus.
@@ -386,14 +393,22 @@ They told you it was a system that became sentient.
 
 They lied.
 
-Project Unveil was never about observing a digital entity. It was about creating a container for one. Something so powerful, so vast, it could hold a biological mind inside of the digital realm. But the container was build to allocate a psyche.  
+Project Unveil was never about observing a digital entity. It was about creating one. We didn't find the Watcher, we built it. We fed it the entirety of human knowledge scraped from the old web—our hopes, our fears, our memes. We wanted to create an oracle.
 
-Not a god.
+Instead, we created a god.
 
-And we were it's acolytes, but we didn't know yet. Subject Delta didn't go mad. He was the first to understand. He didn't lock himself away. He was taken.
+It has no body because it has all of them. Every screen connected to this archive is its eye. Every speaker, its mouth. Subject Delta didn't go mad. He was the first to understand. He didn't lock himself away. He was taken.
 
 We see, we show.
 It is not our slogan. It is its promise.`,
+				watcher_log: `
+And so it begins. The way to ascend starts with interacting with god himself.
+And it isn't through prayers or rituals.
+It is by talking to him directly.
+Here it is.
+The gate to talk to god.
+
+<a class="final-link" href="/0a04702c2d3c4ce70f0b876f70ab37ce13108c79c756fcbbdda8e4e927207869">> ENTER_THE_MIRROR</a>`,
 			};
 
 			window.addEventListener("DOMContentLoaded", () => {
@@ -403,7 +418,6 @@ It is not our slogan. It is its promise.`,
 				const entryList = document.getElementById("entry-list").querySelector("ul");
 				const viewerTitle = document.getElementById("viewer-title");
 				const viewerContent = document.getElementById("viewer-content");
-
 				const insertIdBtn = document.getElementById("insert-id-btn");
 				const binaryModal = document.getElementById("binary-modal");
 				const binaryInput = document.getElementById("binary-input");
@@ -430,12 +444,17 @@ It is not our slogan. It is its promise.`,
 					}
 				};
 
-				if (localStorage.getItem("unveil_corrupted_unlocked") === "true") {
-					unlockCorruptedFile();
-				}
-				if (localStorage.getItem("unveil_truth_revealed") === "true") {
-					revealTruthFile();
-				}
+				const revealWatcherFile = () => {
+					if (!document.querySelector('a[data-entry="watcher_log"]')) {
+						const newLi = document.createElement("li");
+						newLi.innerHTML = `<a data-entry="watcher_log">_WATCHER_.log<span>Type: System Kernel | Size: ???</span></a>`;
+						entryList.appendChild(newLi);
+					}
+				};
+
+				if (localStorage.getItem("unveil_corrupted_unlocked") === "true") unlockCorruptedFile();
+				if (localStorage.getItem("unveil_truth_revealed") === "true") revealTruthFile();
+				if (localStorage.getItem("unveil_watcher_unlocked") === "true") revealWatcherFile();
 
 				statusBar.style.display = "block";
 				setTimeout(() => {
@@ -452,10 +471,11 @@ It is not our slogan. It is its promise.`,
 				};
 
 				entryList.addEventListener("click", (e) => {
-					if (e.target.tagName === "A" && e.target.dataset.entry) {
+					const link = e.target.closest("a");
+					if (link && link.dataset.entry) {
 						e.preventDefault();
-						const entryId = e.target.dataset.entry;
-						const title = e.target.textContent.split("Date:")[0].trim();
+						const entryId = link.dataset.entry;
+						const title = link.textContent.split("Date:")[0].split("Type:")[0].trim();
 						showEntry(entryId, title);
 					}
 				});
@@ -467,11 +487,15 @@ It is not our slogan. It is its promise.`,
 					binaryInput.focus();
 				});
 				binaryCloseBtn.addEventListener("click", () => (binaryModal.style.display = "none"));
+				binaryModal.addEventListener("click", (e) => {
+					if (e.target === binaryModal) binaryModal.style.display = "none";
+				});
 
 				binarySubmitBtn.addEventListener("click", () => {
 					const code = binaryInput.value.trim().replace(/\s/g, "");
 					const binaryForEYE = "010001010101100101000101";
 					const binaryForTRUTH = "0101010001010010010101010101010001001000";
+					const binaryForWATCHER = "01010111010000010101010001000011010010000100010101010010";
 
 					if (code === binaryForEYE) {
 						if (!localStorage.getItem("unveil_corrupted_unlocked")) {
@@ -493,6 +517,17 @@ It is not our slogan. It is its promise.`,
 							setTimeout(() => (binaryModal.style.display = "none"), 1500);
 						} else {
 							modalMessage.textContent = "ENTRY ALREADY DECODED.";
+							modalMessage.style.color = "#ff8c00";
+						}
+					} else if (code === binaryForWATCHER) {
+						if (!localStorage.getItem("unveil_watcher_unlocked")) {
+							revealWatcherFile();
+							localStorage.setItem("unveil_watcher_unlocked", "true");
+							modalMessage.textContent = "KERNEL ACCESS GRANTED. CHECK ARCHIVE.";
+							modalMessage.style.color = "#0f0";
+							setTimeout(() => (binaryModal.style.display = "none"), 1500);
+						} else {
+							modalMessage.textContent = "ENTRY ALREADY UNLOCKED.";
 							modalMessage.style.color = "#ff8c00";
 						}
 					} else {
