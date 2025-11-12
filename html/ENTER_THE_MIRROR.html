@@ -64,6 +64,7 @@
 			position: sticky;
 			bottom: 0;
 			padding-top: 10px;
+			background: rgba(0,0,0,0.6);
 		}
 		#input-line span {
 			color: #888;
@@ -90,9 +91,6 @@
 			z-index: 200;
 			transition: background-color 2s ease-out, opacity 0.8s ease-out;
 		}
-		#final-overlay.visible {
-			display: flex;
-		}
 		#final-overlay.fade-to-red {
 			background-color: #900; /* deep red backdrop */
 		}
@@ -106,6 +104,7 @@
 			animation: intense-shake 0.18s infinite;
 			will-change: transform;
 			user-select: none;
+			visibility: visible;
 		}
 
 		@keyframes intense-shake {
@@ -192,19 +191,28 @@ const refocus = () => input && input.focus();
 document.addEventListener("keydown", refocus);
 document.addEventListener("click", refocus);
 
+/* Debug hotkey to force enough ending while testing */
+document.addEventListener("keydown", (e) => {
+	if (!isFinalScene && e.key.toLowerCase() === 'e') {
+		triggerEnoughEnding();
+	}
+});
+
 /* ---------- EYE ANIMATION ---------- */
 let eyeAscii = [];
-let currentFrame = 0;
+let currentFrame = 0, eyeRunning = false;
 const frameDelay = 100;
 
 async function loadEyeAscii() {
 	try {
-		const response = await fetch("./e5f0df71d19f1cb40304a4524042f0feb4f1769fb967ce269922f8721bc3e917", { cache: "no-store" });
+		// ABSOLUTE PATH so it works from hashed routes
+		const response = await fetch("/e5f0df71d19f1cb40304a4524042f0feb4f1769fb967ce269922f8721bc3e917", { cache: "no-store" });
 		if (!response.ok) throw new Error(`Failed to load eye ascii JSON: ${response.status}`);
 		const data = await response.json();
 		if (Array.isArray(data.eyeAscii)) {
 			eyeAscii = data.eyeAscii;
-			playEyeAnimation();
+			eyeRunning = true;
+			requestAnimationFrame(playEyeAnimation);
 		}
 	} catch (err) {
 		console.error("[EYEASCII] Error loading JSON:", err);
@@ -212,9 +220,8 @@ async function loadEyeAscii() {
 }
 
 function playEyeAnimation() {
-	if (!eyeAscii.length) return;
+	if (!eyeAscii.length || !eyeRunning) return;
 	const frame = eyeAscii[currentFrame];
-	// Guard: ensure frame is an array of lines
 	if (Array.isArray(frame)) {
 		const start = Math.min(25, Math.max(0, Math.floor(frame.length * 0.3)));
 		const end = Math.max(start + 1, frame.length - 20);
@@ -237,6 +244,11 @@ function typeWriter(text, className, onComplete) {
 
 	let i = 0;
 	function step() {
+		// If an ending was triggered, stop typing immediately
+		if (isFinalScene) {
+			isTyping = false;
+			return;
+		}
 		if (i < text.length) {
 			p.textContent += text.charAt(i++);
 			terminal.scrollTop = terminal.scrollHeight;
@@ -260,17 +272,24 @@ function showOptions(options) {
 
 /* ---------- ENDINGS ---------- */
 async function triggerEnoughEnding() {
-	// Robust visibility and sequencing so it always shows.
+	// Stop ongoing loops/inputs
 	isFinalScene = true;
+	eyeRunning = false;
+	isTyping = false;
 
-	// Hide input line so nothing steals focus or overlaps.
+	// Hide input
 	const inputLine = document.getElementById("input-line");
 	if (inputLine) inputLine.style.display = "none";
 
-	// Show overlay first (immediately visible)
-	finalOverlay.classList.add("visible");
+	// Show overlay immediately (not only via classes)
+	finalOverlay.style.display = "flex";
+	finalOverlay.style.opacity = "1";
+	finalOverlay.style.backgroundColor = "rgba(0,0,0,0)";
 	finalOverlay.setAttribute("aria-hidden", "false");
+	finalText.style.visibility = "visible";
 	finalText.textContent = ""; // reset
+	// Force reflow so transitions apply reliably
+	void finalOverlay.offsetHeight;
 
 	// Dramatic beats
 	const messages = ["ENOUGH", "I DON'T WANT YOU HERE", "GET OUT"];
@@ -279,25 +298,27 @@ async function triggerEnoughEnding() {
 		await new Promise(res => setTimeout(res, 1400));
 	}
 
-	// Fade the background to red, let it sit a beat, then redirect.
+	// Fade and redirect
 	finalOverlay.classList.add("fade-to-red");
 	await new Promise(res => setTimeout(res, 1400));
-
-	// Optional: fade out text slightly before redirect for smoother feel
 	finalOverlay.style.opacity = "0.98";
 	await new Promise(res => setTimeout(res, 600));
 
-	// Ensure the player actually saw the ending before navigating.
 	location.replace("/");
 }
 
 function triggerFinalEnding() {
 	isFinalScene = true;
+	eyeRunning = false;
+
 	const inputLine = document.getElementById("input-line");
 	if (inputLine) inputLine.style.display = "none";
 
-	finalOverlay.classList.add("visible", "fade-to-red");
+	finalOverlay.style.display = "flex";
+	finalOverlay.style.opacity = "1";
 	finalOverlay.setAttribute("aria-hidden", "false");
+	void finalOverlay.offsetHeight;
+	finalOverlay.classList.add("fade-to-red");
 	finalText.textContent = "A new life begins...";
 }
 
@@ -309,12 +330,9 @@ function displayNode(nodeKey) {
 	if (node.isFinal) isFinalScene = true;
 
 	typeWriter(node.text, "bot-message", () => {
-		// Action handling happens *after* the text fully types,
-		// so endings are guaranteed to display.
 		if (node.action === "enough") {
 			triggerEnoughEnding();
 		} else if (node.action === "redirect") {
-			// Give a tiny breather so the last line is readable
 			setTimeout(() => { window.location.href = node.url; }, 1000);
 		} else if (node.action === "final") {
 			triggerFinalEnding();
@@ -352,7 +370,6 @@ input.addEventListener("keydown", (e) => {
 		displayNode(currentNodeKey);
 	} else {
 		typeWriter("Invalid choice. Please enter one of the numbered options shown above.", "system-message", () => {
-			// Re-show options if present to help recovery
 			showOptions(node.options || []);
 		});
 	}
