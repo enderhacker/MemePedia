@@ -49,9 +49,11 @@ app.get("/", async (req, res) => {
 });
 
 // --- Serve fonts ---
+const fontsPath = path.join(__dirname, 'fonts');
+console.log('Serving fonts from:', fontsPath);
 app.use(
-  '/', // serve at root
-  express.static(path.join(process.cwd(), 'fonts'), {
+  '/',
+  express.static(fontsPath, {
     setHeaders(res, filePath) {
       if (filePath.endsWith('.woff2')) res.set('Content-Type', 'font/woff2');
       else if (filePath.endsWith('.woff')) res.set('Content-Type', 'font/woff');
@@ -61,6 +63,7 @@ app.use(
     }
   })
 );
+
 
 // --- Publish all ads with hashed filenames ---
 const adsDir = path.resolve("./ads");
