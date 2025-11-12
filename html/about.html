@@ -231,10 +231,11 @@
 						for (const { id } of Object.values(members)) {
 							const img = document.getElementById(id);
 							if (!img) continue;
-
-							img.addEventListener("click", () => {
+						
+							// Use "pointerup" instead of "click" for more permissive behavior
+							img.addEventListener("pointerup", () => {
 								clicked.add(id);
-
+						
 								if (clicked.size === Object.keys(members).length) {
 									if (stage === 0) {
 										switchImages();
@@ -250,6 +251,7 @@
 								}
 							});
 						}
+
 
 						function switchImages() {
 							for (const { id, alt } of Object.values(members)) {
