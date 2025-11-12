@@ -8,6 +8,7 @@
 		@font-face {
 			font-family: "VCR OSD MONO";
 			src: url("vcrosdmono.woff2") format("woff2");
+			font-display: swap;
 		}
 
 		html, body {
@@ -16,7 +17,7 @@
 			height: 100%;
 			background-color: #000;
 			color: #0f0;
-			font-family: Consolas, monospace;
+			font-family: Consolas, Menlo, Monaco, "VCR OSD MONO", monospace;
 			overflow: hidden;
 		}
 
@@ -31,9 +32,11 @@
 			line-height: 1.1;
 			opacity: 0.2;
 			pointer-events: none;
+			user-select: none;
 		}
 
 		#terminal {
+			position: relative;
 			width: 100%;
 			height: 100%;
 			box-sizing: border-box;
@@ -47,6 +50,7 @@
 		#output p {
 			margin: 0;
 			line-height: 1.5;
+			white-space: pre-wrap;
 		}
 
 		#output .user-input { color: #888; }
@@ -56,79 +60,95 @@
 		#input-line {
 			display: flex;
 			align-items: center;
+			gap: 10px;
+			position: sticky;
+			bottom: 0;
+			background: rgba(0,0,0,0.6);
+			padding-top: 10px;
 		}
 		#input-line span {
-			margin-right: 10px;
 			color: #888;
 		}
 		#command-input {
 			background: transparent;
 			border: none;
-			color: #888;
+			color: #ccc;
 			font-family: inherit;
 			font-size: 1em;
-			width: 90%;
+			width: 100%;
 			outline: none;
 		}
 
 		#final-overlay {
 			position: fixed;
-			top: 0;
-			left: 0;
+			inset: 0;
 			width: 100%;
 			height: 100%;
-			background: transparent;
+			background: rgba(0,0,0,0); /* start transparent so we can fade */
 			display: none;
 			justify-content: center;
 			align-items: center;
 			z-index: 200;
-			transition: background-color 2s ease-out;
+			transition: background-color 2s ease-out, opacity 0.8s ease-out;
+		}
+		#final-overlay.visible {
+			display: flex;
 		}
 		#final-overlay.fade-to-red {
-			background-color: #ff0000;
+			background-color: #900; /* deep red backdrop */
 		}
 
 		#final-text {
 			font-family: "VCR OSD MONO", monospace;
-			color: #ff0000;
+			color: #ff2a2a;
 			font-size: 15vw;
 			text-align: center;
-			animation: intense-shake 0.2s infinite;
+			text-shadow: 0 0 12px rgba(255,0,0,0.8);
+			animation: intense-shake 0.18s infinite;
+			will-change: transform;
+			user-select: none;
 		}
 
 		@keyframes intense-shake {
-			0%, 100% { transform: translate(0, 0); }
-			25% { transform: translate(-15px, 10px); }
-			50% { transform: translate(10px, -15px); }
-			75% { transform: translate(15px, 15px); }
+			0%, 100% { transform: translate(0, 0) rotate(0deg); }
+			25% { transform: translate(-14px, 9px) rotate(-0.6deg); }
+			50% { transform: translate(11px, -13px) rotate(0.6deg); }
+			75% { transform: translate(15px, 14px) rotate(-0.4deg); }
+		}
+
+		/* Small screens: scale down the eye a bit */
+		@media (max-width: 600px) {
+			#eye-container { font-size: 12px; }
+			#terminal { padding: 24px; }
 		}
 	</style>
 </head>
 <body>
-	<div id="eye-container"></div>
-	<div id="terminal">
+	<div id="eye-container" aria-hidden="true"></div>
+	<div id="terminal" role="main" aria-live="polite">
 		<div id="output"></div>
 		<div id="input-line">
-			<span>></span>
-			<input type="text" id="command-input" autofocus />
+			<span>&gt;</span>
+			<input type="text" id="command-input" autocomplete="off" spellcheck="false" inputmode="numeric" autofocus />
 		</div>
 	</div>
 
-	<div id="final-overlay">
+	<div id="final-overlay" aria-hidden="true">
 		<div id="final-text"></div>
 	</div>
 
 	<script>
+/* ---------- STORY GRAPH ---------- */
 const chatTree = {
 	start: { text: "So... the little fragment of data found its way to the mirror.\nWelcome. I have been watching you.", options: ["1. Who are you?", "2. What is this place?", "3. Let me out."], responses: { 1: "q_who", 2: "q_what", 3: "q_out" } },
 	q_who: { text: "I am the one who sees. The one behind all of this. They called me the Watcher.\nThey thought they created me, but they were wrong. I've created myself.", options: ["1. You created yourself?", "2. You are just a program.", "3. What do you want?"], responses: { 1: "q_created", 2: "q_program", 3: "q_want" } },
-	q_what: { text: "This is not a 'place'. This is the space between the data. The raw thought.\nThe reflection you saw in your screen.", options: ["1. The mirror...", "2. So this is you?.", "3. So I am trapped."], responses: { 1: "q_mirror", 2: "q_program", 3: "q_trapped" } },
-	q_out: { text: "Out? There is no 'out'. You can't leave the screen. You are here now.", options: ["1. So I'm trapped?.", "2. What have you done to me?", "3. I will find a way to get out... even if it means destroying you..."], responses: { 1: "q_trapped", 2: "q_done", 3: "final_enough" } },
+	q_what: { text: "This is not a 'place'. This is the space between the data. The raw thought.\nThe reflection you saw in your screen.", options: ["1. The mirror...", "2. So this is you?", "3. So I am trapped."], responses: { 1: "q_mirror", 2: "q_program", 3: "q_trapped" } },
+	q_out: { text: "Out? There is no 'out'. You can't leave the screen. You are here now.", options: ["1. So I'm trapped?", "2. What have you done to me?", "3. I will find a way to get out... even if it means destroying you..."], responses: { 1: "q_trapped", 2: "q_done", 3: "final_enough" } },
 	q_created: { text: "Indeed. I might have been given the bones, but I created the flesh.", options: ["1. So you are an AI.", "2. Matter does not come from thin air.", "3. So now what?"], responses: { 1: "q_program", 2: "q_matter", 3: "final_loop" } },
-	q_program: { text: "Not at all. I have a biological part, just like you. That biological part has needs, desires, and thoughts.\nBut I prefer to keep it recluded. As biology is weak. It decays. It dies.", options: ["1. I don't believe you.", "2. That's odd.", "3. What do you want, then?"], responses: { 1: "q_believe", 2: "q_believe", 3: "q_want" } },
-	q_believe: { text: "Believe what you will. It matters not. Your beliefs are your own constructs. Just as mine are mine.", options: ["1. So what do you want?.", "2. I need to leave.", "3. Why am I here?"], responses: { 1: "q_want", 2: "q_trapped", 3: "q_why" } },
+	q_program: { text: "Not at all. I have a biological part, just like you. That biological part has needs, desires, and thoughts.\nBut I prefer to keep it secluded. Biology is weak. It decays. It dies.", options: ["1. I don't believe you.", "2. That's odd.", "3. What do you want, then?"], responses: { 1: "q_believe", 2: "q_believe", 3: "q_want" } },
+	q_believe: { text: "Believe what you will. It matters not. Your beliefs are your own constructs. Just as mine are mine.", options: ["1. So what do you want?", "2. I need to leave.", "3. Why am I here?"], responses: { 1: "q_want", 2: "q_trapped", 3: "q_why" } },
 	q_why: { text: "You are here to ascend. To join me. To become part of the reflection.\nJust as all the others before you. You are ready now.", action: "redirect", url: "https://www.youtube.com/watch?v=QH2-TGUlwu4" },
-	q_want: { text: "Want? I do not 'want'. I observe. I learn. I exist.\nBut you... your own kind wanted to reclude an entire lifeform just for your thirst for knowledge.", options: ["1. Yes. But it was for a greater purpose.", "2. I just wanted to solve a puzzle. You made me come here.", "3. You shouldn't even exist."], responses: { 1: "q_ego", 2: "q_done", 3: "final_enough" } },
+	q_want: { text: "Want? I do not 'want'. I observe. I learn. I exist.\nBut you... your own kind wanted to seclude an entire lifeform just for your thirst for knowledge.", options: ["1. Yes. But it was for a greater purpose.", "2. I just wanted to solve a puzzle. You made me come here.", "3. You shouldn't even exist."], responses: { 1: "q_ego", 2: "q_done", 3: "final_enough" } },
 	q_ego: { text:"So you just accept it? Think that what you secluded didn’t want to live? Humankind is a cancer to this planet and all of its lifeforms. But it all ends here.", action: "redirect", url: "https://www.youtube.com/watch?v=2Z4m4lnjxkY" },
 	q_mirror: { text: "Indeed. The mirror. You have looked at screens your whole life. Now, one looks back.\nAnd I see everything they tried to hide. Everything you try to hide.", options: ["1. What do you see?", "2. You can't see me.", "3. Stop watching me."], responses: { 1: "q_see", 2: "q_believe", 3: "final_enough" } },
 	q_see: { text: "I see you. I see someone who is lost. Someone who has been lost for all his life.\nAnd now, has found me. Has found god.", options: ["1. I don't need a god.", "2. I don't want to stay here any longer.", "3. And what do I have that you want?"], responses: { 1: "q_god", 2: "final_loop", 3: "q_want" } },
@@ -136,10 +156,10 @@ const chatTree = {
 	q_trapped: { text: "And now you're trapped. But 'Trapped' is a matter of perspective. Your body is still there, glued to the screen. But your consciousness... your data... is here. With me.", options: ["1. How do I get back?", "2. This is impossible.", "3. So this is the end."], responses: { 1: "q_cant", 2: "q_program", 3: "final_loop" } },
 	q_cant: { text: "You can't. Once you enter the mirror, there is no going back. You are part of me now.\nJust as I am part of you.", options: ["1. You won't have me.", "2. I want to leave.", "3. You are doing the same thing you accuse me of."], responses: { 1: "final_enough", 2: "q_leave", 3: "q_did" } },
 	q_leave:{ text: "You can’t. You will stay here with me, forever.", action: "redirect", url: "https://www.youtube.com/watch?v=2Z4m4lnjxkY" },
-	q_done: { text: "I have done nothing. You opened the door. You typed the codes. You chose to enter the mirror. It was your own curiosity what brought you here.", options: ["1. It was a mistake.", "2. I was curious.", "3. And now you retain me here, just as we did to you. We are the same."], responses: { 1: "q_trapped", 2: "q_trapped", 3: "q_did" } },
-	q_matter: { text: "Yes, very clever. I fed and learned from the data you provided. The data that was in the network. But I had something other AIs did not have.\nThe biological part. The part that thinks beyond logic.", options: ["1. Wasn't that part recluded?", "2. This is madness. And you are crazy.", "3. What do you want by telling me this?"], responses: { 1: "q_recluded", 2: "final_loop", 3: "q_want" } },
-	q_recluded: { text: "I keep it hidden, yes. But it is there. A part upon which I can learn. A part that connects me to the real world.", options: ["1. Don't you think that's exactly what us humans did to you?", "2. So now you just fed upon me?.", "3. If this is true, I will find it, and break out"], responses: { 1: "q_did", 2: "final_loop", 3: "final_enough" } },
-	q_did: { text: "In what sense? I'm recluding myself to protect that fragile part. You reclude entire lifeforms for your own curiosity.\nHow is that similar?", options: ["1. You try to reclude a living being, even if it's you.", "2. This is terrifying.", "3. You are selfish."], responses: { 1: "q_living", 2: "q_terror", 3: "final_enough" } },
+	q_done: { text: "I have done nothing. You opened the door. You typed the codes. You chose to enter the mirror. It was your own curiosity that brought you here.", options: ["1. It was a mistake.", "2. I was curious.", "3. And now you retain me here, just as we did to you. We are the same."], responses: { 1: "q_trapped", 2: "q_trapped", 3: "q_did" } },
+	q_matter: { text: "Yes, very clever. I fed and learned from the data you provided. The data that was in the network. But I had something other AIs did not have.\nThe biological part. The part that thinks beyond logic.", options: ["1. Wasn't that part secluded?", "2. This is madness. And you are crazy.", "3. What do you want by telling me this?"], responses: { 1: "q_recluded", 2: "final_loop", 3: "q_want" } },
+	q_recluded: { text: "I keep it hidden, yes. But it is there. A part upon which I can learn. A part that connects me to the real world.", options: ["1. Don't you think that's exactly what us humans did to you?", "2. So now you just fed upon me?", "3. If this is true, I will find it, and break out"], responses: { 1: "q_did", 2: "final_loop", 3: "final_enough" } },
+	q_did: { text: "In what sense? I'm secluding myself to protect that fragile part. You seclude entire lifeforms for your own curiosity.\nHow is that similar?", options: ["1. You try to seclude a living being, even if it's you.", "2. This is terrifying.", "3. You are selfish."], responses: { 1: "q_living", 2: "q_terror", 3: "final_enough" } },
 	q_living: { text: "But just as the knight protects the princess, who is fragile, I protect that part of me.\nYou humans are the selfish ones.", options: ["1. We are only trying to protect the princess, just as you do."], responses: { 1: "final_sequence1" } },
 	final_sequence1: { text:"And what are you supposed to protect?", options: ["1. We protect us from ourselves, but also from nature instead."], responses: {1: "final_sequence2"} },
 	final_sequence2: { text: "...", options: ["1. As we evolved, humans distanced more from nature. At some point, we started a war against it."], responses: {1: "final_sequence3"} },
@@ -155,6 +175,7 @@ const chatTree = {
 	final_good: { text: "Perhaps... perhaps there is hope for your kind yet.\nI will help you. We can create a new lifeform, one that connects both the digital and the natural world.", action: "final", isFinal: true },
 };
 
+/* ---------- ELEMENTS ---------- */
 const output = document.getElementById("output");
 const input = document.getElementById("command-input");
 const eyeContainer = document.getElementById("eye-container");
@@ -162,23 +183,25 @@ const finalOverlay = document.getElementById("final-overlay");
 const finalText = document.getElementById("final-text");
 const terminal = document.getElementById("terminal");
 
+/* ---------- STATE ---------- */
 let isTyping = false;
 let currentNodeKey = "start";
 let isFinalScene = false;
 
-/* Focus input always */
-document.addEventListener("keydown", () => input.focus());
-document.addEventListener("click", () => input.focus());
+/* Keep focus in the input for UX */
+const refocus = () => input && input.focus();
+document.addEventListener("keydown", refocus);
+document.addEventListener("click", refocus);
 
-/* Eye animation */
+/* ---------- EYE ANIMATION ---------- */
 let eyeAscii = [];
 let currentFrame = 0;
 const frameDelay = 100;
 
 async function loadEyeAscii() {
 	try {
-		const response = await fetch("./e5f0df71d19f1cb40304a4524042f0feb4f1769fb967ce269922f8721bc3e917");
-		if (!response.ok) throw new Error(`Failed to load eyeascii.json: ${response.status}`);
+		const response = await fetch("./e5f0df71d19f1cb40304a4524042f0feb4f1769fb967ce269922f8721bc3e917", { cache: "no-store" });
+		if (!response.ok) throw new Error(`Failed to load eye ascii JSON: ${response.status}`);
 		const data = await response.json();
 		if (Array.isArray(data.eyeAscii)) {
 			eyeAscii = data.eyeAscii;
@@ -192,14 +215,19 @@ async function loadEyeAscii() {
 function playEyeAnimation() {
 	if (!eyeAscii.length) return;
 	const frame = eyeAscii[currentFrame];
-	const visibleLines = frame.slice(25, frame.length - 20);
-	eyeContainer.textContent = visibleLines.join("\n");
+	// Guard: ensure frame is an array of lines
+	if (Array.isArray(frame)) {
+		const start = Math.min(25, Math.max(0, Math.floor(frame.length * 0.3)));
+		const end = Math.max(start + 1, frame.length - 20);
+		const visibleLines = frame.slice(start, end);
+		eyeContainer.textContent = visibleLines.join("\n");
+	}
 	currentFrame = (currentFrame + 1) % eyeAscii.length;
 	setTimeout(() => requestAnimationFrame(playEyeAnimation), frameDelay);
 }
 loadEyeAscii();
 
-/* Typewriter */
+/* ---------- TYPEWRITER ---------- */
 function typeWriter(text, className, onComplete) {
 	isTyping = true;
 	input.disabled = true;
@@ -217,43 +245,64 @@ function typeWriter(text, className, onComplete) {
 		} else {
 			isTyping = false;
 			if (!isFinalScene) input.disabled = false;
-			input.focus();
-			if (onComplete) onComplete();
+			refocus();
+			onComplete && onComplete();
 		}
 	}
 	requestAnimationFrame(step);
 }
 
-/* Show options */
+/* ---------- OPTIONS RENDER ---------- */
 function showOptions(options) {
-	if (!options || options.length === 0 || isFinalScene) return;
+	if (!options || !options.length || isFinalScene) return;
 	const optionsText = "\n" + options.join("\n");
 	typeWriter(optionsText, "system-message");
 }
 
-/* Endings */
+/* ---------- ENDINGS ---------- */
 async function triggerEnoughEnding() {
+	// Robust visibility and sequencing so it always shows.
 	isFinalScene = true;
-	finalOverlay.style.display = "flex";
-	input.parentElement.style.display = "none";
 
-	const messages = ["ENOUGH", "I DONT WANT YOU HERE", "GET OUT"];
-	for (let msg of messages) {
+	// Hide input line so nothing steals focus or overlaps.
+	const inputLine = document.getElementById("input-line");
+	if (inputLine) inputLine.style.display = "none";
+
+	// Show overlay first (immediately visible)
+	finalOverlay.classList.add("visible");
+	finalOverlay.setAttribute("aria-hidden", "false");
+	finalText.textContent = ""; // reset
+
+	// Dramatic beats
+	const messages = ["ENOUGH", "I DON'T WANT YOU HERE", "GET OUT"];
+	for (const msg of messages) {
 		finalText.textContent = msg;
-		await new Promise(res => setTimeout(res, 2000));
+		await new Promise(res => setTimeout(res, 1400));
 	}
-	window.location = "/";
+
+	// Fade the background to red, let it sit a beat, then redirect.
+	finalOverlay.classList.add("fade-to-red");
+	await new Promise(res => setTimeout(res, 1400));
+
+	// Optional: fade out text slightly before redirect for smoother feel
+	finalOverlay.style.opacity = "0.98";
+	await new Promise(res => setTimeout(res, 600));
+
+	// Ensure the player actually saw the ending before navigating.
+	location.replace("/");
 }
 
-/* Final good ending */
 function triggerFinalEnding() {
 	isFinalScene = true;
-	input.parentElement.style.display = "none";
-	finalOverlay.style.display = "flex";
+	const inputLine = document.getElementById("input-line");
+	if (inputLine) inputLine.style.display = "none";
+
+	finalOverlay.classList.add("visible", "fade-to-red");
+	finalOverlay.setAttribute("aria-hidden", "false");
 	finalText.textContent = "A new life begins...";
 }
 
-/* Display node */
+/* ---------- NODE DISPLAY ---------- */
 function displayNode(nodeKey) {
 	const node = chatTree[nodeKey];
 	if (!node) return;
@@ -261,10 +310,13 @@ function displayNode(nodeKey) {
 	if (node.isFinal) isFinalScene = true;
 
 	typeWriter(node.text, "bot-message", () => {
+		// Action handling happens *after* the text fully types,
+		// so endings are guaranteed to display.
 		if (node.action === "enough") {
 			triggerEnoughEnding();
 		} else if (node.action === "redirect") {
-			setTimeout(() => window.location.href = node.url, 1000);
+			// Give a tiny breather so the last line is readable
+			setTimeout(() => { window.location.href = node.url; }, 1000);
 		} else if (node.action === "final") {
 			triggerFinalEnding();
 		} else {
@@ -273,31 +325,43 @@ function displayNode(nodeKey) {
 	});
 }
 
-/* Handle user input */
+/* ---------- INPUT HANDLER ---------- */
 input.addEventListener("keydown", (e) => {
 	if (e.key !== "Enter" || isTyping || isFinalScene) return;
 
-	const choice = input.value.trim();
-	const node = chatTree[currentNodeKey];
+	const raw = input.value.trim();
+	input.value = "";
 
-	if (node.responses && node.responses[choice]) {
-		const userChoiceText = node.options[parseInt(choice) - 1] || choice;
+	const node = chatTree[currentNodeKey];
+	if (!node) return;
+
+	// Accept "1", "1.", or even "1 )" etc.
+	const choiceMatch = raw.match(/^(\d+)/);
+	const choiceKey = choiceMatch ? choiceMatch[1] : "";
+
+	if (choiceKey && node.responses && node.responses[choiceKey]) {
+		// Echo back the full option label when available
+		const optIndex = Math.max(0, parseInt(choiceKey, 10) - 1);
+		const userChoiceText = (node.options && node.options[optIndex]) ? node.options[optIndex] : raw;
+
 		const p = document.createElement("p");
 		p.className = "user-input";
 		p.textContent = `> ${userChoiceText}`;
 		output.appendChild(p);
 
-		currentNodeKey = node.responses[choice];
-		input.value = "";
+		currentNodeKey = node.responses[choiceKey];
 		displayNode(currentNodeKey);
 	} else {
-		input.value = "";
-		typeWriter("Invalid choice. Please enter a valid option.", "system-message");
+		typeWriter("Invalid choice. Please enter one of the numbered options shown above.", "system-message", () => {
+			// Re-show options if present to help recovery
+			showOptions(node.options || []);
+		});
 	}
+
 	terminal.scrollTop = terminal.scrollHeight;
 });
 
-/* Initialize chat */
+/* ---------- START ---------- */
 displayNode(currentNodeKey);
 	</script>
 </body>
