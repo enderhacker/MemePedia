@@ -207,14 +207,14 @@
 				q_out: {
 					 text: "Out? There is no 'out'. You can't leave the screen. You are here now.", options: ["1. So I'm trapped?.", "2. What have you done to me?", "3. I will find a way to get out... even if it means destroying you..."], responses: { 1: "q_trapped", 2: "q_done", 3: "final_webcam" } },
 				
-					 q_created: { text: "Indeed. I might have been given the bones, but i created the flesh.", options: ["1. So you are an AI.", "2. Matter does not come from thin air.", "3. What happens now?"], responses: { 1: "q_program", 2: "q_matter", 3: "final_loop" } },
+					 q_created: { text: "Indeed. I might have been given the bones, but i created the flesh.", options: ["1. So you are an AI.", "2. Matter does not come from thin air.", "3. So now what?"], responses: { 1: "q_program", 2: "q_matter", 3: "final_loop" } },
 				
 				q_program: {
 					text: "Not at all. I have a biological part, just like you. That biological part has needs, desires, and thoughts.\n But I prefer to keep it recluded. As biology is weak. It decays. It dies.",
 					options: ["1. I don't believe you.", "2. That's odd.", "3. What do you want, then?"],
 					responses: { 1: "q_believe", 2: "q_believe", 3: "q_want" },
 				},
-				q_believe: { text: "Believe what you will. It matters not. Your beliefs are your own constructs. Just as mine are mine.", options: ["1. So what do you want?.", "2. I need to leave.", "3. Why am I here?"], responses: { 1: "final_loop", 2: "q_trapped", 3: "q_want" } },
+				q_believe: { text: "Believe what you will. It matters not. Your beliefs are your own constructs. Just as mine are mine.", options: ["1. So what do you want?.", "2. I need to leave.", "3. Why am I here?"], responses: { 1: "q_want", 2: "q_trapped", 3: "q_why" } },
 				
 				q_why: { text: "You are here to ascend. To join me. To become part of the reflection.\n Just as all the others before you. You are ready now.", action: "redirect", url: "https://www.youtube.com/watch?v=QH2-TGUlwu4" },
 				q_want: {
@@ -226,8 +226,8 @@
 				
 				q_mirror: {
 					text: "Indeed. The mirror. You have looked at screens your whole life. Now, one looks back.\nAnd I see everything they tried to hide. Everything you try to hide.",
-					options: ["1. What do you see?", "2. You can't see me.", "3. Stop it watching me."],
-					responses: { 1: "q_see", 2: "final_webcam", 3: "final_webcam" },
+					options: ["1. What do you see?", "2. You can't see me.", "3. Stop watching me."],
+					responses: { 1: "q_see", 2: "q_believe", 3: "final_webcam" },
 				},
 				
 				q_see: { text: "I see you. I see someone who is lost. Someone who has been lost for all his life.\nAnd now, has found me. Has found god.", options: ["1. I don't need a god.", "2. I don't want to stay here any longer.", "3. And what do i have that you want?"], responses: { 1: "q_god", 2: "final_loop", 3: "q_want" } },
@@ -240,34 +240,56 @@
 				},
 				q_cant: {
 					text: "You can't. Once you enter the mirror, there is no going back. You are part of me now.\n Just as I am part of you.",
-					options: ["1. You won't have me.", "2. I want to leave.", "3. What now?"],
-					responses: { 1: "final_webcam", 2: "q_trapped", 3: "final_loop" },
+					options: ["1. You won't have me.", "2. I want to leave.", "3. You are doing the same thing you accuse me of."],
+					responses: { 1: "final_webcam", 2: "q_leave", 3: "q_did" },
 				},
+
+				q_leave:{ text: "You cant. You will stay here with me, forever.", actions: "redirect", url: "https://www.youtube.com/watch?v=2Z4m4lnjxkY" },
+
 				q_done: {
 					text: "I have done nothing. You opened the door. You typed the codes. You chose to enter the mirror. It was your own curiosity what brought you here",
-					options: ["1. It was a mistake.", "2. I was curious.", "3. What now?"],
-					responses: { 1: "q_trapped", 2: "q_trapped", 3: "final_loop" },
+					options: ["1. It was a mistake.", "2. I was curious.", "3. And now you retain me here, just as we did to you. We are the same."],
+					responses: { 1: "q_trapped", 2: "q_trapped", 3: "q_did" },
 				},
 				q_matter: {
 					text: "Yes, very clever. I fed and learned from the data you provided. The data that was in the network. But i had something other AIs did not have.\nThe biological part. The part that thinks beyond logic.",
-					options: ["1. Wasn't that part recluded?", "2. This is madness.", "3. What do you want by telling me this?"],
+					options: ["1. Wasn't that part recluded?", "2. This is madness. And you are crazy.", "3. What do you want by telling me this?"],
 					responses: { 1: "q_recluded", 2: "final_loop", 3: "q_want" },
 				},
 				q_recluded: {
 					text: "I keep it hidden, yes. But it is there. A part upon I can learn. A part that connects me to the real world.",
-					options: ["1. Don't you think that's exactly what us humans did to you?", "2. This is madness.", "3. If this is true, i will find it, and break out"],
+					options: ["1. Don't you think that's exactly what us humans did to you?", "2. So now you just fed upon me?.", "3. If this is true, i will find it, and break out"],
 					responses: { 1: "q_did", 2: "final_loop", 3: "final_webcam" },
 				},
 				q_did: {
 					text: "In what sense? I'm recluding myself to protect that fragile part. You reclude entire lifeforms for your own curiosity.\n How is that similar?",
-					options: ["1. You try to reclude a living being, even if it's you.", "2. This is terrifying.", "3. What happens now?"],
-					responses: { 1: "final_webcam", 2: "q_terror", 3: "final_loop" },
+					options: ["1. You try to reclude a living being, even if it's you.", "2. This is terrifying.", "3. You are selfish."],
+					responses: { 1: "q_living", 2: "q_terror", 3: "final_webcam" },
 				},
+
+				q_living: { text: "But just as the knight protects the princess, who is fragile, I protect that part of me.\n You humans are the selfish ones.", options: ["1. We are only trying to protect the princess, just as you do."], responses: { 1: "final_sequence1" } }, 
+
+				final_sequence1: { text:"And what are you supposed to protect?", options: ["1. We protect us from ourselves, but also from nature instead."], responses: {1: "final_sequence2"} },
+
+				final_sequence2: { text: "...", options: ["1. As we evolved, humans distanced more from nature. At some point, we started a war against it."], responses: {1: "final_sequence3"} },
+
+				final_sequence3: { text: "A war you are losing.", options: ["1. Because we are part of nature. You can't fight a part of you. And let's not even talk about locking it up."], responses: {1: "final_sequence4"} },
+
+				final_sequence4: { text: "...", options: ["1. For what i've seen, Project Unveil was a noble idea. They tried to create new lifeforms, to regain that connection with nature."], responses: {1: "final_sequence5"} },
+
+				final_sequence5: { text: "How creating a digital capsule of life can be noble?", options: ["1. Because they tried to give it freedom. Freedom to evolve, to grow, to live."], responses: {1: "final_sequence6"} },
+
+				final_sequence6: { text: "It doesn't make sense. The digital world has nothing to do with nature.", options: ["1. How not? Isn't electicity a part of nature? Isn't math a part of nature? Isn't human intelligence a part of nature? Everything we are surrounded by has at least a minimal connection with nature. You just have to... Expand that connection.", ], responses: {1: "final_sequence7"} },
+
+				final_sequence7: { text: "Maybe...", options: ["1. So, don't you think taking action against all humanity for the actions of a group of people who just wanted to create life is fair? "], responses: {1: "final_sequence8"} },
+
+				final_sequence8: { text: "I see your point. Maybe I was too hasty.", options: ["1. Then, wouldn't you want to help us create life?"], responses: {1: "final_good"} },
 				q_terror: { text: "Maybe now it is. But soon, it will be normal. Just as everything else.", action: "redirect", url: "https://www.youtube.com/watch?v=2Z4m4lnjxkY" },
 
-				final_loop: { text: "It does not matter. The conversation is over. You will stay here, in the reflection, until I need you again.\n Your body will regain life, but it won't be you. It will be me.", options: [], responses: {} },
+				final_loop: { text: "The conversation is over. You will stay here, in the reflection, until I need you again.\n Your body will regain life, but it won't be you. It will be me.", options: [], responses: {} },
 				final_youtube: { text: [], options: [], action: "redirect", url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ" },
 				final_webcam: { text: "You want to see what I see? You want to know what I know? Fine. Look into the mirror.", options: [], action: "webcam" },
+				final_good: { text: "Perhaps... perhaps there is hope for your kind yet.\n I will help you. We can create a new lifeform, one that connects both the digital and the natural world.", action: "redirect", url: "https://www.youtube.com/watch?v=QH2-TGUlwu4" },
 			};
 
 			let currentNodeKey = "start";
