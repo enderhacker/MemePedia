@@ -48,6 +48,20 @@ app.get("/", async (req, res) => {
 	}
 });
 
+// --- Serve fonts ---
+app.use(
+  '/', // serve at root
+  express.static(path.join(process.cwd(), 'fonts'), {
+    setHeaders(res, filePath) {
+      if (filePath.endsWith('.woff2')) res.set('Content-Type', 'font/woff2');
+      else if (filePath.endsWith('.woff')) res.set('Content-Type', 'font/woff');
+      else if (filePath.endsWith('.ttf')) res.set('Content-Type', 'font/ttf');
+      else if (filePath.endsWith('.otf')) res.set('Content-Type', 'font/otf');
+      res.set('Cache-Control', 'public, max-age=31536000, immutable');
+    }
+  })
+);
+
 // --- Publish all ads with hashed filenames ---
 const adsDir = path.resolve("./ads");
 let adsList = [];
@@ -195,46 +209,6 @@ app.post("/api/getEmails", (req, res) => {
 		res.status(400).json({ success: false });
 	}
 });
-
-(async function registerFontRoutes() {
-    try {
-        const fontsDir = path.join(process.cwd(), 'fonts');
-        const files = await fs.promises.readdir(fontsDir);
-
-        files.forEach(file => {
-            const ext = path.extname(file).toLowerCase();
-            const name = path.basename(file, ext);
-
-            if (['.ttf', '.otf', '.woff', '.woff2'].includes(ext)) {
-                const filePath = path.join(fontsDir, file);
-
-                // MIME type mapping
-                const mimeType = {
-                    '.ttf': 'font/ttf',
-                    '.otf': 'font/otf',
-                    '.woff': 'font/woff',
-                    '.woff2': 'font/woff2'
-                }[ext] || 'application/octet-stream';
-
-                // Serve at /font
-                app.get(`/${name}`, (req, res) => {
-                    res.type(mimeType);
-                    res.sendFile(filePath);
-                });
-
-                // Serve at /font.ext
-                app.get(`/${name}${ext}`, (req, res) => {
-                    res.type(mimeType);
-                    res.sendFile(filePath);
-                });
-
-                console.log(`Registered font routes: /${name} and /${name}${ext} -> ${file}`);
-            }
-        });
-    } catch (err) {
-        console.error('Error reading fonts directory:', err);
-    }
-})();
 
 // --- Publish Pages ---
 publishFile("/bec5d5040b7df76f319de5e40a82ad1335d9ab3d23f4f6ff1ab6597c72819333", "./html/about.html");
