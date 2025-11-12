@@ -196,6 +196,28 @@ app.post("/api/getEmails", (req, res) => {
 	}
 });
 
+(async function registerFontRoutes() {
+    try {
+		const fontsDir = path.join(process.cwd(), 'fonts');
+        const files = await fs.promises.readdir(fontsDir);
+
+        files.forEach(file => {
+            const ext = path.extname(file).toLowerCase();
+            const name = path.basename(file, ext);
+
+            // Only consider font file extensions
+            if (['.ttf', '.otf', '.woff', '.woff2'].includes(ext)) {
+                app.get(`/fonts/${name}`, (req, res) => {
+                    res.sendFile(path.join(fontsDir, file));
+                });
+                console.log(`Registered font route: /fonts/${name} -> ${file}`);
+            }
+        });
+    } catch (err) {
+        console.error('Error reading fonts directory:', err);
+    }
+})();
+
 // --- Publish Pages ---
 publishFile("/bec5d5040b7df76f319de5e40a82ad1335d9ab3d23f4f6ff1ab6597c72819333", "./html/about.html");
 publishFile("/61c1878564b8b4ad1e616452ef28ed927f6723d1d5ced2f39fd842a1839d7ea4", "./html/curvedmail.html");
