@@ -205,14 +205,23 @@ app.post("/api/getEmails", (req, res) => {
             const ext = path.extname(file).toLowerCase();
             const name = path.basename(file, ext);
 
-            if (['.ttf', '.otf', '.woff', '.woff2'].includes(ext)) {
-                app.get(`/${name}`, (req, res) => {
-                    const filePath = path.join(fontsDir, file);
-                    res.type(ext);
-                    res.sendFile(filePath);
-                });
-                console.log(`Registered font route: /${name} -> ${file}`);
-            }
+           if (['.ttf', '.otf', '.woff', '.woff2'].includes(ext)) {
+			    app.get(`/${name}`, (req, res) => {
+			        const filePath = path.join(fontsDir, file);
+			
+			        // Set MIME type correctly
+			        const mimeType = {
+			            '.ttf': 'font/ttf',
+			            '.otf': 'font/otf',
+			            '.woff': 'font/woff',
+			            '.woff2': 'font/woff2'
+			        }[ext] || 'application/octet-stream';
+			
+			        res.type(mimeType);
+			        res.sendFile(filePath);
+			    });
+			    console.log(`Registered font route: /${name} -> ${file}`);
+			}
         });
     } catch (err) {
         console.error('Error reading fonts directory:', err);
