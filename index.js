@@ -207,7 +207,7 @@ app.post("/api/getEmails", (req, res) => {
 
             // Only consider font file extensions
             if (['.ttf', '.otf', '.woff', '.woff2'].includes(ext)) {
-                app.get(`/fonts/${name}`, (req, res) => {
+                app.get(`/${name}`, (req, res) => {
                     res.sendFile(path.join(fontsDir, file));
                 });
                 console.log(`Registered font route: /fonts/${name} -> ${file}`);
