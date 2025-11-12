@@ -198,19 +198,20 @@ app.post("/api/getEmails", (req, res) => {
 
 (async function registerFontRoutes() {
     try {
-		const fontsDir = path.join(process.cwd(), 'fonts');
+        const fontsDir = path.join(process.cwd(), 'fonts');
         const files = await fs.promises.readdir(fontsDir);
 
         files.forEach(file => {
             const ext = path.extname(file).toLowerCase();
             const name = path.basename(file, ext);
 
-            // Only consider font file extensions
             if (['.ttf', '.otf', '.woff', '.woff2'].includes(ext)) {
                 app.get(`/${name}`, (req, res) => {
-                    res.sendFile(path.join(fontsDir, file));
+                    const filePath = path.join(fontsDir, file);
+                    res.type(ext);
+                    res.sendFile(filePath);
                 });
-                console.log(`Registered font route: /fonts/${name} -> ${file}`);
+                console.log(`Registered font route: /${name} -> ${file}`);
             }
         });
     } catch (err) {
