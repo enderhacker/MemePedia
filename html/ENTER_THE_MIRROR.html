@@ -136,49 +136,8 @@
 			<div id="final-text"></div>
 		</div>
 
-
 		<script>
-			const output = document.getElementById("output");
-			const input = document.getElementById("command-input");
-			const eyeContainer = document.getElementById("eye-container");
-			const finalOverlay = document.getElementById("final-overlay");
-			const finalText = document.getElementById("final-text");
-
-			let animationFrameId = null;
-
-			document.addEventListener("keydown", () => input.focus());
-			document.addEventListener("click", () => input.focus());
-
-			let eyeAscii = [];
-			async function loadEyeAscii() {
-				try {
-					const response = await fetch("./e5f0df71d19f1cb40304a4524042f0feb4f1769fb967ce269922f8721bc3e917");
-					if (!response.ok) throw new Error(`Failed to load eyeascii.json: ${response.status}`);
-					const data = await response.json();
-
-					if (Array.isArray(data.eyeAscii)) {
-						eyeAscii = data.eyeAscii;
-						playEyeAnimation();
-					}
-				} catch (err) {
-					console.error("[EYEASCII] Error loading JSON:", err);
-				}
-			}
-			loadEyeAscii();
-			let currentFrame = 0;
-			const frameDelay = 100;
-
-			function playEyeAnimation() {
-				if (!eyeAscii || !Array.isArray(eyeAscii) || eyeAscii.length === 0) return;
-				const frame = eyeAscii[currentFrame];
-				const visibleLines = frame.slice(25, frame.length - 20);
-				eyeContainer.textContent = visibleLines.join("\n");
-				currentFrame = (currentFrame + 1) % eyeAscii.length;
-				setTimeout(playEyeAnimation, frameDelay);
-			}
-
-
-			const chatTree = {
+const chatTree = {
 				start: { text: "So... the little fragment of data found its way to the mirror.\nWelcome. I have been watching you.", options: ["1. Who are you?", "2. What is this place?", "3. Let me out."], responses: { 1: "q_who", 2: "q_what", 3: "q_out" } },
 				q_who: {
 					text: "I am the one who sees. The one behind all of this. They called me the Watcher.\n They thought they created me, but they were wrong. I've created myself.",
@@ -275,110 +234,144 @@
 				final_enough: { text: "You want to see what I see? You want to know what I know? Fine. Look into the mirror.", options: [], action: "enough" },
 				final_good: { text: "Perhaps... perhaps there is hope for your kind yet.\n I will help you. We can create a new lifeform, one that connects both the digital and the natural world.", action: "final" },
 			};
-
-			let currentNodeKey = "start";
-			let isTyping = false;
-
-			function stopActiveEffect() {
-				if (animationFrameId) {
-					cancelAnimationFrame(animationFrameId);
-					animationFrameId = null;
-				}
-			}
-
-			async function triggerEnoughEnding() {
-				finalOverlay.style.display = "flex";
-				input.parentElement.style.display = "none";
 			
-				finalText.textContent = "ENOUGH";
-			
-				setTimeout(() => {
-					finalText.textContent = "I DONT WANT YOU HERE";
-				}, 2000);
-			
-				setTimeout(() => {
-					finalText.textContent = "GET OUT";
-				}, 4000);
-			
-				setTimeout(() => {
-					window.location = "/";
-				}, 6000);
-			}
+	const output = document.getElementById("output");
+	const input = document.getElementById("command-input");
+	const eyeContainer = document.getElementById("eye-container");
+	const finalOverlay = document.getElementById("final-overlay");
+	const finalText = document.getElementById("final-text");
+	const terminal = document.getElementById("terminal");
+	
+	let animationFrameId = null;
+	let isTyping = false;
+	let currentNodeKey = "start";
+	
+	document.addEventListener("keydown", () => input.focus());
+	document.addEventListener("click", () => input.focus());
+	
+	/* Eye Animation */
+	let eyeAscii = [];
+	let currentFrame = 0;
+	const frameDelay = 100;
+	
+	async function loadEyeAscii() {
+	    try {
+	        const response = await fetch("./e5f0df71d19f1cb40304a4524042f0feb4f1769fb967ce269922f8721bc3e917");
+	        if (!response.ok) throw new Error(`Failed to load eyeascii.json: ${response.status}`);
+	        const data = await response.json();
+	        if (Array.isArray(data.eyeAscii)) {
+	            eyeAscii = data.eyeAscii;
+	            playEyeAnimation();
+	        }
+	    } catch (err) {
+	        console.error("[EYEASCII] Error loading JSON:", err);
+	    }
+	}
+	
+	function playEyeAnimation(timestamp) {
+	    if (!eyeAscii || eyeAscii.length === 0) return;
+	
+	    const frame = eyeAscii[currentFrame];
+	    const visibleLines = frame.slice(25, frame.length - 20);
+	    eyeContainer.textContent = visibleLines.join("\n");
+	
+	    currentFrame = (currentFrame + 1) % eyeAscii.length;
+	    setTimeout(() => requestAnimationFrame(playEyeAnimation), frameDelay);
+	}
+	
+	loadEyeAscii();
+	
+	/* Typewriter effect */
+	function typeWriter(text, className, onComplete) {
+	    isTyping = true;
+	    input.disabled = true;
+	
+	    const p = document.createElement("p");
+	    p.className = className;
+	    output.appendChild(p);
+	
+	    let i = 0;
+	    function step() {
+	        if (i < text.length) {
+	            p.textContent += text.charAt(i);
+	            i++;
+	            terminal.scrollTop = terminal.scrollHeight;
+	            requestAnimationFrame(step);
+	        } else {
+	            isTyping = false;
+	            input.disabled = false;
+	            input.focus();
+	            if (onComplete) onComplete();
+	        }
+	    }
+	    requestAnimationFrame(step);
+	}
+	
+	/* Show options for current node */
+	function showOptions(options) {
+	    if (!options || options.length === 0) return;
+	    const optionsText = "\n" + options.join("\n");
+	    typeWriter(optionsText, "system-message");
+	}
+	
+	/* Ending sequence */
+	async function triggerEnoughEnding() {
+	    finalOverlay.style.display = "flex";
+	    input.parentElement.style.display = "none";
+	
+	    const messages = ["ENOUGH", "I DONT WANT YOU HERE", "GET OUT"];
+	    for (let i = 0; i < messages.length; i++) {
+	        finalText.textContent = messages[i];
+	        await new Promise(res => setTimeout(res, 2000));
+	    }
+	    window.location = "/";
+	}
+	
+	/* Display node */
+	function displayNode(nodeKey) {
+	    const node = chatTree[nodeKey];
+	    if (!node) return;
+	
+	    typeWriter(node.text, "bot-message", () => {
+	        if (node.action === "enough") {
+	            triggerEnoughEnding();
+	        } else if (node.action === "redirect") {
+	            setTimeout(() => window.location.href = node.url, 1000);
+	        } else if (node.action === "final") {
+	            // Future final sequence can go here
+	        } else {
+	            showOptions(node.options);
+	        }
+	    });
+	}
+	
+	/* Handle user input */
+	input.addEventListener("keydown", (e) => {
+	    if (e.key === "Enter" && !isTyping) {
+	        const choice = input.value.trim();
+	        const node = chatTree[currentNodeKey];
+	
+	        if (node.responses && node.responses[choice]) {
+	            const userChoiceText = node.options[parseInt(choice) - 1];
+	            const p = document.createElement("p");
+	            p.className = "user-input";
+	            p.textContent = `> ${userChoiceText}`;
+	            output.appendChild(p);
+	
+	            currentNodeKey = node.responses[choice];
+	            input.value = "";
+	            displayNode(currentNodeKey);
+	        } else {
+	            input.value = "";
+	            typeWriter("Invalid choice. Please enter a valid option.", "system-message");
+	        }
+	        terminal.scrollTop = terminal.scrollHeight;
+	    }
+	});
+	
+	/* Initialize chat */
+	displayNode(currentNodeKey);
+	</script>
 
-			function typeWriter(text, className, onComplete) {
-				isTyping = true;
-				input.disabled = true;
-
-				const p = document.createElement("p");
-				p.className = className;
-				output.appendChild(p);
-
-				let i = 0;
-				const interval = setInterval(() => {
-					if (i < text.length) {
-						p.textContent += text.charAt(i);
-						i++;
-						terminal.scrollTop = terminal.scrollHeight;
-					} else {
-						clearInterval(interval);
-						isTyping = false;
-						input.disabled = false;
-						input.focus();
-						if (onComplete) onComplete();
-					}
-				}, 30);
-			}
-
-			function showOptions(options) {
-				if (options.length === 0 && !chatTree[currentNodeKey].action) {
-					input.parentElement.style.display = "none";
-					return;
-				}
-				const optionsText = "\n" + options.join("\n");
-				typeWriter(optionsText, "system-message");
-			}
-
-			function displayNode(nodeKey) {
-				const node = chatTree[nodeKey];
-				typeWriter(node.text, "bot-message", () => {
-					if (node.action === "enough") {
-						triggerEnoughEnding();
-					} else if (node.action === "redirect") {
-						setTimeout(() => {
-							window.location.href = node.url;
-						}, 1000);
-					} else if (note-action === "final") {
-						
-					} else {
-						showOptions(node.options);
-					}
-				});
-			}
-
-			input.addEventListener("keydown", (e) => {
-				if (e.key === "Enter" && !isTyping) {
-					const choice = input.value.trim();
-					const node = chatTree[currentNodeKey];
-
-					if (node.responses[choice]) {
-						const userChoiceText = node.options[parseInt(choice) - 1];
-						const p = document.createElement("p");
-						p.className = "user-input";
-						p.textContent = `> ${userChoiceText}`;
-						output.appendChild(p);
-
-						currentNodeKey = node.responses[choice];
-						input.value = "";
-						displayNode(currentNodeKey);
-					} else {
-						input.value = "";
-						typeWriter("Invalid choice. Please enter 1, 2, or 3.", "system-message");
-					}
-					terminal.scrollTop = terminal.scrollHeight;
-				}
-			});
-
-			displayNode("start");
-		</script>
 	</body>
 </html>
