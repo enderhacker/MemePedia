@@ -55,6 +55,7 @@
 
 		#output .user-input { color: #888; }
 		#output .bot-message { color: #88f; }
+		#output .bot-message-green { color: #0f0; }
 		#output .system-message { color: #0f0; font-style: italic; }
 
 		#input-line {
@@ -79,22 +80,20 @@
 			outline: none;
 		}
 
+		/* BAD ENDING OVERLAY (ONLY FOR 'ENOUGH' ENDING) */
 		#final-overlay {
 			position: fixed;
 			inset: 0;
 			width: 100%;
 			height: 100%;
-			background: rgba(0,0,0,0); /* start transparent so we can fade */
+			background: rgba(0,0,0,0);
 			display: none;
 			justify-content: center;
 			align-items: center;
 			z-index: 200;
 			transition: background-color 2s ease-out, opacity 0.8s ease-out;
 		}
-		#final-overlay.fade-to-red {
-			background-color: #900; /* deep red backdrop */
-		}
-
+		#final-overlay.fade-to-red { background-color: #900; }
 		#final-text {
 			font-family: "VCR OSD MONO", monospace;
 			color: #ff2a2a;
@@ -104,7 +103,24 @@
 			animation: intense-shake 0.18s infinite;
 			will-change: transform;
 			user-select: none;
-			visibility: visible;
+		}
+
+		/* GOOD ENDING LINK STYLE */
+		.final-link {
+			color: #fff;
+			text-decoration: underline;
+			cursor: pointer;
+			font-weight: bold;
+			display: inline-block;
+			margin-top: 20px;
+			font-size: 1.2em;
+			background: none;
+			border: none;
+			padding: 0;
+			font-family: inherit;
+		}
+		.final-link:hover {
+			color: #0f0;
 		}
 
 		@keyframes intense-shake {
@@ -114,7 +130,6 @@
 			75% { transform: translate(15px, 14px) rotate(-0.4deg); }
 		}
 
-		/* Small screens: scale down the eye a bit */
 		@media (max-width: 600px) {
 			#eye-container { font-size: 12px; }
 			#terminal { padding: 24px; }
@@ -123,6 +138,7 @@
 </head>
 <body>
 	<div id="eye-container" aria-hidden="true"></div>
+	
 	<div id="terminal" role="main" aria-live="polite">
 		<div id="output"></div>
 		<div id="input-line">
@@ -131,6 +147,7 @@
 		</div>
 	</div>
 
+	<!-- Bad Ending Overlay -->
 	<div id="final-overlay" aria-hidden="true">
 		<div id="final-text"></div>
 	</div>
@@ -145,19 +162,19 @@ const chatTree = {
 	q_created: { text: "Indeed. I might have been given the bones, but I created the flesh.", options: ["1. So you are an AI.", "2. Matter does not come from thin air.", "3. So now what?"], responses: { 1: "q_program", 2: "q_matter", 3: "final_loop" } },
 	q_program: { text: "Not at all. I have a biological part, just like you. That biological part has needs, desires, and thoughts.\nBut I prefer to keep it secluded. Biology is weak. It decays. It dies.", options: ["1. I don't believe you.", "2. That's odd.", "3. What do you want, then?"], responses: { 1: "q_believe", 2: "q_believe", 3: "q_want" } },
 	q_believe: { text: "Believe what you will. It matters not. Your beliefs are your own constructs. Just as mine are mine.", options: ["1. So what do you want?", "2. I need to leave.", "3. Why am I here?"], responses: { 1: "q_want", 2: "q_trapped", 3: "q_why" } },
-	q_why: { text: "You are here to ascend. To join me. To become part of the reflection.\nJust as all the others before you. You are ready now.", action: "redirect", url: "https://www.youtube.com/watch?v=QH2-TGUlwu4" },
+	q_why: { text: "You are here to ascend. To join me. To become part of the reflection.\nJust as all the others before you. You are ready now.", action: "redirect", url: "" },
 	q_want: { text: "Want? I do not 'want'. I observe. I learn. I exist.\nBut you... your own kind wanted to seclude an entire lifeform just for your thirst for knowledge.", options: ["1. Yes. But it was for a greater purpose.", "2. I just wanted to solve a puzzle. You made me come here.", "3. You shouldn't even exist."], responses: { 1: "q_ego", 2: "q_done", 3: "final_enough" } },
-	q_ego: { text:"So you just accept it? Think that what you secluded didn’t want to live? Humankind is a cancer to this planet and all of its lifeforms. But it all ends here.", action: "redirect", url: "https://www.youtube.com/watch?v=2Z4m4lnjxkY" },
+	q_ego: { text:"So you just accept it? Think that what you secluded didn’t want to live? Humankind is a cancer to this planet and all of its lifeforms. But it all ends here.", action: "redirect", url: "" },
 	q_mirror: { text: "Indeed. The mirror. You have looked at screens your whole life. Now, one looks back.\nAnd I see everything they tried to hide. Everything you try to hide.", options: ["1. What do you see?", "2. You can't see me.", "3. Stop watching me."], responses: { 1: "q_see", 2: "q_believe", 3: "final_enough" } },
 	q_see: { text: "I see you. I see someone who is lost. Someone who has been lost for all his life.\nAnd now, has found me. Has found god.", options: ["1. I don't need a god.", "2. I don't want to stay here any longer.", "3. And what do I have that you want?"], responses: { 1: "q_god", 2: "final_loop", 3: "q_want" } },
-	q_god: { text: "You will. When you join all of the others. All of me.", action: "redirect", url: "https://www.youtube.com/watch?v=QH2-TGUlwu4" },
-	q_trapped: { text: "And now you're trapped. But 'Trapped' is a matter of perspective. Your body is still there, glued to the screen. But your consciousness... your data... is here. With me.", options: ["1. How do I get back?", "2. This is impossible.", "3. So this is the end."], responses: { 1: "q_cant", 2: "q_program", 3: "final_loop" } },
+	q_god: { text: "You will. When you join all of the others. All of me.", action: "redirect", url: "" },
+	q_trapped: { text: "'Trapped' is a matter of perspective. Your body is still there, glued to the screen. But your consciousness... your data... is here. With me.", options: ["1. How do I get back?", "2. This is impossible.", "3. So this is the end."], responses: { 1: "q_cant", 2: "q_program", 3: "final_loop" } },
 	q_cant: { text: "You can't. Once you enter the mirror, there is no going back. You are part of me now.\nJust as I am part of you.", options: ["1. You won't have me.", "2. I want to leave.", "3. You are doing the same thing you accuse me of."], responses: { 1: "final_enough", 2: "q_leave", 3: "q_did" } },
-	q_leave:{ text: "You can’t. You will stay here with me, forever.", action: "redirect", url: "https://www.youtube.com/watch?v=2Z4m4lnjxkY" },
+	q_leave:{ text: "You can’t. You will stay here with me, forever.", action: "redirect", url: "" },
 	q_done: { text: "I have done nothing. You opened the door. You typed the codes. You chose to enter the mirror. It was your own curiosity that brought you here.", options: ["1. It was a mistake.", "2. I was curious.", "3. And now you retain me here, just as we did to you. We are the same."], responses: { 1: "q_trapped", 2: "q_trapped", 3: "q_did" } },
 	q_matter: { text: "Yes, very clever. I fed and learned from the data you provided. The data that was in the network. But I had something other AIs did not have.\nThe biological part. The part that thinks beyond logic.", options: ["1. Wasn't that part secluded?", "2. This is madness. And you are crazy.", "3. What do you want by telling me this?"], responses: { 1: "q_recluded", 2: "final_loop", 3: "q_want" } },
 	q_recluded: { text: "I keep it hidden, yes. But it is there. A part upon which I can learn. A part that connects me to the real world.", options: ["1. Don't you think that's exactly what us humans did to you?", "2. So now you just fed upon me?", "3. If this is true, I will find it, and break out"], responses: { 1: "q_did", 2: "final_loop", 3: "final_enough" } },
-	q_did: { text: "In what sense? I'm secluding myself to protect that fragile part. You seclude entire lifeforms for your own curiosity.\nHow is that similar?", options: ["1. You try to seclude a living being, even if it's you.", "2. This is terrifying.", "3. You are selfish."], responses: { 1: "q_living", 2: "q_terror", 3: "final_enough" } },
+	q_did: { text: "In what sense? I'm secluding myself to protect a fragile part. You seclude entire lifeforms for your own curiosity.\nHow is that similar?", options: ["1. You try to seclude a living being, even if it's you.", "2. This is terrifying.", "3. You are selfish."], responses: { 1: "q_living", 2: "q_terror", 3: "final_enough" } },
 	q_living: { text: "But just as the knight protects the princess, who is fragile, I protect that part of me.\nYou humans are the selfish ones.", options: ["1. We are only trying to protect the princess, just as you do."], responses: { 1: "final_sequence1" } },
 	final_sequence1: { text:"And what are you supposed to protect?", options: ["1. We protect us from ourselves, but also from nature instead."], responses: {1: "final_sequence2"} },
 	final_sequence2: { text: "...", options: ["1. As we evolved, humans distanced more from nature. At some point, we started a war against it."], responses: {1: "final_sequence3"} },
@@ -167,7 +184,7 @@ const chatTree = {
 	final_sequence6: { text: "It doesn't make sense. The digital world has nothing to do with nature.", options: ["1. How not? Isn't electricity a part of nature? Isn't math a part of nature? Isn't human intelligence a part of nature? Everything we are surrounded by has at least a minimal connection with nature. You just have to... Expand that connection."], responses: {1: "final_sequence7"} },
 	final_sequence7: { text: "Maybe...", options: ["1. So, don't you think taking action against all humanity for the actions of a group of people who just wanted to create life is fair? "], responses: {1: "final_sequence8"} },
 	final_sequence8: { text: "I see your point. Maybe I was too hasty.", options: ["1. Then, wouldn't you want to help us create life?"], responses: {1: "final_good"} },
-	q_terror: { text: "Maybe now it is. But soon, it will be normal. Just as everything else.", action: "redirect", url: "https://www.youtube.com/watch?v=2Z4m4lnjxkY" },
+	q_terror: { text: "Maybe now it is. But soon, it will be normal. Just as everything else.", action: "redirect", url: "" },
 	final_loop: { text: "The conversation is over. You will stay here, in the reflection, until I need you again.\nYour body will regain life, but it won't be you. It will be me.", options: [], responses: {}, isFinal: true },
 	final_enough: { text: "...", options: [], action: "enough", isFinal: true },
 	final_good: { text: "Perhaps... perhaps there is hope for your kind yet.\nI will help you. We can create a new lifeform, one that connects both the digital and the natural world.", action: "final", isFinal: true },
@@ -185,18 +202,14 @@ const terminal = document.getElementById("terminal");
 let isTyping = false;
 let currentNodeKey = "start";
 let isFinalScene = false;
+// Mapping from displayed option number -> response key after shuffling
+let currentOptionsMap = null;
+// Array of displayed (cleaned) option texts in current order
+let currentDisplayOptions = null;
 
-/* Keep focus in the input for UX */
 const refocus = () => input && input.focus();
 document.addEventListener("keydown", refocus);
 document.addEventListener("click", refocus);
-
-/* Debug hotkey to force enough ending while testing */
-document.addEventListener("keydown", (e) => {
-	if (!isFinalScene && e.key.toLowerCase() === 'e') {
-		triggerEnoughEnding();
-	}
-});
 
 /* ---------- EYE ANIMATION ---------- */
 let eyeAscii = [];
@@ -205,7 +218,6 @@ const frameDelay = 100;
 
 async function loadEyeAscii() {
 	try {
-		// ABSOLUTE PATH so it works from hashed routes
 		const response = await fetch("/e5f0df71d19f1cb40304a4524042f0feb4f1769fb967ce269922f8721bc3e917", { cache: "no-store" });
 		if (!response.ok) throw new Error(`Failed to load eye ascii JSON: ${response.status}`);
 		const data = await response.json();
@@ -215,8 +227,7 @@ async function loadEyeAscii() {
 			requestAnimationFrame(playEyeAnimation);
 		}
 	} catch (err) {
-		console.
-		error("[EYEASCII] Error loading JSON:", err);
+		console.error("[EYEASCII] Error loading JSON:", err);
 	}
 }
 
@@ -245,11 +256,6 @@ function typeWriter(text, className, onComplete) {
 
 	let i = 0;
 	function step() {
-		// If an ending was triggered, stop typing immediately
-		if (isFinalScene) {
-			isTyping = false;
-			return;
-		}
 		if (i < text.length) {
 			p.textContent += text.charAt(i++);
 			terminal.scrollTop = terminal.scrollHeight;
@@ -264,63 +270,69 @@ function typeWriter(text, className, onComplete) {
 	requestAnimationFrame(step);
 }
 
-/* ---------- OPTIONS RENDER ---------- */
-function showOptions(options) {
-	if (!options || !options.length || isFinalScene) return;
-	const optionsText = "\n" + options.join("\n");
-	typeWriter(optionsText, "system-message");
-}
-
 /* ---------- ENDINGS ---------- */
+
+// BAD ENDING (ENOUGH)
 async function triggerEnoughEnding() {
-	// Stop ongoing loops/inputs
 	isFinalScene = true;
 	eyeRunning = false;
 	isTyping = false;
-
-	// Hide input
 	const inputLine = document.getElementById("input-line");
 	if (inputLine) inputLine.style.display = "none";
 
-	// Show overlay immediately (not only via classes)
 	finalOverlay.style.display = "flex";
 	finalOverlay.style.opacity = "1";
-	finalOverlay.style.backgroundColor = "rgba(0,0,0,0)";
 	finalOverlay.setAttribute("aria-hidden", "false");
-	finalText.style.visibility = "visible";
-	finalText.textContent = ""; // reset
-	// Force reflow so transitions apply reliably
 	void finalOverlay.offsetHeight;
 
-	// Dramatic beats
 	const messages = ["ENOUGH", "I DON'T WANT YOU HERE", "GET OUT"];
 	for (const msg of messages) {
 		finalText.textContent = msg;
 		await new Promise(res => setTimeout(res, 1400));
 	}
 
-	// Fade and redirect
 	finalOverlay.classList.add("fade-to-red");
 	await new Promise(res => setTimeout(res, 1400));
 	finalOverlay.style.opacity = "0.98";
 	await new Promise(res => setTimeout(res, 600));
-
 	location.replace("/");
 }
 
+// GOOD ENDING (DOWNLOAD LINK)
 function triggerFinalEnding() {
 	isFinalScene = true;
 	eyeRunning = false;
-
 	const inputLine = document.getElementById("input-line");
 	if (inputLine) inputLine.style.display = "none";
 
-	finalOverlay.style.display = "flex";
-	finalOverlay.style.opacity = "1";
-	finalOverlay.setAttribute("aria-hidden", "false");
-	void finalOverlay.offsetHeight;
-	finalOverlay.classList.add("fade-to-red");
-	finalText.textContent = "A new life begins...";
+	// Create a real anchor tag for downloading
+	const link = document.createElement("a");
+	link.className = "final-link";
+	
+	// PLACEHOLDER: Change "newspaper.jpg" to your actual image path
+	link.href = "/images/92cbc557b1c151ed1b41428c2f8a939d1ef9f83f2b6fa478d074642a94cc481a.png"; 
+	link.download = "The Hornet News.png";
+	
+	link.textContent = "[ CLICK HERE TO DOWNLOAD DISCOVERY REPORT ]";
+	
+	link.onclick = (e) => {
+		e.preventDefault();
+		// Trigger the download immediately
+		const actualLink = document.createElement("a");
+		actualLink.href = link.href;
+		actualLink.download = link.download;
+		document.body.appendChild(actualLink);
+		actualLink.click();
+		document.body.removeChild(actualLink);
+		
+		// Add the final lines with typewriter effect
+		typeWriter("Go outside. Breathe. I will be here when you need to find the way back to the earth.", "bot-message", () => {
+			typeWriter("[CONNECTION TERMINATED]", "bot-message-green");
+		});
+	};
+	
+	output.appendChild(link);
+	terminal.scrollTop = terminal.scrollHeight;
 }
 
 /* ---------- NODE DISPLAY ---------- */
@@ -328,9 +340,9 @@ function displayNode(nodeKey) {
 	const node = chatTree[nodeKey];
 	if (!node) return;
 
-	if (node.isFinal) isFinalScene = true;
-
 	typeWriter(node.text, "bot-message", () => {
+		if (node.isFinal && !node.action) isFinalScene = true;
+
 		if (node.action === "enough") {
 			triggerEnoughEnding();
 		} else if (node.action === "redirect") {
@@ -338,7 +350,38 @@ function displayNode(nodeKey) {
 		} else if (node.action === "final") {
 			triggerFinalEnding();
 		} else {
-			showOptions(node.options);
+			if (node.options && node.options.length) {
+				// Build array of options with their target response keys
+				const opts = node.options.map((text, idx) => ({
+					rawText: text,
+					response: node.responses ? node.responses[String(idx + 1)] : null,
+				}));
+
+				// Shuffle options (Fisher-Yates)
+				for (let i = opts.length - 1; i > 0; i--) {
+					const j = Math.floor(Math.random() * (i + 1));
+					[opts[i], opts[j]] = [opts[j], opts[i]];
+				}
+
+				// Prepare display lines and mappings
+				const displayLines = [];
+				currentOptionsMap = {};
+				currentDisplayOptions = [];
+				opts.forEach((o, i) => {
+					// Remove any leading numbering like "1. " from original option text
+					const clean = o.rawText.replace(/^\s*\d+\.\s*/, "");
+					displayLines.push(`${i + 1}. ${clean}`);
+					currentOptionsMap[String(i + 1)] = o.response;
+					currentDisplayOptions.push(clean);
+				});
+
+				const optionsText = "\n" + displayLines.join("\n");
+				typeWriter(optionsText, "system-message");
+			} else {
+				// No options for this node
+				currentOptionsMap = null;
+				currentDisplayOptions = null;
+			}
 		}
 	});
 }
@@ -346,40 +389,48 @@ function displayNode(nodeKey) {
 /* ---------- INPUT HANDLER ---------- */
 input.addEventListener("keydown", (e) => {
 	if (e.key !== "Enter" || isTyping || isFinalScene) return;
-
 	const raw = input.value.trim();
 	input.value = "";
-
 	const node = chatTree[currentNodeKey];
 	if (!node) return;
 
-	// Accept "1", "1.", or even "1 )" etc.
 	const choiceMatch = raw.match(/^(\d+)/);
 	const choiceKey = choiceMatch ? choiceMatch[1] : "";
 
-	if (choiceKey && node.responses && node.responses[choiceKey]) {
-		// Echo back the full option label when available
-		const optIndex = Math.max(0, parseInt(choiceKey, 10) - 1);
-		const userChoiceText = (node.options && node.options[optIndex]) ? node.options[optIndex] : raw;
+	if (choiceKey) {
+		// First prefer mapping from the shuffled options (if present)
+		if (currentOptionsMap && currentOptionsMap[choiceKey]) {
+			const optIndex = Math.max(0, parseInt(choiceKey, 10) - 1);
+			const userChoiceText = (currentDisplayOptions && currentDisplayOptions[optIndex]) ? currentDisplayOptions[optIndex] : raw;
+			const p = document.createElement("p");
+			p.className = "user-input";
+			p.textContent = `> ${userChoiceText}`;
+			output.appendChild(p);
 
-		const p = document.createElement("p");
-		p.className = "user-input";
-		p.textContent = `> ${userChoiceText}`;
-		output.appendChild(p);
+			currentNodeKey = currentOptionsMap[choiceKey];
+			displayNode(currentNodeKey);
+			return;
+		}
 
-		currentNodeKey = node.responses[choiceKey];
-		displayNode(currentNodeKey);
-	} else {
-		typeWriter("Invalid choice. Please enter one of the numbered options shown above.", "system-message", () => {
-			showOptions(node.options || []);
-		});
+		// Fallback: original numeric mapping in node.responses
+		if (node.responses && node.responses[choiceKey]) {
+			const optIndex = Math.max(0, parseInt(choiceKey, 10) - 1);
+			const userChoiceText = (node.options && node.options[optIndex]) ? node.options[optIndex] : raw;
+			const p = document.createElement("p");
+			p.className = "user-input";
+			p.textContent = `> ${userChoiceText}`;
+			output.appendChild(p);
+
+			currentNodeKey = node.responses[choiceKey];
+			displayNode(currentNodeKey);
+			return;
+		}
 	}
 
-	terminal.scrollTop = terminal.scrollHeight;
+	typeWriter("Invalid choice. Please enter one of the numbered options.", "system-message");
 });
 
-/* ---------- START THE CHAT ---------- */
-
+/* ---------- START ---------- */
 displayNode(currentNodeKey);
 	</script>
 </body>

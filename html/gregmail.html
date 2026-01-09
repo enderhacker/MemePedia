@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CurvedMail Mail Viewer - Discovery Report 1997</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Tinos:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #c0c0c0;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px), 
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0, 0, 0, 0.03) 2px, rgba(0, 0, 0, 0.03) 4px);
+            font-family: "Tinos", "Times New Roman", serif;
+            font-size: 14px;
+            color: #000000;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: auto;
+        }
+
+        .window {
+            width: 850px;
+            background-color: #c0c0c0;
+            border: 2px outset #ffffff;
+            box-shadow: 2px 2px 0px #000000;
+            margin: 20px;
+        }
+
+        .title-bar {
+            background: linear-gradient(to right, #000080, #1084d0);
+            color: #ffffff;
+            padding: 3px 5px;
+            font-weight: bold;
+            font-size: 13px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: Arial, sans-serif;
+        }
+
+        .title-bar-text {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .title-bar-controls {
+            display: flex;
+            gap: 2px;
+        }
+
+        .title-bar-button {
+            width: 18px;
+            height: 16px;
+            background-color: #c0c0c0;
+            border: 1px outset #ffffff;
+            font-size: 9px;
+            font-weight: bold;
+            color: black;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .window-body {
+            padding: 12px;
+            background-image: radial-gradient(circle, rgba(0, 0, 0, 0.02) 1px, transparent 1px);
+            background-size: 8px 8px;
+        }
+
+        .header-banner {
+            background-color: #ffffff;
+            border: 2px inset #ffffff;
+            padding: 15px;
+            margin-bottom: 12px;
+            text-align: center;
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(192, 192, 192, 0.1) 10px, rgba(192, 192, 192, 0.1) 20px);
+        }
+
+        .header-banner h1 {
+            font-size: 28px;
+            color: #000080;
+            letter-spacing: 2px;
+            margin: 5px 0;
+        }
+
+        .toolbar {
+            border: 2px outset #ffffff;
+            padding: 4px;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .toolbar button {
+            padding: 4px 12px;
+            background-color: #c0c0c0;
+            border: 2px outset #ffffff;
+            font-size: 12px;
+            font-weight: bold;
+            font-family: Arial, sans-serif;
+        }
+
+        .toolbar button:active {
+            border-style: inset;
+        }
+
+        .mail-viewer {
+            background-color: #ffffff;
+            border: 2px inset #ffffff;
+            padding: 20px;
+            min-height: 400px;
+            box-shadow: inset 1px 1px 2px rgba(0,0,0,0.2);
+        }
+
+        .mail-header {
+            border-bottom: 2px solid #000080;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .subject {
+            font-size: 22px;
+            font-weight: bold;
+            color: #000080;
+            margin-bottom: 8px;
+        }
+
+        .meta-info {
+            font-size: 13px;
+            color: #444;
+            line-height: 1.4;
+        }
+
+        .meta-info strong {
+            color: #000;
+            width: 70px;
+            display: inline-block;
+        }
+
+        .content {
+            line-height: 1.6;
+            font-size: 15px;
+            white-space: pre-wrap;
+            color: #111;
+        }
+
+        .attachments {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px dashed #808080;
+        }
+
+        .attachments-title {
+            font-weight: bold;
+            font-size: 12px;
+            color: #000080;
+            margin-bottom: 10px;
+            font-family: Arial, sans-serif;
+        }
+
+        .attachment-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            border: 2px outset #ffffff;
+            padding: 8px;
+            background-color: #dfdfdf;
+            cursor: pointer;
+            text-decoration: none;
+            color: black;
+        }
+
+        .attachment-box:hover {
+            background-color: #e0e0ff;
+        }
+
+        .attachment-icon {
+            width: 32px;
+            height: 32px;
+            background: #fff;
+            border: 1px solid #808080;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 10px;
+            color: #000080;
+        }
+
+        .status-bar {
+            border-top: 2px outset #ffffff;
+            padding: 4px 6px;
+            margin-top: 10px;
+            font-size: 11px;
+            display: flex;
+            justify-content: space-between;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Subtle fungal glitch effect for the Watcher names */
+        .glitch {
+            color: #006600;
+            font-weight: bold;
+            text-shadow: 1px 1px rgba(0, 128, 0, 0.1);
+            animation: drift 3s infinite;
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(1px); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="window">
+    <div class="title-bar">
+        <div class="title-bar-text">
+            <span>CurvedMail - Message [Internal Archive]</span>
+        </div>
+        <div class="title-bar-controls">
+            <button class="title-bar-button">_</button>
+            <button class="title-bar-button">□</button>
+            <button class="title-bar-button">X</button>
+        </div>
+    </div>
+    
+    <div class="window-body">
+        <div class="header-banner">
+            <h1>CURVEDMAIL MAIL VIEWER</h1>
+            <div style="font-size: 10px; color: #808080;">The world's leading electronic communication system © 1997</div>
+        </div>
+
+        <div class="toolbar">
+            <button>Reply</button>
+            <button>Forward</button>
+            <button>Delete</button>
+            <button>Print</button>
+            <button style="margin-left: auto;">Next ></button>
+        </div>
+
+        <div class="mail-viewer">
+            <div class="mail-header">
+                <div class="subject">RE: Lost Access</div>
+                <div class="meta-info">
+                    <strong>From:</strong> <span>Greg Meyer &lt;gregory.meyer@curvedmail.com&gt;</span><br>
+                    <strong>Date:</strong> <span>Monday, June 23, 2003 02:14:55 AM</span><br>
+                    <strong>To:</strong> <span>Darren Hancock &lt;darren.hancock@curvedmail.com&gt;</span>
+                </div>
+            </div>
+
+            <div class="content">
+Hello Darren, 
+I´ve restarted your password to access curvedmail. I don´t really understand why you speacifically wanted it to be "alleyes" but anyway, it´s done. You should be able to log in now with that password. Please take note of it somewhere safe this time, so you wouldn´t forget it as easily in the future. It was lucky that you were already logged in in your computer, otherwise we would have had to go through a more complicated verification process.
+Best regards,
+Greg Meyer
+            </div>
+
+            
+        </div>
+
+        <div class="status-bar">
+            <span>Message Load: Complete</span>
+            <span>Security: Encrypted (128-bit)</span>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
