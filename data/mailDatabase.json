@@ -149,6 +149,27 @@
 						"url": "https://placehold.co/500x300"
 					}
 				]
+			},
+			{
+				"fromName": "Greg Meyer",
+				"fromEmail": "greg.meyer@curvedmail.com",
+				"subject": "RE: Lost Access",
+				"content": "Hello Darren, \nI've restarted your password to access curvedmail. I don't really understand why you specifically wanted it to be \"alleyes\" but anyway, it's done. You should be able to log in now with that password. Please take note of it somewhere safe this time, so you wouldn't forget it as easily in the future. It was lucky that you were already logged in in your computer, otherwise we would have had to go through a more complicated verification process.\nBest regards,\n\n- Greg Meyer",
+				"timestamp": 1056334495,
+				"images": []
+			},
+			{
+				"fromName": "Greg Meyer",
+				"fromEmail": "greg.meyer@curvedmail.com",
+				"subject": "RE: Concerns About Advertising",
+				"content": "Hello Darren, \nIn regards of your concerns on the advertising about Project Unveil, we are currently investigating who might have started to upload those ads without authorization. It is very strange, as the IP adress they were uploaded from seems to be coming from within our own network, more concretely from the own server. We are looking into it, and we will take the necessary measures to avoid this happening again in the future. Thank you for bringing this to our attention.\nBest regards,\n\n- Greg Meyer",
+				"timestamp": 1111881600,
+				"images": [
+					{
+						"name": "Pr0yectUnv3ilLogo.png",
+						"url": "/9089f976186daa17b7e9bb4b3c0ddcaa1882c93bbde3013456043e505b624c67"
+					}
+				]
 			}
 		]
 	}
