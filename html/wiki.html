@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=800,initial-scale=1" />
+	<title>MemePedia - The 2000s Archive</title>
+	<meta name="description" content="MemePedia Encyclopedia - Documenting internet history." />
+	<link rel="stylesheet" href="/24d8fbbc0b0629acf787bb9ece916f209c6184526a6ec6fa628d9bc2840c7764" />
+	<style>
+		body {
+			margin: 0;
+			background: #f3efe9 url("grid.png");
+			font-family: Tahoma, Verdana, Arial, sans-serif;
+			color: #111;
+			font-size: 14px;
+			line-height: 1.4;
+		}
+
+		#wrapper {
+			width: 800px;
+			margin: 20px auto;
+			border: 4px solid #222;
+			background: #fff;
+			box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.15);
+		}
+
+		header {
+			background: linear-gradient(#ffd6a5, #ffb4a2);
+			padding: 12px 14px;
+			display: flex;
+			align-items: center;
+			gap: 12px;
+		}
+
+		.logo {
+			width: 72px;
+			height: 60px;
+			background: url("logo-old.gif") center/contain no-repeat;
+			border: 1px solid #999;
+		}
+
+		h1 {
+			margin: 0;
+			font-size: 22px;
+			color: #1b1b3a;
+			text-shadow: 1px 1px 0 #fff;
+		}
+
+		.back {
+			display: inline-block;
+			margin: 12px 0;
+			padding: 6px 10px;
+			border: 2px solid #000;
+			background: #fff;
+			text-decoration: none;
+			color: #000;
+			font-weight: bold;
+		}
+
+		.tagline {
+			font-size: 12px;
+			color: #333;
+			margin-top: 4px;
+		}
+
+		nav {
+			padding: 8px 12px;
+			background: #f9f6f2;
+			border-top: 2px solid #eee;
+			border-bottom: 2px dashed #ddd;
+		}
+
+		nav a {
+			margin-right: 8px;
+			color: #0645ad;
+			text-decoration: none;
+			font-weight: bold;
+		}
+
+		.layout {
+			display: flex;
+			gap: 12px;
+			padding: 12px;
+		}
+
+		.main {
+			flex: 1;
+		}
+
+		.side {
+			width: 220px;
+			background: #fff;
+			padding: 10px;
+			border-left: 2px dotted #ddd;
+		}
+
+		.card {
+			background: #fff;
+			padding: 10px;
+			margin-bottom: 12px;
+			border: 1px solid #e0d8d2;
+		}
+
+		.marquee {
+			background: #1b1b3a;
+			color: #fff;
+			padding: 6px;
+			margin-bottom: 10px;
+			font-weight: bold;
+		}
+
+		.marquee marquee {
+			color: #fff;
+		}
+
+		.counter {
+			font-family: "Courier New", monospace;
+			background: #000;
+			color: #0f0;
+			padding: 4px 6px;
+			display: inline-block;
+			border-radius: 4px;
+		}
+
+		.wiki-list {
+			list-style: square;
+			padding-left: 18px;
+			margin: 8px 0;
+		}
+
+		#ads-container {
+			display: flex;
+			flex-direction: column;
+			border: 1px solid lightgray;
+			background: antiquewhite;
+			padding: 0px 10px;
+			margin-bottom: 10px;
+		}
+
+		.ad {
+			padding: 8px;
+			border: 2px solid #ddd;
+			margin-bottom: 10px;
+			background: linear-gradient(#fff, #f0f0f0);
+			cursor: pointer;
+			text-align: center;
+		}
+
+		.ad img {
+			max-width: 100%;
+			height: auto;
+			display: block;
+			margin: 0 auto 6px;
+		}
+
+		.footer {
+			padding: 10px;
+			text-align: center;
+			font-size: 12px;
+			background: #f4f4f4;
+			border-top: 1px solid #ddd;
+		}
+
+		/* Popup Styles */
+		#popup-overlay {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			right: 0;
+			bottom: 0;
+			background: rgba(0, 0, 0, 0.5);
+			justify-content: center;
+			align-items: center;
+			z-index: 1000;
+		}
+
+		#popup {
+			background: #fdf5e6;
+			border: 4px solid #c58a4a;
+			padding: 20px 25px;
+			width: 360px;
+			max-width: 90%;
+			box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.2);
+			text-align: center;
+		}
+
+		#popup h2 {
+			margin: 0 0 10px 0;
+			font-size: 20px;
+			color: #1b1b3a;
+		}
+
+		#popup button {
+			background: #d6a86a;
+			border: 2px outset #ffdba0;
+			padding: 6px 12px;
+			cursor: pointer;
+			font-weight: bold;
+		}
+
+		/* Wiki Specific Styles */
+		.wiki-entry {
+			border-bottom: 4px double #ccc;
+			padding-bottom: 20px;
+			margin-bottom: 20px;
+		}
+
+		.wiki-entry:last-child {
+			border-bottom: none;
+		}
+
+		.wiki-title {
+			font-family: Georgia, serif;
+			border-bottom: 1px solid #aaa;
+			margin-top: 0;
+			padding-bottom: 5px;
+			font-size: 24px;
+			color: #000;
+		}
+
+		.wiki-meta {
+			font-size: 11px;
+			color: #666;
+			margin-bottom: 10px;
+		}
+
+		.wiki-box {
+			background: #f9f9f9;
+			border: 1px solid #ccc;
+			padding: 4px;
+			font-size: 11px;
+			float: right;
+			margin: 0 0 10px 15px;
+			width: 200px;
+			text-align: center;
+			box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
+		}
+
+		.wiki-box-header {
+			background: #ccccff;
+			padding: 4px;
+			font-weight: bold;
+			border: 1px solid #aaa;
+			margin-bottom: 4px;
+		}
+
+		.wiki-box img {
+			max-width: 100%;
+			border: 1px solid #999;
+			background: #fff;
+		}
+
+		.caption {
+			padding: 4px 0;
+		}
+
+		.toc {
+			background: #f8f9fa;
+			border: 1px solid #a2a9b1;
+			display: inline-block;
+			padding: 10px;
+			margin: 10px 0;
+			min-width: 200px;
+		}
+
+		.toc h4 {
+			margin: 0;
+			text-align: center;
+			font-size: 100%;
+		}
+
+		.toc ul {
+			list-style: none;
+			padding: 0;
+			margin: 5px 0 0;
+			font-size: 13px;
+		}
+
+		.toc li {
+			margin-bottom: 4px;
+		}
+
+		.toc-number {
+			color: #000;
+			font-weight: bold;
+		}
+
+		h3 {
+			border-bottom: 1px solid #a2a9b1;
+			padding-bottom: 3px;
+			font-size: 18px;
+			color: #000;
+			margin-top: 20px;
+		}
+
+		.edit-link {
+			font-size: 10px;
+			float: right;
+			font-weight: normal;
+			margin-top: 5px;
+		}
+
+		a {
+			color: #0645ad;
+			text-decoration: none;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+
+		blockquote {
+			background: #f0f0f0;
+			border-left: 3px solid #ccc;
+			margin: 10px 20px;
+			padding: 10px;
+			font-style: italic;
+		}
+
+		.categories-box {
+			border: 1px solid #aaa;
+			background: #f5f5f5;
+			padding: 8px;
+			margin-top: 15px;
+			font-size: 11px;
+			clear: both;
+		}
+	</style>
+</head>
+
+<body>
+	<div id="wrapper">
+		<header>
+			<a href="/" class="logo" aria-label="MemePedia home" style="background: none">
+				<img src="/9fd8a9b27cf86d9129f1edc6c2d47e25cb8f3cfe11984d1a67b946f00ee4b8c4" alt="MemePedia logo"
+					width="72" height="60" style="display: block; border: 0" />
+			</a>
+			<div>
+				<h1>MemePedia [WIKI]</h1>
+				<div class="tagline">The best meme community online!</div>
+			</div>
+		</header>
+
+		<nav>
+			<a href="/">Home</a>
+			<a href="/0b0951b0a8a5586a5b54e34912a09c323e16c5924fc7f888ddc74e3284e282b2">Wiki</a>
+			<a href="/c40fbc15b206edccd7b21b63c5379d9b049598fadd81544e26de27e501572da9">Forum</a>
+			<a href="/395b46de6c56b0518e08b07182c1ff4a340e0bb6ca7b315a8967a4d02b44b76d">Gallery</a>
+			<a href="/bec5d5040b7df76f319de5e40a82ad1335d9ab3d23f4f6ff1ab6597c72819333">About</a>
+		</nav>
+
+		<div class="layout">
+			<!-- Main Wiki Content -->
+			<div class="main">
+				<a href="/" class="back">← Back to MemePedia</a>
+				<div class="card">
+					<div class="toc">
+						<h4>Table of Contents</h4>
+						<ul>
+							<li><span class="toc-number">1</span> <a href="#aybabtu">All Your Base Are Belong To Us</a>
+							</li>
+							<li><span class="toc-number">2</span> <a href="#starwarskid">Star Wars Kid</a></li>
+							<li><span class="toc-number">3</span> <a href="#numanuma">Numa Numa</a></li>
+							<li><span class="toc-number">4</span> <a href="#rickroll">Rickrolling</a></li>
+							<li><span class="toc-number">5</span> <a href="#keyboardcat">Keyboard Cat</a></li>
+						</ul>
+					</div>
+				</div>
+
+				<!-- Entry 1 -->
+				<div class="card wiki-entry" id="aybabtu">
+					<h2 class="wiki-title">All Your Base Are Belong To Us</h2>
+					<div class="wiki-meta">From MemePedia, the free encyclopedia.</div>
+
+					<div class="wiki-box">
+						<div class="wiki-box-header">All Your Base</div>
+						<img src="/48a87d19adf0f0dcfbf41e41bcb2875b90a8b5f5b46c929e8d29b20368cd9618" alt="CATS" />
+						<div class="caption">The villain "CATS" from Zero Wing.</div>
+						<div style="text-align:left; border-top:1px solid #ccc; margin-top:4px; padding-top:4px;">
+							<strong>Origin:</strong> Zero Wing (Sega Genesis)<br />
+							<strong>Year:</strong> 2001<br />
+							<strong>Type:</strong> Flash Animation / Catchphrase
+						</div>
+					</div>
+
+					<p><strong>"All your base are belong to us"</strong> (often abbreviated as <strong>AYBABTU</strong>)
+						is a broken English phrase that became an internet phenomenon in 2001. The quote comes from the
+						opening cutscene of the 1991 European Sega Mega Drive version of the video game <em>Zero
+							Wing</em>.</p>
+
+					<h3><span class="edit-link">[<a href="#">edit</a>]</span>Origins</h3>
+					<p>The meme took off when a Flash animation by Bad_CRC was posted to Newgrounds in early 2001. It
+						featured a techno remix of the game's soundtrack (the "Invasion of the Gabber Robots" remix by
+						The Laziest Men on Mars).</p>
+
+					<h3><span class="edit-link">[<a href="#">edit</a>]</span>Transcript</h3>
+					<blockquote>
+						<b>Captain:</b> What happen ?<br>
+						<b>Mechanic:</b> Somebody set up us the bomb.<br>
+						<b>Operator:</b> We get signal.<br>
+						<b>Captain:</b> What !<br>
+						<b>Operator:</b> Main screen turn on.<br>
+						<b>Captain:</b> It's you !!<br>
+						<b>CATS:</b> How are you gentlemen !! All your base are belong to us.
+					</blockquote>
+
+					<div class="categories-box">
+						Categories: <a href="#">2001 Memes</a> | <a href="#">Engrish</a> | <a href="#">Flash
+							Animation</a> | <a href="#">Video Game Memes</a>
+					</div>
+				</div>
+
+				<!-- Entry 2 -->
+				<div class="card wiki-entry" id="starwarskid">
+					<h2 class="wiki-title">Star Wars Kid</h2>
+					<div class="wiki-meta">From MemePedia, the free encyclopedia.</div>
+
+					<div class="wiki-box">
+						<div class="wiki-box-header">Star Wars Kid</div>
+						<img src="/72a44cb9a9bfa47f93e04f5a8d1a37961a2efb8bc44c18f4038d20b5e9b4cf10"
+							alt="Ghyslain Raza" />
+						<div class="caption">The original footage.</div>
+						<div style="text-align:left; border-top:1px solid #ccc; margin-top:4px; padding-top:4px;">
+							<strong>Year:</strong> 2002 (Filmed), 2003 (Viral)<br />
+							<strong>Type:</strong> Viral Video
+						</div>
+					</div>
+
+					<p><strong>Star Wars Kid</strong> refers to a viral video showing a high school student, Ghyslain
+						Raza, wielding a golf ball retriever as if it were a double-sided lightsaber from the movie
+						<em>Star Wars Episode I: The Phantom Menace</em>.
+					</p>
+
+					<h3><span class="edit-link">[<a href="#">edit</a>]</span>Spread</h3>
+					<p>The video was filmed in November 2002 but was left in a school basement. It was discovered by
+						other students in 2003 and uploaded to the file-sharing network Kazaa. Within weeks, it had been
+						downloaded millions of times.</p>
+					<p>It is widely considered one of the first "viral videos" in internet history, pre-dating YouTube.
+						Users created "remixes" adding special effects (lightsaber glows) and music.</p>
+
+					<div class="categories-box">
+						Categories: <a href="#">2003 Memes</a> | <a href="#">Viral Videos</a> | <a href="#">Star
+							Wars</a> | <a href="#">Remixes</a>
+					</div>
+				</div>
+
+				<!-- Entry 3 -->
+				<div class="card wiki-entry" id="numanuma">
+					<h2 class="wiki-title">Numa Numa</h2>
+					<div class="wiki-meta">From MemePedia, the free encyclopedia.</div>
+
+					<div class="wiki-box">
+						<div class="wiki-box-header">Numa Numa Dance</div>
+						<img src="/3e4a0bdf58f4a7a99f3c2b14cb987e6cdd46a3d8bf64b1b6b3a92a0dfb7814b6"
+							alt="Gary Brolsma" />
+						<div class="caption">Gary Brolsma mid-dance.</div>
+						<div style="text-align:left; border-top:1px solid #ccc; margin-top:4px; padding-top:4px;">
+							<strong>Origin:</strong> Newgrounds<br />
+							<strong>Year:</strong> 2004<br />
+							<strong>Song:</strong> Dragostea Din Tei
+						</div>
+					</div>
+
+					<p><strong>Numa Numa</strong> is an internet phenomenon based on a video of American vlogger Gary
+						Brolsma lip-syncing to the Moldovan pop song "Dragostea Din Tei" by O-Zone. The title comes from
+						the misheard refrain "nu mă, nu mă iei".</p>
+
+					<h3><span class="edit-link">[<a href="#">edit</a>]</span>Impact</h3>
+					<p>Uploaded to Newgrounds.com on December 6, 2004, under the title <em>Numa Numa Dance</em>, it
+						instantly became a hit due to Brolsma's energetic and unselfconscious performance. It has been
+						parodied in <em>South Park</em> and by thousands of imitators on early YouTube.</p>
+
+					<div class="categories-box">
+						Categories: <a href="#">2004 Memes</a> | <a href="#">Lip Sync</a> | <a href="#">Newgrounds</a> |
+						<a href="#">Dance</a>
+					</div>
+				</div>
+
+				<!-- Entry 4 -->
+				<div class="card wiki-entry" id="rickroll">
+					<h2 class="wiki-title">Rickrolling</h2>
+					<div class="wiki-meta">From MemePedia, the free encyclopedia.</div>
+
+					<div class="wiki-box">
+						<div class="wiki-box-header">Rickrolling</div>
+						<img src="/6a5142ac9b9b985f27e861bbd4e33c6ad2d2af7e05a284e79b83e68266dcbfc7"
+							alt="Rick Astley" />
+						<div class="caption">Never Gonna Give You Up (1987)</div>
+						<div style="text-align:left; border-top:1px solid #ccc; margin-top:4px; padding-top:4px;">
+							<strong>Origin:</strong> 4chan (/v/)<br />
+							<strong>Year:</strong> 2007<br />
+							<strong>Type:</strong> Bait-and-Switch
+						</div>
+					</div>
+
+					<p><strong>Rickrolling</strong> is a bait-and-switch prank that involves posting a hyperlink that is
+						supposedly relevant to the topic at hand, but instead leads to the music video for Rick Astley's
+						1987 hit "Never Gonna Give You Up".</p>
+
+					<h3><span class="edit-link">[<a href="#">edit</a>]</span>History</h3>
+					<p>The trend evolved from an earlier 4chan prank called "duckrolling" (linking to a picture of a
+						duck on wheels). The first known instance of Rickrolling occurred in May 2007 on the /v/ (video
+						games) board, where a user claimed to post a link to the <em>Grand Theft Auto IV</em> trailer.
+					</p>
+
+					<h3><span class="edit-link">[<a href="#">edit</a>]</span>Mainstream Success</h3>
+					<p>On April 1, 2008, YouTube pranked the entire internet by redirecting all featured homepage videos
+						to the Rickroll. This event cemented the meme's place in history.</p>
+
+					<div class="categories-box">
+						Categories: <a href="#">2007 Memes</a> | <a href="#">4chan</a> | <a href="#">Pranks</a> | <a
+							href="#">Music Video</a>
+					</div>
+				</div>
+
+				<!-- Entry 5 -->
+				<div class="card wiki-entry" id="keyboardcat">
+					<h2 class="wiki-title">Keyboard Cat</h2>
+					<div class="wiki-meta">From MemePedia, the free encyclopedia.</div>
+
+					<div class="wiki-box">
+						<div class="wiki-box-header">Fatso the Cat</div>
+						<img src="/79b81ff2a8cf7ebad4d95c1b7351f24a83e7a8d319da2f6e9a0b3af2bb12e597"
+							alt="Keyboard Cat" />
+						<div class="caption">"Play him off, Keyboard Cat!"</div>
+						<div style="text-align:left; border-top:1px solid #ccc; margin-top:4px; padding-top:4px;">
+							<strong>Year:</strong> 1984 (Filmed), 2007/2009 (Viral)<br />
+							<strong>Origin:</strong> YouTube
+						</div>
+					</div>
+
+					<p><strong>Keyboard Cat</strong> is a video of a female cat named Fatso wearing a blue shirt and
+						"playing" an electronic keyboard. The footage was actually filmed by Charlie Schmidt in 1984 on
+						VHS but was not uploaded to YouTube until 2007.</p>
+
+					<h3><span class="edit-link">[<a href="#">edit</a>]</span>"Play Him Off"</h3>
+					<p>The meme achieved peak popularity in 2009 when Brad O'Farrell created a mashup video. The format
+						involves showing a "fail" video (someone tripping or making a mistake), followed immediately by
+						Keyboard Cat playing his upbeat tune to "play them off stage."</p>
+
+					<div class="categories-box">
+						Categories: <a href="#">2009 Memes</a> | <a href="#">Cats</a> | <a href="#">YouTube Poop</a> |
+						<a href="#">Fail Compilation</a>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- Sidebar -->
+			<aside class="side">
+				<div class="card">
+					<h4 style="margin-top: 0">Wiki Toolbox</h4>
+					<ul style="padding-left: 20px; margin: 6px 0; font-size: 13px;">
+						<li><a href="#">Upload file</a></li>
+						<li><a href="#">Special pages</a></li>
+						<li><a href="#">Printable version</a></li>
+						<li><a href="#">Permanent link</a></li>
+					</ul>
+				</div>
+
+				<div id="ads-container">
+					<h4 style="margin: 5px 0px">Advertisements:</h4>
+					<div class="card ad">
+						<img src="" alt="" />
+						<div style="font-weight: bold">Loading...</div>
+						<div style="font-size: 12px; color: #444; margin-top: 6px">Loading...</div>
+					</div>
+				</div>
+
+				<div class="card">
+					<h4 style="margin: 0 0 6px 0">Did you know?</h4>
+					<p style="font-size: 13px; color: #555; margin: 0">
+						...that the <b>Hamster Dance</b> was created in 1998 on a Geocities page as a competition
+						between sisters to see who could get the most traffic?
+					</p>
+				</div>
+
+				<div class="card" style="text-align:center;">
+					<button style="cursor:pointer;" onclick="window.scrollTo(0,0);">Top of Page</button>
+				</div>
+			</aside>
+		</div>
+		<footer class="footer">
+			<p>This page was last modified on 12 December 2009, at 14:02.</p>
+			<p>Text is available under the Creative Commons Attribution-ShareAlike License.</p>
+			<p>© MemePedia | 2001-2009</p>
+		</footer>
+	</div>
+
+	<script>
+		// --- Ads Loader (Simulated) ---
+		window.addEventListener("DOMContentLoaded", async () => {
+			const container = document.getElementById("ads-container");
+			container.innerHTML = '<h4 style="margin: 5px 0px;">Advertisements:</h4>';
+
+			let currentAds = [];
+
+			const renderAds = (ads) => {
+				container.querySelectorAll(".ad").forEach((ad) => ad.remove());
+				ads.forEach((ad) => {
+					const div = document.createElement("div");
+					div.className = "card ad";
+					div.innerHTML = `
+				<img src="${ad.imageUrl}" alt="${ad.title}">
+				<div style="font-weight:bold">${ad.title}</div>
+				<div style="font-size:12px;color:#444;margin-top:6px">${ad.description}</div>`;
+					// Dead link behavior
+					div.onclick = () => {
+						alert("Ad server unreachable in archive mode.");
+					};
+					container.appendChild(div);
+				});
+			};
+
+			const fetchAds = async () => {
+				try {
+					const res = await fetch("/api/getAd");
+					if (!res.ok) throw new Error("Network response was not ok");
+					const ads = await res.json();
+					currentAds = ads;
+					renderAds(ads);
+				} catch (e) {
+					console.warn("Failed to fetch new ads, keeping previous ones.");
+					// Keep current ads or placeholders if fails
+				}
+			};
+
+			await fetchAds();
+			setInterval(fetchAds, 15000);
+		});
+
+		// --- Visits Counter Logic ---
+		(() => {
+			const el = document.getElementById("visits");
+			if (!el) return;
+			// Just a static number incrementing slightly for effect
+			let count = 8675309;
+			setInterval(() => {
+				count += Math.floor(Math.random() * 3);
+				el.textContent = count.toLocaleString();
+			}, 5000);
+		})();
+	</script>
+</body>
+
+</html>

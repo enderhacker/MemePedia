@@ -223,6 +223,7 @@ publishFile("/a15c2ab34008389122288d06521382beb04dde0f0e7eae4f0e025e73838feecc",
 publishFile("/4b3c126cf6c073a2d6f962afd5f072b52b1432119602644c43308ca79ff4e08e", "./html/unveil.html");
 publishFile("/0a04702c2d3c4ce70f0b876f70ab37ce13108c79c756fcbbdda8e4e927207869", "./html/ENTER_THE_MIRROR.html");
 publishFile("/157dd9d6f7d7fb22f4c950a8f6713276b53b92a00eb4f195f7400dfb958fcca6", "./html/newspaper.html");
+publishFile("/0b0951b0a8a5586a5b54e34912a09c323e16c5924fc7f888ddc74e3284e282b2", "./html/wiki.html");
 
 publishFile("/e5f0df71d19f1cb40304a4524042f0feb4f1769fb967ce269922f8721bc3e917", "./data/eyeascii.json");
 
