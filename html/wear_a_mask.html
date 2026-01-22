@@ -91,7 +91,7 @@
 
 				ctx.putImageData(imgData, 0, 0);
 
-				// Dense random glitch lines (horizontal + vertical)
+			
 				ctx.globalCompositeOperation = "screen";
 				for (let i = 0; i < 40; i++) {
 					ctx.fillStyle = `rgba(255,0,0,${rand(0.05, 0.4)})`;
@@ -103,7 +103,7 @@
 				}
 				ctx.globalCompositeOperation = "source-over";
 
-				// Random screen flicker
+		
 				if (Math.random() < 0.15) {
 					flash.style.background = `rgba(255,0,0,${rand(0.05, 0.25)})`;
 				} else {
