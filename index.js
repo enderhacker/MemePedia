@@ -224,6 +224,7 @@ publishFile("/4b3c126cf6c073a2d6f962afd5f072b52b1432119602644c43308ca79ff4e08e",
 publishFile("/0a04702c2d3c4ce70f0b876f70ab37ce13108c79c756fcbbdda8e4e927207869", "./html/ENTER_THE_MIRROR.html");
 publishFile("/157dd9d6f7d7fb22f4c950a8f6713276b53b92a00eb4f195f7400dfb958fcca6", "./html/newspaper.html");
 publishFile("/0b0951b0a8a5586a5b54e34912a09c323e16c5924fc7f888ddc74e3284e282b2", "./html/wiki.html");
+publishFile("/6da53329402540dee8230bdce3c339b2438767b6fcf3ec6f9df20ea996ce5ee7", "./html/gregmail.html");
 
 publishFile("/e5f0df71d19f1cb40304a4524042f0feb4f1769fb967ce269922f8721bc3e917", "./data/eyeascii.json");
 
@@ -264,7 +265,7 @@ publishFile("/8eb590f2bb544ba251569354919adcfe2b38dffc5b4a60662a10036e8be8fcc0",
 publishFile("/e4fc780f974374a885e0246a100a3405285edf85e9e97e27583702fe0afff0df", "./sounds/Success.mp3");
 publishFile("/ded2d40110abb9075e42bb31f69a6799bf25e515a8403549d4a8f0706877da9e", "./sounds/Blurred.mp3");
 
-// 6da53329402540dee8230bdce3c339b2438767b6fcf3ec6f9df20ea996ce5ee7
+// 
 // ad01dbe10a4e567094a3861103089fad02b2e9327051db89d748f320cb538e88
 // e69ef03be5ba8d0ad520267dad768ee0c9e7ea90489e3f99abde2bba1a9adf11
 // b4840da99696ec91badda36e0d399f4063ea1a5992e27e1df278aa3420627b78
